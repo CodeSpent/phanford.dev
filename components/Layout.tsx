@@ -7,8 +7,11 @@ type Props = {
   title?: string;
 };
 
-const Layout = ({ children, title = "This is the default title" }: Props) => (
-  <div>
+const Layout = ({
+  children,
+  title = "Patrick Hanford | Software Engineer",
+}: Props) => (
+  <div className="lg:px-12">
     <Head>
       <title>{title}</title>
       <meta charSet="utf-8" />
@@ -18,10 +21,6 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
       <Navbar />
     </header>
     {children}
-    <footer>
-      <hr />
-      <span>I'm here to stay (Footer)</span>
-    </footer>
   </div>
 );
 
