@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 
 const taglines = [
   "Software",
@@ -39,10 +40,10 @@ const HeroComponent = () => {
   return (
     <div className="flex flex-col px-6 py-12 leading-6 tracking-widest">
       <div className="min-h-max" style={{ minHeight: "200px" }}>
-        <span className="text-lg font-bold italic text-teal-500">
+        <span className="text-lg font-thin italic text-teal-500">
           Hi, my name is
         </span>
-        <h1 className="text-6xl font-black text-white lg:text-9xl">Patrick</h1>
+        <h1 className="text-6xl text-white lg:text-9xl">Patrick</h1>
 
         <Transition
           enter-active-class="transition-opacity duration-75"
@@ -70,6 +71,14 @@ const HeroComponent = () => {
         infancy. Various versions have evolved over the years, sometimes by
         accident, sometimes on purpose (injected humour and the like).
       </p>
+
+      <a className="mt-20 flex flex-col items-center justify-center p-4">
+        <p className="text-center font-thin">Scroll Down</p>
+        <ChevronDownIcon
+          className="ml-2 h-5 w-5 animate-bounce text-2xl text-white group-hover:text-white"
+          aria-hidden="true"
+        />
+      </a>
     </div>
   );
 };

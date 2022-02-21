@@ -7,4 +7,22 @@
 html {
     @apply text-white;
     @apply bg-gray-900;
+
+    /* Resume timeline causes overflow on intersection.
+       This can be removed when our PR gets merged to
+       fix this.
+    */
+    overflow-x: hidden;
+}
+
+.vertical-timeline.vertical-timeline--two-columns::before {
+    width: 1px !important;
+}
+
+.vertical-timeline-element-icon {
+    box-shadow: none !important;
+}
+
+.vertical-timeline-element-icon img {
+    border-radius: 50%;
 }

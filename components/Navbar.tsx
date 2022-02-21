@@ -38,8 +38,8 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Popover className="relative bg-gray-900">
-      <div className="flex items-center justify-center space-x-10 px-4 py-6 sm:px-6 md:justify-start">
+    <Popover className="relative w-full">
+      <div className="flex w-screen items-center justify-center space-x-10 px-4 py-6 sm:px-6 md:justify-start">
         <div className="flex justify-start">
           <a className="flex items-center" href="#">
             <img
@@ -61,13 +61,18 @@ export default function Navbar() {
             <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </Popover.Button>
         </div>
-        <Popover.Group as="nav" className="hidden space-x-4 md:flex">
+        <Popover.Group
+          as="nav"
+          className="hidden space-x-4 md:flex"
+          style={{ alignItems: "center" }}
+        >
           <a
             href="#"
             className="text-base font-medium text-white hover:text-white"
           >
             About
           </a>
+
           <a
             href="#"
             className="text-base font-medium text-white hover:text-white"
@@ -75,13 +80,19 @@ export default function Navbar() {
             Blog
           </a>
 
+          <a
+            href="#"
+            className="text-base font-medium text-white hover:text-white"
+          >
+            Resume
+          </a>
           <Popover className="relative">
             {({ open }) => (
               <>
                 <Popover.Button
                   className={classNames(
                     open ? "text-white" : "text-white",
-                    "group inline-flex items-center rounded-md bg-gray-900 text-base font-medium hover:text-white"
+                    "group inline-flex items-center rounded-md bg-transparent text-base font-medium hover:text-white"
                   )}
                 >
                   <span>Projects</span>
