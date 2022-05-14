@@ -2,13 +2,14 @@ import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { ChartBarIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
 import { ChevronDownIcon, CodeIcon } from "@heroicons/react/solid";
+import Link from "next/link";
 
 const projects = [
   {
     name: "DevStreams.io",
     description:
       "Discover streams in your stack with granular search for programming live streams.",
-    href: "#",
+    href: "https://devstreams.io/",
     image: "/images/devstreams-logo.png",
     icon: null,
     unannounced: false,
@@ -17,7 +18,7 @@ const projects = [
     name: "GigHire",
     description:
       "Gig-based hiring made simpler, streamlined, and more effective.",
-    href: "#",
+    href: "",
     image: null,
     icon: ChartBarIcon,
     unannounced: true,
@@ -26,7 +27,7 @@ const projects = [
     name: "Your Product",
     description:
       "Let's get in touch & add your product to what I'm working on!",
-    href: "#",
+    href: "mailto:patrick@phanford.dev",
     image: null,
     icon: CodeIcon,
   },
@@ -38,22 +39,24 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Popover className="relative w-full">
-      <div className="flex w-screen items-center justify-center space-x-10 px-4 py-6 sm:px-6 md:justify-start">
+    <Popover className="relative">
+      <div className="flex items-center justify-center space-x-10 px-4 py-6 sm:px-6 md:justify-start">
         <div className="flex justify-start">
-          <a className="flex items-center" href="#">
-            <img
-              className="h-10 w-auto rounded-full sm:h-10"
-              src="https://github.com/codespent.png"
-              alt="Patrick Hanford profile photo."
-            />
-            <div className={"mx-2 flex flex-col"}>
-              <h1 className="text-2xl text-white">Patrick Hanford</h1>
-              <p className={"text-xs italic text-white"}>
-                Web, Mobile, Software, DevOps
-              </p>
-            </div>
-          </a>
+          <Link href="/">
+            <a className="flex items-center">
+              <img
+                className="h-10 w-auto rounded-full sm:h-10"
+                src="https://github.com/codespent.png"
+                alt="Patrick Hanford profile photo."
+              />
+              <div className={"mx-2 flex flex-col"}>
+                <h1 className="text-2xl text-white">Patrick Hanford</h1>
+                <p className={"text-xs italic text-white"}>
+                  Web, Mobile, Software, DevOps
+                </p>
+              </div>
+            </a>
+          </Link>
         </div>
         <div className="-my-2 -mr-2 md:hidden">
           <Popover.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500">
@@ -63,29 +66,26 @@ export default function Navbar() {
         </div>
         <Popover.Group
           as="nav"
-          className="hidden space-x-4 md:flex"
-          style={{ alignItems: "center" }}
+          className="ml-auto hidden space-x-4 md:flex"
+          style={{ marginLeft: "auto" }}
         >
-          <a
-            href="#"
-            className="text-base font-medium text-white hover:text-white"
-          >
-            About
-          </a>
+          <Link href="/">
+            <a className="text-base font-medium text-white hover:text-white">
+              Home
+            </a>
+          </Link>
 
-          <a
-            href="#"
-            className="text-base font-medium text-white hover:text-white"
-          >
-            Blog
-          </a>
+          <Link href="/blog">
+            <a className="text-base font-medium text-white hover:text-white">
+              Blog
+            </a>
+          </Link>
 
-          <a
-            href="#"
-            className="text-base font-medium text-white hover:text-white"
-          >
-            Resume
-          </a>
+          <Link href="#">
+            <a className="text-base font-medium text-white hover:text-white">
+              Resume
+            </a>
+          </Link>
           <Popover className="relative">
             {({ open }) => (
               <>
@@ -121,6 +121,7 @@ export default function Navbar() {
                           <a
                             key={project.name}
                             href={project.href}
+                            target="_blank"
                             className={
                               "-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50 " +
                               (project.unannounced ? "blur-sm" : "")
@@ -218,14 +219,14 @@ export default function Navbar() {
                   <div className="py-6 px-5">
                     <div className="grid grid-cols-3 gap-4 text-center">
                       <a
-                        href="#"
+                        href="/"
                         className="text-base font-medium text-white hover:text-gray-700"
                       >
-                        About
+                        Home
                       </a>
 
                       <a
-                        href="#"
+                        href="blog"
                         className="text-base font-medium text-white hover:text-gray-700"
                       >
                         Blog
@@ -245,6 +246,7 @@ export default function Navbar() {
                     <a
                       key={project.name}
                       href={project.href}
+                      target="_blank"
                       className={
                         "relative -m-3 rounded-lg bg-gray-50 p-3 text-white"
                       }

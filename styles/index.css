@@ -1,8 +1,8 @@
 /* purgecss start ignore */
 @tailwind base;
 @tailwind components;
-/* purgecss end ignore */
 @tailwind utilities;
+/* purgecss end ignore */
 
 html {
     @apply text-white;
@@ -25,4 +25,34 @@ html {
 
 .vertical-timeline-element-icon img {
     border-radius: 50%;
+}
+
+.article-body h2 {
+    @apply text-white;
+    @apply text-4xl;
+    @apply my-4;
+    @apply flex;
+    @apply items-center;
+}
+
+.article-body h2 em {
+    @apply ml-2;
+    @apply mr-4;
+}
+
+.article-body > img {
+    @apply my-4;
+}
+
+.article-body p {
+    @apply my-4;
+}
+
+.article-body .article-image {
+    @apply my-8 !important;
+    @apply p-4 !important;
+}
+
+.article-body .article-image img {
+    @apply rounded;
 }

@@ -1,14 +1,14 @@
 import React, { Fragment } from "react";
 import { AppProps } from "next/app";
 import Particles from "react-tsparticles";
-
 import "../styles/index.css";
+import "../global.scss";
 
 function AppComponent({ Component, pageProps }: AppProps) {
   return (
     <Fragment>
       <Particles
-        id="tsparticles"
+        id="particles"
         options={{
           fpsLimit: 120,
           interactivity: {
@@ -82,7 +82,6 @@ function AppComponent({ Component, pageProps }: AppProps) {
           detectRetina: true,
         }}
       />
-
       <Component {...pageProps} />
     </Fragment>
   );

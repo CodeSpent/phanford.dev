@@ -11,7 +11,7 @@ import robertHalfLogo from "../public/images/robert-half-logo.png";
 import twitchinStudiosLogo from "../public/images/twitchin-studios-logo.jpg";
 
 const LogoComponent = (props) => {
-  return <img src={props.src} alt="Company logo" />;
+  return <img src={props.src} alt="Company logo"/>;
 };
 
 const ResumeTimeline = () => {
@@ -111,12 +111,12 @@ const ResumeTimeline = () => {
   ];
 
   return (
-    <VerticalTimeline id="resume" layout={"2-columns"} animate={true}>
+    <VerticalTimeline layout={"2-columns"} animate={true}>
       {resumeEntries.map((entry) => (
         <VerticalTimelineElement
           className="vertical-timeline-element--work"
           date={entry.startDate + " - " + entry.endDate}
-          icon={<LogoComponent src={entry.logo} />}
+          icon={<LogoComponent src={entry.logo}/>}
         >
           <div className="flex">
             {entry.tags.map((tag) => (
@@ -136,7 +136,7 @@ const ResumeTimeline = () => {
             <h3 className="vertical-timeline-element-title font-semibold text-gray-900">
               {entry.title}
             </h3>
-            <p />
+            <p/>
             <h4 className="vertical-timeline-element-subtitle m-2 text-gray-500">
               {entry.description}
             </h4>

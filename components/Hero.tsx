@@ -60,7 +60,7 @@ const HeroComponent = () => {
           </h2>
         </Transition>
       </div>
-      <p className="mt-4 py-4 font-thin lg:w-1/2">
+      <p className="mt-4 max-w-lg py-4 font-thin lg:max-w-4xl">
         It is a long established fact that a reader will be distracted by the
         readable content of a page when looking at its layout. The point of
         using Lorem Ipsum is that it has a more-or-less normal distribution of
@@ -73,9 +73,8 @@ const HeroComponent = () => {
       </p>
 
       <a className="mt-20 flex flex-col items-center justify-center p-4">
-        <p className="text-center font-thin">Scroll Down</p>
         <ChevronDownIcon
-          className="ml-2 h-5 w-5 animate-bounce text-2xl text-white group-hover:text-white"
+          className="mr-1 h-8 w-8 animate-bounce text-white group-hover:text-white"
           aria-hidden="true"
         />
       </a>
