@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useMarkdownRenderer } from "../../../utils/markdown/useMarkdownRenderer";
-import ArticleLayout from "../../../components/ArticleLayout";
+import ArticleLayout from "../../../components/blog/ArticleLayout";
 import {
   getArticlesBySlug,
   getAllArticles,

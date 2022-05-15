@@ -1,6 +1,6 @@
-import { ArticleSearchContext } from "../constants/article-search-context/article-search-context";
+import { ArticleSearchContext } from "../../constants/article-search-context/article-search-context";
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { ArticleListContext } from "../constants/article-list-context/article-list-context";
+import { ArticleListContext } from "../../constants/article-list-context/article-list-context";
 
 export default function ArticleSearch() {
   const { setSearchValue } = useContext(ArticleSearchContext);

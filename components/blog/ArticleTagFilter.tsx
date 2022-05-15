@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import { Combobox } from "@headlessui/react";
-import { ArticleSearchContext } from "../constants/article-search-context/article-search-context";
+import { ArticleSearchContext } from "../../constants/article-search-context/article-search-context";
 
 type Props = {
   tags: string[];

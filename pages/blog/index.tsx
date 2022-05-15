@@ -5,9 +5,9 @@ import {
   getAllArticles,
   ListViewArticles,
 } from "../../utils/fs/api";
-import ArticleSearch from "../../components/ArticleSearch";
-import ArticleTagFilter from "../../components/ArticleTagFilter";
-import ArticleSortFilter from "../../components/ArticleSortFilter";
+import ArticleSearch from "../../components/blog/ArticleSearch";
+import ArticleTagFilter from "../../components/blog/ArticleTagFilter";
+import ArticleSortFilter from "../../components/blog/ArticleSortFilter";
 import {
   ArticleListContext,
   ArticleListProvider,
