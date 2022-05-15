@@ -14,6 +14,7 @@ import {
 } from "../../constants/article-list-context/article-list-context";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import ArticleList from "../../page-components/blog/article-list/article-list";
+import ArticlePagesFilter from "../../components/blog/ArticlePagesFilter";
 
 type Article = {
   title: string;
@@ -57,6 +58,7 @@ export default function BlogPage({
                 <ArticleSearch />
                 <ArticleTagFilter tags={tags} />
                 <ArticleSortFilter />
+                <ArticlePagesFilter />
               </div>
             </div>
             <ArticleList />
@@ -74,6 +76,8 @@ export const getStaticProps = async () => {
     content: false,
   };
 
+  const { articlesPerPage } = useContext(ArticleListContext);
+
   const articles = getAllArticles();
   const tags = [];
 
@@ -85,9 +89,6 @@ export const getStaticProps = async () => {
     });
   });
 
-  // TODO: This should be an option control
-  const articlesPerPage = 10;
-
   const numberOfPages = Math.ceil(articles.length / articlesPerPage);
 
   const pageIndex = 1;
@@ -98,6 +99,7 @@ export const getStaticProps = async () => {
       path: `/`,
       articles,
       numberOfPages,
+      articlesPerPage,
       tags,
     },
   };

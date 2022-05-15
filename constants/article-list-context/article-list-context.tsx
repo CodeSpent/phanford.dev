@@ -40,6 +40,8 @@ export const sortOptions: ArticleSortOption[] = [
   { name: "Time to Read ↓", value: ArticleSortOptionValue.TIME_DESCENDING },
 ];
 
+export const articlesPerPageOptions = [6, 9, 18, 36];
+
 interface ArticleListContextProps {
   numberOfPages: number;
   articlesPerPage: number;
@@ -55,6 +57,8 @@ const initialArticleListContext = {
   articleTags: [] as string[],
   sortValue: sortOptions[2] as ArticleSortOption,
   setSortValue: (value: {}) => {},
+  articlesPerPage: articlesPerPageOptions[1] as number,
+  setArticlesPerPage: (value: {}) => {},
 };
 
 export const ArticleListContext = createContext(initialArticleListContext);
@@ -62,14 +66,15 @@ export const ArticleListContext = createContext(initialArticleListContext);
 export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
   children,
   numberOfPages,
-  articlesPerPage,
   pageIndex: originalPageIndex,
   articles,
 }) => {
   const searchContextValue = useSearchFilterValue();
 
   const [sortValue, setSortValue] = useState(sortOptions[2]);
+
   const [currentPageIndex, setCurrentPageIndex] = useState(originalPageIndex);
+  const [articlesPerPage, setArticlesPerPage] = useState(9);
 
   const currentSkipNumber = currentPageIndex * articlesPerPage;
 
@@ -120,6 +125,7 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     sortedArticles,
     filteredArticles,
     originalPageIndex,
+    articlesPerPage,
   ]);
 
   useEffect(() => {
@@ -164,6 +170,7 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     originalPageIndex,
     sortValue,
     sortedArticles,
+    articlesPerPage,
   ]);
 
   /*
@@ -194,6 +201,8 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     articleTags,
     sortValue,
     setSortValue,
+    articlesPerPage,
+    setArticlesPerPage,
   };
 
   return (
