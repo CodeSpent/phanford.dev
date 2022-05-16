@@ -15,6 +15,7 @@ import {
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import ArticleList from "../../page-components/blog/article-list/article-list";
 import ArticlePagesFilter from "../../components/blog/ArticlePagesFilter";
+import ArticlePaginator from "../../components/blog/ArticlePaginator";
 
 type Article = {
   title: string;
@@ -42,14 +43,9 @@ export default function BlogPage({
 }: Props) {
   return (
     <Layout title="Blog | Patrick Hanford">
-      <div className="lg:pt-18 px-4 pt-12 pb-20 sm:px-6 lg:px-8 lg:pb-28">
-        <div className="relative mx-auto max-w-lg divide-y-2 divide-gray-200 lg:max-w-7xl">
-          <ArticleListProvider
-            articles={articles}
-            pageIndex={pageNumber}
-            numberOfPages={numberOfPages}
-            articleLimit={articlesPerPage}
-          >
+      <div className="sm:px-6">
+        <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
+          <ArticleListProvider articles={articles} pageIndex={pageNumber}>
             <div>
               <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                 Blog
@@ -62,6 +58,7 @@ export default function BlogPage({
               </div>
             </div>
             <ArticleList />
+            <ArticlePaginator />
           </ArticleListProvider>
         </div>
       </div>
@@ -76,8 +73,6 @@ export const getStaticProps = async () => {
     content: false,
   };
 
-  const { articlesPerPage } = useContext(ArticleListContext);
-
   const articles = getAllArticles();
   const tags = [];
 
@@ -89,8 +84,6 @@ export const getStaticProps = async () => {
     });
   });
 
-  const numberOfPages = Math.ceil(articles.length / articlesPerPage);
-
   const pageIndex = 1;
 
   return {
@@ -98,8 +91,6 @@ export const getStaticProps = async () => {
       pageIndex,
       path: `/`,
       articles,
-      numberOfPages,
-      articlesPerPage,
       tags,
     },
   };

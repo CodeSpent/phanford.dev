@@ -9,7 +9,7 @@ export default function ArticleList() {
   // @ts-ignore
   // @ts-ignore
   return (
-    <div className="mt-6 grid pt-10 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-5">
+    <div className="grid lg:grid-cols-3 lg:gap-x-5 lg:gap-y-5">
       {articlesToDisplay.map((article) => (
         <Link href={["blog", article.slug].join("/")}>
           <a

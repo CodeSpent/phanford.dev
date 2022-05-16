@@ -126,3 +126,8 @@ export const useArticleTagsFromNodes = <T extends { tags: Article["tags"] }>(
 
   return articleTags.sort();
 };
+
+export const getNumberOfPages = (
+  articlesArrayLength: number,
+  articlesPerPage: number
+) => Math.ceil(articlesArrayLength / articlesPerPage);

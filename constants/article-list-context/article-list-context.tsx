@@ -15,6 +15,7 @@ import { ListViewArticles } from "../../utils/fs/api";
 import {
   getCurrentListViewPageArticles,
   getInitialListViewPageArticles,
+  getNumberOfPages,
   getSortedListViewArticles,
   useArticleTagsFromNodes,
 } from "../../utils/blog";
@@ -43,8 +44,6 @@ export const sortOptions: ArticleSortOption[] = [
 export const articlesPerPageOptions = [6, 9, 18, 36];
 
 interface ArticleListContextProps {
-  numberOfPages: number;
-  articlesPerPage: number;
   pageIndex: number;
   articles: ListViewArticles;
 }
@@ -59,13 +58,14 @@ const initialArticleListContext = {
   setSortValue: (value: {}) => {},
   articlesPerPage: articlesPerPageOptions[1] as number,
   setArticlesPerPage: (value: {}) => {},
+  numberOfPages: 0 as number,
+  setNumberOfPages: (value: {}) => {},
 };
 
 export const ArticleListContext = createContext(initialArticleListContext);
 
 export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
   children,
-  numberOfPages,
   pageIndex: originalPageIndex,
   articles,
 }) => {
@@ -82,6 +82,10 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
   const [sortedArticles, setSortedArticles] = useState([]);
   const [articlesToDisplay, setArticlesToDisplay] = useState(
     getInitialListViewPageArticles(articles, originalPageIndex, articlesPerPage)
+  );
+
+  const [numberOfPages, setNumberOfPages] = useState(
+    getNumberOfPages(filteredArticles.length, articlesPerPage)
   );
 
   useEffect(() => {
@@ -107,6 +111,10 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     ) {
       setCurrentPageIndex(originalPageIndex || 0);
       setFilteredArticles(sortedArticles);
+      setNumberOfPages(
+        getNumberOfPages(filteredArticles.length, articlesPerPage)
+      );
+
       return;
     }
 
@@ -117,6 +125,9 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     );
 
     setCurrentPageIndex(0);
+    setNumberOfPages(
+      getNumberOfPages(filteredArticles.length, articlesPerPage)
+    );
   }, [
     searchContextValue.searchValue,
     searchContextValue.filterValue,
@@ -126,6 +137,8 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     filteredArticles,
     originalPageIndex,
     articlesPerPage,
+    numberOfPages,
+    setNumberOfPages,
   ]);
 
   useEffect(() => {
@@ -144,6 +157,8 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     sortValue,
     sortedArticles,
     searchContextValue.lunrResultSlugs,
+    numberOfPages,
+    setNumberOfPages,
   ]);
 
   const { pageCount, pageIndex } = useMemo(() => {
@@ -203,6 +218,7 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     setSortValue,
     articlesPerPage,
     setArticlesPerPage,
+    numberOfPages,
   };
 
   return (
