@@ -23,7 +23,7 @@ export default function ArticleTagFilter({ tags }: Props) {
       </Combobox.Label>
       <div className="relative mt-1">
         <Combobox.Input
-          className="w-30 h-9 rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 capitalize text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+          className="h-9 w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 capitalize text-black shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => {
             if (event.target.value.length > 0) {
               setFilteredTags(
