@@ -50,11 +50,15 @@ export default function BlogPage({
               <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                 Blog
               </h2>
-              <div className="mt-3 flex items-center py-4 sm:mt-4 lg:gap-5">
+
+              <div className="sm:fl mt-3 flex flex-col gap-3 py-4 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
                 <ArticleSearch />
                 <ArticleTagFilter tags={tags} />
-                <ArticleSortFilter />
-                <ArticlePagesFilter />
+
+                <div className="flex w-full flex-row gap-5">
+                  <ArticleSortFilter />
+                  <ArticlePagesFilter />
+                </div>
               </div>
             </div>
             <ArticleList />
