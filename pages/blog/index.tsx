@@ -43,7 +43,7 @@ export default function BlogPage({
 }: Props) {
   return (
     <Layout title="Blog | Patrick Hanford">
-      <div className="sm:px-6">
+      <div className="px-4">
         <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
           <ArticleListProvider articles={articles} pageIndex={pageNumber}>
             <div>
