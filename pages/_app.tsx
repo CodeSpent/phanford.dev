@@ -1,10 +1,18 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { AppProps } from "next/app";
 import Particles from "react-tsparticles";
+import { Transition } from "@headlessui/react";
 import "../styles/index.css";
 import "../global.scss";
+import AnnouncementBanner from "../components/AnnouncementBanner";
 
 function AppComponent({ Component, pageProps }: AppProps) {
+  const [announcementVisible, setAnnouncementVisible] = useState(true);
+
+  const closeAnnouncementBanner = () => {
+    setAnnouncementVisible(false);
+  };
+
   return (
     <Fragment>
       <Particles
@@ -83,6 +91,25 @@ function AppComponent({ Component, pageProps }: AppProps) {
         }}
       />
       <Component {...pageProps} />
+      <Transition
+        show={announcementVisible}
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <AnnouncementBanner
+          color="warning"
+          shortMessage="Site incomplete! Bugs ahead."
+          longMessage="You're early! I'm still actively building this site. Bugs ahead."
+          linkText="Report an issue"
+          linkHref="https://github.com/CodeSpent/phanford.dev/issues"
+          announcementDate="Aug 21, 2020 at 11:52 am (EST)"
+          onClose={closeAnnouncementBanner}
+        />
+      </Transition>
     </Fragment>
   );
 }
