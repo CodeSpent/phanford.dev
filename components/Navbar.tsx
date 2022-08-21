@@ -39,7 +39,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Popover className="relative">
+    <Popover className="relative z-50">
       <div className="flex items-center justify-center space-x-10 px-4 py-6 sm:px-6 md:justify-start">
         <div className="flex justify-start">
           <Link href="/">
