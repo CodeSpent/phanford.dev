@@ -40,7 +40,7 @@ const HeroComponent = () => {
   return (
     <div className="flex flex-col px-6 py-12 leading-6 tracking-widest">
       <div className="min-h-max" style={{ minHeight: "200px" }}>
-        <span className="text-lg font-thin italic text-teal-500">
+        <span className="text-lg font-medium text-yellow-500">
           Hi, my name is
         </span>
         <h1 className="text-6xl text-white lg:text-9xl">Patrick</h1>
