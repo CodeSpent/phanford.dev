@@ -90,7 +90,6 @@ function AppComponent({ Component, pageProps }: AppProps) {
           detectRetina: true,
         }}
       />
-      <Component {...pageProps} />
       <Transition
         show={announcementVisible}
         enter="transition ease-out duration-100"
@@ -110,6 +109,7 @@ function AppComponent({ Component, pageProps }: AppProps) {
           onClose={closeAnnouncementBanner}
         />
       </Transition>
+      <Component {...pageProps} />
     </Fragment>
   );
 }
