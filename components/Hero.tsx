@@ -60,7 +60,8 @@ const HeroComponent = () => {
           </h2>
         </Transition>
       </div>
-      <p className="mt-4 max-w-lg py-4 font-thin lg:max-w-4xl">
+
+      <p className="mt-4 max-w-lg rounded bg-black-glass px-4 py-6 font-thin backdrop-blur-sm lg:max-w-4xl">
         It is a long established fact that a reader will be distracted by the
         readable content of a page when looking at its layout. The point of
         using Lorem Ipsum is that it has a more-or-less normal distribution of
