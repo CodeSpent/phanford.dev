@@ -14,7 +14,7 @@ export default function ArticleList() {
         <Link href={["blog", article.slug].join("/")}>
           <a
             key={article.slug}
-            className="mt-4 flex flex-col justify-between rounded bg-gray-800 p-4 text-white shadow-lg"
+            className="mt-4 flex flex-col justify-between rounded bg-black-glass p-4 text-white shadow-lg backdrop-blur-sm"
           >
             <p className="text-sm text-gray-500">
               <time dateTime={article.datetime}>{article.date}</time>
