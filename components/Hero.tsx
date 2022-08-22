@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/solid";
 
 const taglines = [
   "Software",
@@ -38,12 +37,17 @@ const HeroComponent = () => {
   }, [currentIndex]);
 
   return (
-    <div className="flex flex-col px-6 py-12 leading-6 tracking-widest">
+    <div className="h-screen--nav-aware flex flex-col justify-center p-4 leading-6 tracking-widest">
       <div className="min-h-max" style={{ minHeight: "200px" }}>
-        <span className="text-lg font-medium text-yellow-500">
+        <span className="border-b border-orange-500 text-xl font-medium italic text-gray-300">
           Hi, my name is
         </span>
-        <h1 className="text-6xl text-white lg:text-9xl">Patrick</h1>
+        <h1 className="text-6xl text-white lg:text-9xl">
+          Patrick
+          <span className="bg-gradient-to-r from-orange-500 to-yellow-500  bg-clip-text text-transparent">
+            .
+          </span>
+        </h1>
 
         <Transition
           enter-active-class="transition-opacity duration-75"
@@ -54,14 +58,16 @@ const HeroComponent = () => {
           leave-to-class="opacity-0"
           show={true}
         >
-          <h2 className="text-4xl font-thin text-gray-500 lg:text-6xl">
+          <h2 className="text-4xl font-thin text-gray-300 lg:text-6xl">
             I build{" "}
-            <span className="font-bold italic text-yellow-500">{tagline}</span>
+            <span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text px-2 font-bold italic text-transparent">
+              {tagline}
+            </span>
           </h2>
         </Transition>
       </div>
 
-      <p className="mt-4 max-w-lg rounded bg-black-glass px-4 py-6 font-thin backdrop-blur-sm lg:max-w-4xl">
+      <p className="mt-4 max-w-lg rounded border border-gray-500 bg-black-glass p-6 font-thin backdrop-blur-sm lg:max-w-4xl">
         It is a long established fact that a reader will be distracted by the
         readable content of a page when looking at its layout. The point of
         using Lorem Ipsum is that it has a more-or-less normal distribution of
@@ -72,13 +78,6 @@ const HeroComponent = () => {
         infancy. Various versions have evolved over the years, sometimes by
         accident, sometimes on purpose (injected humour and the like).
       </p>
-
-      <a className="mt-20 flex flex-col items-center justify-center p-4">
-        <ChevronDownIcon
-          className="mr-1 h-8 w-8 animate-bounce text-white group-hover:text-white"
-          aria-hidden="true"
-        />
-      </a>
     </div>
   );
 };

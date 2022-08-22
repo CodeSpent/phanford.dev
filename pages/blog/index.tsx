@@ -44,7 +44,7 @@ export default function BlogPage({
   return (
     <Layout title="Blog | Patrick Hanford">
       <div className="px-4">
-        <div className="relative -z-50 mx-auto max-w-lg py-10 lg:max-w-7xl">
+        <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
           <ArticleListProvider articles={articles} pageIndex={pageNumber}>
             <div>
               <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">

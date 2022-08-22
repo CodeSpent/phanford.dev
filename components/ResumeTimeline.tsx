@@ -11,7 +11,7 @@ import robertHalfLogo from "../public/images/robert-half-logo.png";
 import twitchinStudiosLogo from "../public/images/twitchin-studios-logo.jpg";
 
 const LogoComponent = (props) => {
-  return <img src={props.src} alt="Company logo"/>;
+  return <img src={props.src} alt="Company logo" />;
 };
 
 const ResumeTimeline = () => {
@@ -23,7 +23,7 @@ const ResumeTimeline = () => {
         "On the Robert Half SPS team I work with a wide variety of clients with very diverse needs and tech stacks, exposing me to exponential experience and potential to creatively solve problems through consulting, bootstrapping, maintaining, and improving systems. With Robert Half I have offered Docker Swarm consulting, improving cross-platform mobile applications, bootstrapping startup MVPs, rewriting legacy systems, and much more.",
       startDate: "2019",
       endDate: "Present",
-      logo: robertHalfLogo.src,
+      logo: robertHalfLogo,
       tags: [
         {
           name: "Django",
@@ -45,7 +45,7 @@ const ResumeTimeline = () => {
       description: "Django Developer",
       startDate: "2018",
       endDate: "Present",
-      logo: devstreamsLogo.src,
+      logo: devstreamsLogo,
       tags: [
         {
           name: "Django",
@@ -68,7 +68,7 @@ const ResumeTimeline = () => {
         "StreamKick is a startup based in Orlando, Florida aspiring to bridge the gaps in content discovery within the live-streaming ecosystem. I came into the project to rewrite the MVP from Ruby on Rails to Django & React. After helping to bring the platform to launch, I focused on continuation of features as well as maintaining systems reliability through my DevOps experience.",
       startDate: "2017",
       endDate: "2020",
-      logo: streamkickLogo.src,
+      logo: streamkickLogo,
       tags: [
         {
           name: "Django",
@@ -92,7 +92,7 @@ const ResumeTimeline = () => {
         "TwitchinStudios was a 3-dev project dedicated to building tools for Twitch streamers to help streamline the content creation process and ultimately augment the streaming experience. In my time with TwitchinStudios, I successfully launched over 14 tools for streamers, 4 of which have been absorbed by StreamLabs and are actively a part of their product features.",
       startDate: "2016",
       endDate: "2019",
-      logo: twitchinStudiosLogo.src,
+      logo: twitchinStudiosLogo,
       tags: [
         {
           name: "Django",
@@ -116,9 +116,9 @@ const ResumeTimeline = () => {
         <VerticalTimelineElement
           className="vertical-timeline-element--work"
           date={entry.startDate + " - " + entry.endDate}
-          icon={<LogoComponent src={entry.logo}/>}
+          icon={<LogoComponent src={entry.logo} />}
         >
-          <div className="flex">
+          {/*<div className="flex">
             {entry.tags.map((tag) => (
               <span
                 className={
@@ -129,15 +129,15 @@ const ResumeTimeline = () => {
                 {tag.name}
               </span>
             ))}
-          </div>
+          </div>*/}
 
           <div className={"my-4"}>
-            <h1 className="text-xl font-bold text-gray-900">{entry.company}</h1>
-            <h3 className="vertical-timeline-element-title font-semibold text-gray-900">
+            <h1 className="text-xl font-bold text-white">{entry.company}</h1>
+            <h3 className="vertical-timeline-element-title font-semibold text-gray-400">
               {entry.title}
             </h3>
-            <p/>
-            <h4 className="vertical-timeline-element-subtitle m-2 text-gray-500">
+            <p />
+            <h4 className="vertical-timeline-element-subtitle m-2 text-white">
               {entry.description}
             </h4>
           </div>
