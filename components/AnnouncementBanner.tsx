@@ -16,7 +16,7 @@ const getBackgroundColorClassName = (color: string): string => {
     case "danger":
       return "bg-red-500";
     case "warning":
-      return "bg-yellow-500";
+      return "bg-orange-500";
     case "positive":
       return "bg-green-500";
     default:
@@ -34,7 +34,7 @@ export default function AnnouncementBanner({
   onClose,
 }: Props) {
   return (
-    <div className={"relative " + getBackgroundColorClassName(color)}>
+    <div className={"w-full " + getBackgroundColorClassName(color)}>
       <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
         <div className="pr-16 sm:px-16 sm:text-center">
           <p className="font-medium text-white">
@@ -48,7 +48,7 @@ export default function AnnouncementBanner({
             </span>
           </p>
 
-          <p className="mt-1 text-xs font-medium text-gray-500 sm:text-center">
+          <p className="mt-1 text-xs font-medium text-gray-300 sm:text-center">
             Announced: {announcementDate}
           </p>
         </div>

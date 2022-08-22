@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { AppProps } from "next/app";
 import Particles from "react-tsparticles";
 import { Transition } from "@headlessui/react";
@@ -7,11 +7,17 @@ import "../global.scss";
 import AnnouncementBanner from "../components/AnnouncementBanner";
 
 function AppComponent({ Component, pageProps }: AppProps) {
-  const [announcementVisible, setAnnouncementVisible] = useState(true);
+  const [announcementVisible, setAnnouncementVisible] = useState(false);
 
   const closeAnnouncementBanner = () => {
     setAnnouncementVisible(false);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAnnouncementVisible(true);
+    }, 1500);
+  }, [setAnnouncementVisible]);
 
   return (
     <Fragment>
@@ -91,13 +97,15 @@ function AppComponent({ Component, pageProps }: AppProps) {
         }}
       />
       <Transition
+        as="div"
         show={announcementVisible}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
+        enter="transition ease-out duration-500"
+        enterFrom="transform opacity-0 top-0"
         enterTo="transform opacity-100 scale-100"
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
+        className="fixed z-50 w-full"
       >
         <AnnouncementBanner
           color="warning"
