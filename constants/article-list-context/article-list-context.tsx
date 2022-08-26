@@ -179,6 +179,7 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     searchContextValue.filterValue,
     searchContextValue.lunrResultSlugs,
     numberOfPages,
+    setNumberOfPages,
     filteredArticles,
     articlesPerPage,
     currentPageIndex,
@@ -219,6 +220,7 @@ export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
     articlesPerPage,
     setArticlesPerPage,
     numberOfPages,
+    setNumberOfPages,
   };
 
   return (

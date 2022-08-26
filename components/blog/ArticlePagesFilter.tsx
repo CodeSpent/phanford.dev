@@ -19,7 +19,7 @@ export default function ArticlePagesFilter() {
       <Listbox value={articlesPerPage} onChange={setArticlesPerPage}>
         {({ open }) => (
           <>
-            <Listbox.Label className="block h-full text-sm font-medium text-gray-500">
+            <Listbox.Label className="block text-sm font-medium text-gray-500">
               Per Page
             </Listbox.Label>
             <div className="relative mt-1">

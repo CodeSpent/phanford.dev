@@ -15,8 +15,34 @@ html {
     overflow-x: hidden;
 }
 
+body {
+    /* FIXME: Layout issues occur when unintended overflow
+   is allowed on y axis. The offending parent element
+   should absolutely be identified, but for sake of
+   pushing through more important issues, we'll hide
+   overflow on the whole document.
+
+   This horizontal overflow is most likely necessary
+   for a transition/animation somewhere.
+
+   Worth noting that this creates redundancy with overflow-x
+   rules for resume-timeline component's transition, however,
+   having a separate rule will let us keep the 2 hacks loosely
+   coupled.
+ */
+
+    overflow: hidden;
+}
+
 .vertical-timeline.vertical-timeline--two-columns::before {
     width: 1px !important;
+}
+
+div.vertical-timeline-element-content {
+    @apply bg-black-glass;
+    @apply rounded;
+    @apply backdrop-blur-sm;
+    box-shadow: none;
 }
 
 .vertical-timeline-element-icon {
@@ -55,4 +81,12 @@ html {
 
 .article-body .article-image img {
     @apply rounded;
+}
+
+/* TODO: This should be more tailwind-y and reusable.
+ * Navbar height is 96px;
+ */
+.h-screen--nav-aware {
+    height: calc(100vh - 96px
+    );
 }

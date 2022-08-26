@@ -19,7 +19,7 @@ export default function ArticleSortFilter() {
       <Listbox value={sortValue} onChange={setSortValue}>
         {({ open }) => (
           <>
-            <Listbox.Label className="block h-full text-sm font-medium text-gray-500">
+            <Listbox.Label className="block text-sm font-medium text-gray-500">
               Sort By
             </Listbox.Label>
             <div className="relative mt-1">

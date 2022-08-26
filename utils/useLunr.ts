@@ -1,3 +1,9 @@
+// @ts-nocheck
+//
+// I'm of the opinion that there's no time-efficient way
+// to allow type checking in this circumstance without
+// considerable effort.
+
 import lunr from "lunr";
 import { useEffect, useState } from "react";
 

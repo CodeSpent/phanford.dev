@@ -39,7 +39,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Popover className="relative">
+    <Popover className="relative z-40">
       <div className="flex items-center justify-center space-x-10 px-4 py-6 sm:px-6 md:justify-start">
         <div className="flex justify-start">
           <Link href="/">
@@ -186,7 +186,7 @@ export default function Navbar() {
       >
         <Popover.Panel
           focus
-          className="absolute inset-x-0 top-0 origin-top-right transform bg-gray-900 p-2 transition md:hidden"
+          className="fixed inset-x-0 top-0 h-screen origin-top-right transform bg-gray-900 p-2 transition md:hidden"
         >
           <div className="divide-y-2 divide-gray-50 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="px-5 pt-5 pb-6">

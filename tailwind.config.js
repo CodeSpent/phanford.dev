@@ -3,7 +3,12 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: {extend: {}},
-  plugins: [require('@tailwindcss/forms'),
-  ],
+  theme: {
+    extend: {
+      colors: {
+        "black-glass": "rgba(0, 0, 0, 0.25)",
+      },
+    },
+  },
+  plugins: [require("@tailwindcss/forms")],
 };
