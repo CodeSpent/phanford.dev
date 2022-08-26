@@ -16,6 +16,7 @@ import React, { useCallback, useContext, useMemo, useState } from "react";
 import ArticleList from "../../page-components/blog/article-list/article-list";
 import ArticlePagesFilter from "../../components/blog/ArticlePagesFilter";
 import ArticlePaginator from "../../components/blog/ArticlePaginator";
+import ignore from "ignore";
 
 type Article = {
   title: string;
@@ -81,6 +82,8 @@ export const getStaticProps = async () => {
   const tags = [];
 
   articles.forEach((article) => {
+    // FIXME: `tags` evaluates to type of `never`.
+    // @ts-ignore
     article.tags.forEach((tag) => {
       if (!tags.includes(tag)) {
         tags.push(tag);
