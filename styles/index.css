@@ -6,8 +6,7 @@
 
 html {
     @apply text-white;
-    @apply bg-gray-900;
-
+    @apply bg-midnight-blue;
     /* Resume timeline causes overflow on intersection.
        This can be removed when our PR gets merged to
        fix this.
@@ -40,6 +39,8 @@ body {
 
 div.vertical-timeline-element-content {
     @apply bg-black-glass;
+    @apply border;
+    @apply border-gray-900;
     @apply rounded;
     @apply backdrop-blur-sm;
     box-shadow: none;

@@ -59,7 +59,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="-my-2 -mr-2 md:hidden">
-          <Popover.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500">
+          <Popover.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-500 hover:text-white hover:text-white">
             <span className="sr-only">Open menu</span>
             <MenuIcon className="h-6 w-6" aria-hidden="true" />
           </Popover.Button>
@@ -186,7 +186,7 @@ export default function Navbar() {
       >
         <Popover.Panel
           focus
-          className="fixed inset-x-0 top-0 h-screen origin-top-right transform bg-gray-900 p-2 transition md:hidden"
+          className="fixed inset-x-0 top-0 h-screen origin-top-right transform bg-midnight-blue p-2 transition md:hidden"
         >
           <div className="divide-y-2 divide-gray-50 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="px-5 pt-5 pb-6">
@@ -208,7 +208,7 @@ export default function Navbar() {
                 </div>
 
                 <div className="-mr-2">
-                  <Popover.Button className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-100 hover:text-white">
+                  <Popover.Button className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-500 hover:text-white">
                     <span className="sr-only">Close menu</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </Popover.Button>

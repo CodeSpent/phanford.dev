@@ -89,8 +89,8 @@ function AppComponent({ Component, pageProps }: AppProps) {
               type: "circle",
             },
             size: {
-              random: true,
-              value: 5,
+              random: false,
+              value: 2,
             },
           },
           detectRetina: true,

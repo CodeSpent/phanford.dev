@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "midnight-blue": "rgb(0, 0, 22)",
         "black-glass": "rgba(0, 0, 0, 0.25)",
       },
     },
