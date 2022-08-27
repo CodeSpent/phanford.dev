@@ -20,7 +20,7 @@ const IndexPage = ({ recentArticles }) => (
 
     <div className="my-4">
       <ResumeTimeline />
-      {/*<RecentPosts articles={recentArticles} />*/}
+      <RecentPosts articles={recentArticles} />
     </div>
   </Layout>
 );
