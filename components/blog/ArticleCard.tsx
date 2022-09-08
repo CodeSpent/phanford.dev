@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRightIcon, ChevronDoubleRightIcon } from "@heroicons/react/solid";
+import { ArrowRightIcon } from "@heroicons/react/solid";
 import React from "react";
 
 type Props = {
@@ -21,7 +21,7 @@ export default function ArticleCard({
 }: Props) {
   return (
     <Link href={["blog", slug].join("/")}>
-      <a
+      <div
         key={slug}
         className="mt-4 flex flex-col justify-between rounded border border-gray-900 bg-black-glass p-4 text-white shadow-lg backdrop-blur-sm"
       >
@@ -63,7 +63,7 @@ export default function ArticleCard({
             </a>
           </Link>
         </div>
-      </a>
+      </div>
     </Link>
   );
 }
