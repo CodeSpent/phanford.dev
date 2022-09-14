@@ -107,7 +107,7 @@ function AppComponent({ Component, pageProps }: AppProps) {
         leaveTo="transform opacity-0 scale-95"
         className="fixed z-50 w-full"
       >
-        <AnnouncementBanner
+        {/* <AnnouncementBanner
           color="warning"
           shortMessage="Site incomplete! Bugs ahead."
           longMessage="You're early! I'm still actively building this site. Bugs ahead."
@@ -115,7 +115,7 @@ function AppComponent({ Component, pageProps }: AppProps) {
           linkHref="https://github.com/CodeSpent/phanford.dev/issues"
           announcementDate="Aug 21, 2020 at 11:52 am (EST)"
           onClose={closeAnnouncementBanner}
-        />
+        />*/}
       </Transition>
       <Component {...pageProps} />
     </Fragment>

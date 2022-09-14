@@ -23,15 +23,19 @@ export default function ArticleCard({
     <Link href={["blog", slug].join("/")}>
       <div
         key={slug}
-        className="mt-4 flex flex-col justify-between rounded border border-gray-900 bg-black-glass p-4 text-white shadow-lg backdrop-blur-sm"
+        className="group mt-4 flex transform flex-col justify-between rounded border border-gray-900 bg-black-glass p-4 text-white shadow-lg backdrop-blur-sm transition duration-500 hover:z-50 hover:scale-110 hover:bg-darkened-black-glass"
       >
         <p className="text-sm text-gray-500">
           <time dateTime={publishedDateTime}>{publishedDate}</time>
         </p>
         <Link href={["blog", slug].join("/")}>
           <a className="mt-2 block">
-            <p className="text-xl font-semibold text-gray-300">{title}</p>
-            <p className="mt-3 text-base text-gray-500">{description}</p>
+            <p className="from-orange-500 to-yellow-500 text-xl font-semibold text-gray-300 group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:text-transparent">
+              {title}
+            </p>
+            <p className="mt-3 text-base text-gray-500 transition group-hover:text-white">
+              {description}
+            </p>
             <p>{publishedDateTime}</p>
           </a>
         </Link>
@@ -50,18 +54,6 @@ export default function ArticleCard({
             // @ts-ignore
             tags.join(", ")
           }
-        </div>
-
-        <div className="col mt-3 flex">
-          <Link href={["blog", slug].join("/")}>
-            <a
-              href={["blog", slug].join("/")}
-              className="align-center ml-auto flex items-center justify-center gap-1 bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-sm text-transparent hover:border-b"
-            >
-              Read more
-              <ArrowRightIcon className="h-4 w-4 text-white" />
-            </a>
-          </Link>
         </div>
       </div>
     </Link>

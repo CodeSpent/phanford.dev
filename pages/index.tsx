@@ -1,13 +1,14 @@
-import Layout from "../components/Layout";
+import VerticalNavigationLayout from "../components/VerticalNavigationLayout";
 import HeroComponent from "../components/Hero";
 import ResumeTimeline from "../components/ResumeTimeline";
 import RecentPosts from "../components/RecentPosts";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { getTopArticles } from "../utils/fs/api";
+import { Fragment } from "react";
 
 const IndexPage = ({ recentArticles }) => (
-  <Layout title="Patrick Hanford | Web, Software, Mobile, DevOps">
-    <div>
+  <VerticalNavigationLayout title="Patrick Hanford | Web, Software, Mobile, DevOps">
+    <Fragment>
       <HeroComponent />
 
       <a className="fixed inset-x-0 bottom-0 mt-20 flex flex-col items-center justify-center p-4">
@@ -16,13 +17,11 @@ const IndexPage = ({ recentArticles }) => (
           aria-hidden="true"
         />
       </a>
-    </div>
+    </Fragment>
 
-    <div className="my-4">
-      <ResumeTimeline />
-      <RecentPosts articles={recentArticles} />
-    </div>
-  </Layout>
+    <ResumeTimeline />
+    <RecentPosts articles={recentArticles} />
+  </VerticalNavigationLayout>
 );
 
 export async function getStaticProps() {

@@ -28,7 +28,7 @@
     left: 18px;
     height: 100%;
     width: 4px;
-    background: var(--line-color)
+    background: var(--line-color);
 }
 
 .vertical-timeline.vertical-timeline--one-column-right::before {
@@ -515,25 +515,6 @@ html {
        fix this.
     */
     overflow-x: hidden;
-}
-
-body {
-    /* FIXME: Layout issues occur when unintended overflow
-   is allowed on y axis. The offending parent element
-   should absolutely be identified, but for sake of
-   pushing through more important issues, we'll hide
-   overflow on the whole document.
-
-   This horizontal overflow is most likely necessary
-   for a transition/animation somewhere.
-
-   Worth noting that this creates redundancy with overflow-x
-   rules for resume-timeline component's transition, however,
-   having a separate rule will let us keep the 2 hacks loosely
-   coupled.
- */
-
-    overflow: hidden;
 }
 
 .vertical-timeline.vertical-timeline--two-columns::before {
