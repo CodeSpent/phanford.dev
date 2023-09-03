@@ -8,7 +8,6 @@ export default function ArticleList() {
   const { articlesToDisplay } = useContext(ArticleListContext);
 
   // @ts-ignore
-  // @ts-ignore
   return (
     <div className="grid lg:grid-cols-3 lg:gap-x-5 lg:gap-y-5">
       {articlesToDisplay.map((article) => (
