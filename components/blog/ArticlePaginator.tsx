@@ -32,8 +32,7 @@ export default function ArticlePaginator() {
         nextClassName="ml-auto -left-16 relative"
         nextLabel={
           <div className="-mt-px ml-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <a
-              href="#"
+            <div
               className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium"
             >
               Next
@@ -41,14 +40,13 @@ export default function ArticlePaginator() {
                 className="ml-3 h-5 w-5"
                 aria-hidden="true"
               />
-            </a>
+            </div>
           </div>
         }
         previousClassName="mr-auto"
         previousLabel={
           <div className="-mt-px mr-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <a
-              href="#"
+            <div
               className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium"
             >
               <ArrowNarrowLeftIcon
@@ -56,7 +54,7 @@ export default function ArticlePaginator() {
                 aria-hidden="true"
               />
               Previous
-            </a>
+            </div>
           </div>
         }
         disabledClassName="text-gray-400"
@@ -89,44 +87,4 @@ export default function ArticlePaginator() {
       />
     </>
   );
-
-  /*return (
-    <nav className="flex items-center justify-between px-4 sm:px-0">
-      <div className="-mt-px flex w-0 flex-1">
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          <ArrowNarrowLeftIcon
-            className="mr-3 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-          Previous
-        </a>
-      </div>
-        {[...Array(numberOfPages)].map((x: any, index: number) => (
-      <div className="md:-mt-px md:flex">
-          <a
-            href="#"
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-          >
-            {index + 1}
-          </a>
-      </div>
-        ))}
-        {/!* Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" *!/}
-      <div className="-mt-px flex w-0 flex-1 justify-end">
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          Next
-          <ArrowNarrowRightIcon
-            className="ml-3 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </a>
-      </div>
-    </nav>
-  );*/
 }

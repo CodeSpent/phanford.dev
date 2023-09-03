@@ -43,7 +43,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between space-x-10 py-6 sm:px-6 md:justify-start">
         <div className="flex justify-start">
           <Link href="/">
-            <a className="flex items-center">
+            <div className="flex items-center">
               <img
                 className="h-10 w-auto rounded-full sm:h-10"
                 src="https://github.com/codespent.png"
@@ -55,7 +55,7 @@ export default function Navbar() {
                   Web, Mobile, Software, DevOps
                 </p>
               </div>
-            </a>
+            </div>
           </Link>
         </div>
         <div className="-my-2 -mr-2 md:hidden">
@@ -70,21 +70,27 @@ export default function Navbar() {
           style={{ marginLeft: "auto" }}
         >
           <Link href="/">
-            <a className="text-base font-medium text-white hover:text-white">
+            <div className="text-base font-medium text-white hover:text-white">
               Home
-            </a>
+            </div>
           </Link>
 
           <Link href="/blog">
-            <a className="text-base font-medium text-white hover:text-white">
+            <div className="text-base font-medium text-white hover:text-white">
               Blog
-            </a>
+            </div>
+          </Link>
+
+          <Link href="/tools">
+            <div className="text-base font-medium text-white hover:text-white">
+              Tools
+            </div>
           </Link>
 
           <Link href="#">
-            <a className="text-base font-medium text-white hover:text-white">
+            <div className="text-base font-medium text-white hover:text-white">
               Resume
-            </a>
+            </div>
           </Link>
           <Popover className="relative">
             {({ open }) => (

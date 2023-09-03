@@ -28,8 +28,7 @@ export default function ArticleCard({
         <p className="text-sm text-gray-500">
           <time dateTime={publishedDateTime}>{publishedDate}</time>
         </p>
-        <Link href={["blog", slug].join("/")}>
-          <a className="mt-2 block">
+        <div className="mt-2 block">
             <p className="from-orange-500 to-yellow-500 text-xl font-semibold text-gray-300 group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:text-transparent">
               {title}
             </p>
@@ -37,8 +36,7 @@ export default function ArticleCard({
               {description}
             </p>
             <p>{publishedDateTime}</p>
-          </a>
-        </Link>
+        </div>
 
         <div className="mt-4 flex text-gray-400">
           {

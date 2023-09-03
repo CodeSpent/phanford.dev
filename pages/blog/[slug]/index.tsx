@@ -33,17 +33,13 @@ const Article = ({ article, markdownHTML, slug, articlesDirectory }: Props) => {
     <ArticleLayout>
       <div className="rounded bg-gray-800 p-8">
         <div className="flex justify-between">
-          <Link href="/blog">
-            <a className="text-decoration-white mb-8 flex items-center gap-1">
+          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1">
               <ChevronDoubleLeftIcon className="h-4 w-4" />
               <p className="text-gray-400 hover:text-white">Back to articles</p>
-            </a>
           </Link>
-          <Link href="/blog">
-            <a className="text-decoration-white mb-8 flex items-center gap-1">
+          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1">
               <p className="text-gray-400 hover:text-white">Next Article</p>
               <ChevronDoubleRightIcon className="h-4 w-4" />
-            </a>
           </Link>
         </div>
         <div className="mb-12">
