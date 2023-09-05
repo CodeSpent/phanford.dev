@@ -9,14 +9,14 @@ import ArticleSearch from "../../components/blog/ArticleSearch";
 import ArticleTagFilter from "../../components/blog/ArticleTagFilter";
 import ArticleSortFilter from "../../components/blog/ArticleSortFilter";
 import {
-  ArticleListContext,
-  ArticleListProvider,
+  ArticleListContextProvider, ArticleSearchContextProvider
 } from "../../constants/article-list-context/article-list-context";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import ArticleList from "../../page-components/blog/article-list/article-list";
 import ArticlePagesFilter from "../../components/blog/ArticlePagesFilter";
 import ArticlePaginator from "../../components/blog/ArticlePaginator";
 import ignore from "ignore";
+import {allArticles} from "contentlayer/generated";
 
 type Article = {
   title: string;
@@ -46,25 +46,24 @@ export default function BlogPage({
     <Layout title="Blog | Patrick Hanford">
       <div className="px-4">
         <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
-          <ArticleListProvider articles={articles} pageIndex={pageNumber}>
+                <ArticleSearchContextProvider>
+          <ArticleListContextProvider articles={articles} pageIndex={pageNumber}>
             <div>
               <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                 Blog
               </h2>
 
               <div className="sm:fl mt-3 flex flex-col gap-3 py-4 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
-                <ArticleSearch />
+                  <ArticleSearch />
                 <ArticleTagFilter tags={tags} />
-
-                <div className="flex w-full flex-row gap-5">
-                  <ArticleSortFilter />
-                  <ArticlePagesFilter />
-                </div>
+                <ArticleSortFilter />
+                <ArticlePagesFilter />
               </div>
             </div>
             <ArticleList />
             <ArticlePaginator />
-          </ArticleListProvider>
+          </ArticleListContextProvider>
+                </ArticleSearchContextProvider>
         </div>
       </div>
     </Layout>
@@ -72,13 +71,7 @@ export default function BlogPage({
 }
 
 export const getStaticProps = async () => {
-  const articlesForListViewQuery: ArticleQuery = {
-    slug: true,
-    excerpt: true,
-    content: false,
-  };
-
-  const articles = getAllArticles();
+  const articles = allArticles;
   const tags = [];
 
   articles.forEach((article) => {

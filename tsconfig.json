@@ -1,9 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "es5",
     "lib": [
       "esnext"
     ],
+    "paths": {
+      "contentlayer/generated": ["./.contentlayer/generated"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -24,7 +28,8 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".contentlayer/generated"
   ],
   "exclude": [
     "node_modules"

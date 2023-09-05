@@ -5,25 +5,48 @@ import { ArticleInfo } from "../../types/ArticleInfo";
 const articleSearchContext = {
   searchValue: "",
   setSearchValue: (value: string) => {},
-  filterValue: [] as any[],
+  filterValue: [] as string[],
   setFilterValue: (value: any[]) => {},
 };
 
 export const ArticleSearchContext = createContext(articleSearchContext);
 
-export const useSearchFilterValue = () => {
-  const [filterValue, setFilterValue] = useState<string[]>([]);
+export const useSearchValue = () => {
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const { searchUsingLunr: filterUsingLunr, results: lunrFilterIds } =
-    useLunr();
+  return useMemo(
+    () => ({
+      searchValue,
+      setSearchValue,
+    }),
+    [searchValue, setSearchValue]
+  );
+};
+
+export const useFilterValue = () => {
+  const [filterValue, setFilterValue] = useState<string[]>([]);
+
+  return useMemo(
+    () => ({
+      filterValue,
+      setFilterValue,
+    }),
+    [filterValue, setFilterValue]
+  );
+};
+
+export const useSearchResults = (
+  searchValue: string,
+  filterValue: string[]
+) => {
+  const { searchUsingLunr: filterUsingLunr, results: lunrFilterIds } = useLunr();
   const { searchUsingLunr, results: lunrSearchIds } = useLunr();
 
   useEffect(() => {
     if (!filterValue || !filterValue.length) {
       filterUsingLunr("");
     } else {
-      filterUsingLunr(`tags: ${filterValue.map((value) => value).join(" ")}`);
+      filterUsingLunr(`tags: ${filterValue.join(" ")}`);
     }
   }, [filterValue]);
 
@@ -56,12 +79,8 @@ export const useSearchFilterValue = () => {
 
   return useMemo(
     () => ({
-      searchValue,
-      setSearchValue,
-      filterValue,
-      setFilterValue,
       lunrResultSlugs,
     }),
-    [searchValue, setSearchValue, filterValue, setFilterValue, lunrResultSlugs]
+    [lunrResultSlugs]
   );
 };

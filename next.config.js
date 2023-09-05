@@ -3,7 +3,12 @@ const CopyPlugin = require("copy-webpack-plugin");
 const withPlugins = require("next-compose-plugins");
 const withImages = require("next-images");
 
-module.exports = withPlugins([withImages], {
+
+module.exports = withPlugins(
+  [
+    withImages,
+],
+  {
   images: {
     disableStaticImages: true,
     domains: ["localhost:3000", "127.0.0.1"],

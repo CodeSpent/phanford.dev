@@ -15,6 +15,8 @@ import {
   ChevronDoubleRightIcon,
 } from "@heroicons/react/solid";
 import path from "path";
+import {allArticles} from "contentlayer/generated";
+import NotFound from "next/dist/client/components/not-found-error";
 
 type Props = {
   article: Partial<Article>;
@@ -31,21 +33,21 @@ const Article = ({ article, markdownHTML, slug, articlesDirectory }: Props) => {
 
   return (
     <ArticleLayout>
-      <div className="rounded bg-gray-800 p-8">
+      <div className="rounded bg-gray-900 p-8">
         <div className="flex justify-between">
-          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1">
-              <ChevronDoubleLeftIcon className="h-4 w-4" />
-              <p className="text-gray-400 hover:text-white">Back to articles</p>
+          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1 group">
+              <ChevronDoubleLeftIcon className="h-4 w-4 group-hover:text-white" />
+              <p className="text-gray-400 hover:text-gray-200">Back to articles</p>
           </Link>
-          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1">
+          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1 group">
               <p className="text-gray-400 hover:text-white">Next Article</p>
-              <ChevronDoubleRightIcon className="h-4 w-4" />
+              <ChevronDoubleRightIcon className="h-4 w-4 group-hover:text-gray-200" />
           </Link>
         </div>
         <div className="mb-12">
           <div className="mb-4">
-            <p className="text-lg text-gray-300">{article.tags?.join(" | ")}</p>
-            <h1 className="text-6xl text-white">{article.title}</h1>
+            <p className="text-lg text-gray-400">{article.tags?.join(" | ")}</p>
+            <h1 className="text-6xl text-gray-300">{article.title}</h1>
           </div>
           <div className="my-4 flex gap-7">
             <span className="flex items-center gap-1">
@@ -63,7 +65,7 @@ const Article = ({ article, markdownHTML, slug, articlesDirectory }: Props) => {
             </span>
           </div>
         </div>
-        <article className="article-body">{articleBody}</article>
+        <article className="article-body text-gray-400">{articleBody}</article>
       </div>
     </ArticleLayout>
   );
@@ -95,13 +97,19 @@ export async function getStaticProps({ params }: any) {
   };
 }
 
-export async function getStaticPaths() {
-  const articles = getAllArticles();
 
-  const paths = articles.map((article) => {
+async function getArticlesFromDoc(slug: string) {
+  const article = allArticles.find((article) => article.slugAsParams === slug)
+
+  if (!article) NotFound()
+
+  return article
+}
+export async function getStaticPaths() {
+  const paths = allArticles.map((article) => {
     return {
       params: {
-        slug: article.slug,
+        slug: article.slugAsParams,
       },
     };
   });

@@ -15,6 +15,7 @@
 # production
 /build
 public/indexes/*
+.contentlayer/
 
 # misc
 .DS_Store

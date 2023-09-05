@@ -3,15 +3,19 @@ import {
   ArrowNarrowRightIcon,
 } from "@heroicons/react/solid";
 import { useContext } from "react";
-import { ArticleListContext } from "../../constants/article-list-context/article-list-context";
+import {
+  ArticleListContext,
+  useArticleListContext,
+  useArticleSearchContext
+} from "../../constants/article-list-context/article-list-context";
 import ReactPaginate from "react-paginate";
 import { ArticleSearchContext } from "../../constants/article-search-context/article-search-context";
 import { useRouter } from "next/router";
 
 export default function ArticlePaginator() {
   const { numberOfPages, pageIndex, setCurrentPageIndex } =
-    useContext(ArticleListContext);
-  const { searchValue, filterValue } = useContext(ArticleSearchContext);
+   useArticleListContext()
+  const { searchValue, filterValue } = useArticleSearchContext();
 
   const router = useRouter();
 

@@ -3,6 +3,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+        --color-background: rgb(0,0,22);
+        --color-accent: "#111827"
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --color-background: 0 0 0;
+            --color-cards-background: 0 0 0;
+        }
+    }
+}
+
 .vertical-timeline * {
     box-sizing: border-box
 }

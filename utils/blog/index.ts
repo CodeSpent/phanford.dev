@@ -123,8 +123,7 @@ export const useArticleTagsFromNodes = <T extends { tags: Article["tags"] }>(
       }, new Set())
     );
   }, [articles]);
-
-  return articleTags.sort();
+  return articleTags
 };
 
 export const getNumberOfPages = (

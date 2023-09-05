@@ -22,7 +22,7 @@ export const getLinks = (_: useMarkdownRendererProps) => {
       }
       return (
         <Link {...restProps} href={href || ""} passHref>
-          <a>{props.children}</a>
+          {props.children}
         </Link>
       );
     },

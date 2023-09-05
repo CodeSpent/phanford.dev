@@ -90,6 +90,13 @@ export default function VerticalNavbar() {
           href="#"
           className="text-gray-400 transition duration-500 hover:rotate-90 hover:border-b hover:font-semibold hover:text-white"
         >
+          Tools
+        </a>
+
+        <a
+          href="/blog"
+          className="text-gray-400 transition duration-500 hover:rotate-90 hover:border-b hover:font-semibold hover:text-white"
+        >
           Blog
         </a>
       </div>

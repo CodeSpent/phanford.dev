@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowRightIcon } from "@heroicons/react/solid";
 import React from "react";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter/dist/cjs/';
 
 type Props = {
   slug: string;
@@ -9,49 +10,67 @@ type Props = {
   title: string;
   description: string;
   tags: string[];
+  color: string;
 };
 
+
 export default function ArticleCard({
-  slug,
-  publishedDateTime,
-  publishedDate,
-  title,
-  description,
-  tags,
-}: Props) {
+                                      slug,
+                                      publishedDateTime,
+                                      publishedDate,
+                                      title,
+                                      description,
+                                      tags,
+                                      color
+                                    }: Props) {
+  const codeSnippet = `
+# Example of a Python list comprehension
+numbers = [1, 2, 3, 4, 5]
+squared_numbers = [num ** 2 for num in numbers]
+print(squared_numbers)
+# Output: [1, 4, 9, 16, 25]
+`;
   return (
-    <Link href={["blog", slug].join("/")}>
-      <div
-        key={slug}
-        className="group mt-4 flex transform flex-col justify-between rounded border border-gray-900 bg-black-glass p-4 text-white shadow-lg backdrop-blur-sm transition duration-500 hover:z-50 hover:scale-110 hover:bg-darkened-black-glass"
-      >
-        <p className="text-sm text-gray-500">
-          <time dateTime={publishedDateTime}>{publishedDate}</time>
-        </p>
-        <div className="mt-2 block">
-            <p className="from-orange-500 to-yellow-500 text-xl font-semibold text-gray-300 group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:text-transparent">
+    <Link href={["blog", slug].join("")}>
+      <div className={`flex flex-col min-h-full bg-card-background group mt-4 rounded-lg border-t-4 border-solid 
+      border-purple-600 shadow-md transition duration-300 hover:z-50 hover:scale-105 hover:shadow-lg`}>
+
+        <div style={{ borderTopColor: color }} className="p-4 border-t-4 border-solid border-t-4 h-full flex
+        flex-col">
+          <div className="flex flex-col h-full">
+            <p className="text-sm text-gray-200">
+              <time dateTime={publishedDate}>{publishedDate}</time>
+            </p>
+            <p className="my-4 self-start align-baseline justify-self-start text-xl font-semibold text-gray-300
+            text-center group-hover:text-white">
               {title}
             </p>
-            <p className="mt-3 text-base text-gray-500 transition group-hover:text-white">
+
+            {codeSnippet && tags.includes('python') && (
+              <div className="py-2 drop-shadow-2xl">
+                <SyntaxHighlighter language="python" style={vscDarkPlus}>
+                  {codeSnippet}
+                </SyntaxHighlighter>
+              </div>
+            )}
+
+
+            <p className="mt-2 text-base text-gray-400 group-hover:text-gray-400">
               {description}
             </p>
-            <p>{publishedDateTime}</p>
-        </div>
+          </div>
 
-        <div className="mt-4 flex text-gray-400">
-          {
-            /*
-             * TODO: Fix type error that doesn't affect functionality.
-             *
-             * Error below.
-             *
-             * ```
-             * TS2339: Property 'join' does not exist on type 'never'.
-             * ```
-             * */
-            // @ts-ignore
-            tags.join(", ")
-          }
+          <div className="flex flex-col">
+            <div className="mt-auto pb-4 pt-6 flex flex-wrap gap-2 items-center">
+              {tags.map((tag, index) =>
+                <span
+                  key={index}
+                  style={{borderColor: color}}
+                  className={`inline-block px-2 py-1 text-xs font-semibold rounded-md border border-solid 
+                  border-opacity-50 border-${tag.toLowerCase()} hover:border-opacity-100`}>{tag}</span>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </Link>
