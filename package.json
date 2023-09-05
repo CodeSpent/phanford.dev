@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next",
     "start": "next start",
-    "build": "npm run build",
+    "build": "next build",
     "build:lunr": "node --experimental-loader esbuild-node-loader build-scripts/lunr-index.ts",
     "type-check": "tsc"
   },
