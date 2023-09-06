@@ -76,7 +76,7 @@ export const ArticleSearchContextProvider: React.FC = ({ children }) => {
     } else {
       filterUsingLunr(`tags: ${filterValue.join(" ")}`);
     }
-  }, [filterValue]);
+  }, [filterValue, setFilterValue]);
 
   useEffect(() => {
     searchUsingLunr(searchValue);
@@ -166,6 +166,7 @@ export const ArticleListContextProvider: React.FC<ArticleListContextProps> = ({
 
   let articlesToDisplay = []
 
+  // @ts-ignore
   if (!searchValue == "" || !filterValue.length == 0) {
     articlesToDisplay = getCurrentListViewPageArticles(filteredArticles, originalPageIndex, articlesPerPage)
   } else {

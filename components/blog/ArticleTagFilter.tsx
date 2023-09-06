@@ -19,7 +19,7 @@ export default function ArticleTagFilter({ tags }: Props) {
     <ComboBoxInput label="Filter by Tag"
                    placeholder="Select Tags"
                    value={filterValue}
-                   onChange={setFilterValue}
+                   onChange={(e) => setFilterValue(e)}
                    options={filteredTags.map((tag) => {
                      return {
                        label: tag,

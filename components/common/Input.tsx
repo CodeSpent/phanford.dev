@@ -102,11 +102,13 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({ label, options, pl
   return (
     <div className="mb-5">
       <label className="block text-sm font-medium text-gray-400">{label}</label>
-      <Combobox as="div" value={selectedFilters} multiple className="relative" onChange={setSelectedFilters}>
+      <Combobox as="div" value={value} multiple={true} className="relative" onChange={onChange}>
         <Combobox.Input
           className="h-9 border-none w-full rounded-md text-gray-600 bg-gray-900 py-2 pl-3 pr-10 capitalize shadow-sm
           focus:border-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-600 sm:text-sm"
           placeholder={placeholder}
+          displayValue={() => selectedFilters.length == 0 ?
+            placeholder : `${selectedFilters.length} selected` }
           onChange={(e) => {
             filterOptionsBySelectedFilters(e.target.value)
           }}
