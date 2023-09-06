@@ -4,7 +4,6 @@ import {
 } from "@heroicons/react/solid";
 import { useContext } from "react";
 import {
-  ArticleListContext,
   useArticleListContext,
   useArticleSearchContext
 } from "../../constants/article-list-context/article-list-context";
