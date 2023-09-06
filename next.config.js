@@ -2,9 +2,9 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const withPlugins = require("next-compose-plugins");
 const withImages = require("next-images");
+const { withContentlayer } = require('next-contentlayer');
 
-
-module.exports = withPlugins(
+const nextConfig = withPlugins(
   [
     withImages,
 ],
@@ -59,3 +59,5 @@ module.exports = withPlugins(
     return config;
   },
 });
+
+module.exports = withContentlayer(nextConfig);
