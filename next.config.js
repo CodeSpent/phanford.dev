@@ -4,6 +4,8 @@ const withPlugins = require("next-compose-plugins");
 const withImages = require("next-images");
 const { withContentlayer } = require('next-contentlayer');
 
+
+/** @type {import('next').NextConfig} */
 const nextConfig = withPlugins(
   [
     withImages,
