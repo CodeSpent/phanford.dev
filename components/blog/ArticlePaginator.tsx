@@ -1,22 +1,22 @@
 import {
   ArrowNarrowLeftIcon,
   ArrowNarrowRightIcon,
-} from "@heroicons/react/solid";
-import { useContext } from "react";
+} from '@heroicons/react/solid'
+import { useContext } from 'react'
 import {
   useArticleListContext,
-  useArticleSearchContext
-} from "../../constants/article-list-context/article-list-context";
-import ReactPaginate from "react-paginate";
-import { ArticleSearchContext } from "../../constants/article-search-context/article-search-context";
-import { useRouter } from "next/router";
+  useArticleSearchContext,
+} from '../../constants/article-list-context/article-list-context'
+import ReactPaginate from 'react-paginate'
+import { ArticleSearchContext } from '../../constants/article-search-context/article-search-context'
+import { useRouter } from 'next/router'
 
 export default function ArticlePaginator() {
   const { numberOfPages, pageIndex, setCurrentPageIndex } =
-   useArticleListContext()
-  const { searchValue, filterValue } = useArticleSearchContext();
+    useArticleListContext()
+  const { searchValue, filterValue } = useArticleSearchContext()
 
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <>
@@ -35,9 +35,7 @@ export default function ArticlePaginator() {
         nextClassName="ml-auto -left-16 relative"
         nextLabel={
           <div className="-mt-px ml-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <div
-              className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium"
-            >
+            <div className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium">
               Next
               <ArrowNarrowRightIcon
                 className="ml-3 h-5 w-5"
@@ -49,9 +47,7 @@ export default function ArticlePaginator() {
         previousClassName="mr-auto"
         previousLabel={
           <div className="-mt-px mr-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <div
-              className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium"
-            >
+            <div className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium">
               <ArrowNarrowLeftIcon
                 className="mr-3 h-5 w-5 text-gray-300"
                 aria-hidden="true"
@@ -70,24 +66,24 @@ export default function ArticlePaginator() {
         pageRangeDisplayed={7}
         hrefBuilder={(pageIndex) => {
           if (pageIndex === 1) {
-            return `${"/blog"}`;
+            return `${'/blog'}`
           }
-          return `/blog?page=${pageIndex}`;
+          return `/blog?page=${pageIndex}`
         }}
         onPageChange={({ selected }) => {
           if (filterValue.length || searchValue) {
-            setCurrentPageIndex(selected);
-            return;
+            setCurrentPageIndex(selected)
+            return
           }
 
           /*
            * ReactPaginate 0 indexes pages while we
            * index pages at 1 for `currentPageIndex`.
            * */
-          const newPageIndex = selected;
-          router.push(`blog?page=${newPageIndex + 1}`);
+          const newPageIndex = selected
+          router.push(`blog?page=${newPageIndex + 1}`)
         }}
       />
     </>
-  );
+  )
 }

@@ -1,39 +1,41 @@
-import React from "react";
-import { FontAwesomeIcon, FontAwesomeIconProps} from "@fortawesome/react-fontawesome";
-import {faGithub, faDev, faLinkedinIn, faTwitch} from "@fortawesome/free-brands-svg-icons";
+import React from 'react'
+import {
+  FontAwesomeIcon,
+  FontAwesomeIconProps,
+} from '@fortawesome/react-fontawesome'
+import {
+  faGithub,
+  faDev,
+  faLinkedinIn,
+  faTwitch,
+} from '@fortawesome/free-brands-svg-icons'
 
 const socials = [
   {
-    name: "GitHub",
-    href: "https://github.com/codespent/",
-    icon: (props) => (
-      <FontAwesomeIcon icon={faGithub} {...props} />
-    ),
+    name: 'GitHub',
+    href: 'https://github.com/codespent/',
+    icon: (props) => <FontAwesomeIcon icon={faGithub} {...props} />,
   },
   {
-    name: "LinkedIn",
-    href: "https://linkedin.com/in/phanford/",
-    icon: (props) => (
-      <FontAwesomeIcon icon={faLinkedinIn} {...props} />
-    ),
+    name: 'LinkedIn',
+    href: 'https://linkedin.com/in/phanford/',
+    icon: (props) => <FontAwesomeIcon icon={faLinkedinIn} {...props} />,
   },
   {
-    name: "Dev.To",
-    href: "https://dev.to/codespent/",
-    icon: (props) => (
-      <FontAwesomeIcon icon={faDev}  {...props} />
-    ),
+    name: 'Dev.To',
+    href: 'https://dev.to/codespent/',
+    icon: (props) => <FontAwesomeIcon icon={faDev} {...props} />,
   },
   {
-    name: "Twitch",
-    href: "https://twitch.tv/codespent/",
+    name: 'Twitch',
+    href: 'https://twitch.tv/codespent/',
     icon: (props: JSX.IntrinsicAttributes & FontAwesomeIconProps) => (
       <FontAwesomeIcon icon={faTwitch} {...props} />
-      ),
+    ),
   },
   {
-    name: "LeetCode",
-    href: "https://leetcode.com/codespent/",
+    name: 'LeetCode',
+    href: 'https://leetcode.com/codespent/',
     icon: (props) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
@@ -44,8 +46,7 @@ const socials = [
       </svg>
     ),
   },
-
-];
+]
 
 export default function VerticalNavbar() {
   return (
@@ -94,5 +95,5 @@ export default function VerticalNavbar() {
         ))}
       </div>
     </nav>
-  );
+  )
 }

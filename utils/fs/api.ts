@@ -1,27 +1,27 @@
-import fs from "fs";
-import { join } from "path";
-import matter from "gray-matter";
-import { countContent, wordCountToMinutesToRead } from "../count-words";
+import fs from 'fs'
+import { join } from 'path'
+import matter from 'gray-matter'
+import { countContent, wordCountToMinutesToRead } from '../count-words'
 import {
   pickDeep,
   DeepPartial,
   DeepReplaceKeys,
   PickDeep,
-} from "ts-util-helpers";
-import { getExcerpt } from "../markdown/getExcerpt";
+} from 'ts-util-helpers'
+import { getExcerpt } from '../markdown/getExcerpt'
 
 export interface Article {
-  slug: string;
-  title: string;
-  published: string;
-  edited?: string;
-  excerpt: string;
-  wordCount: number;
-  minutesToRead: number;
-  description?: string;
-  originalLink?: string;
-  content: string;
-  tags: string[];
+  slug: string
+  title: string
+  published: string
+  edited?: string
+  excerpt: string
+  wordCount: number
+  minutesToRead: number
+  description?: string
+  originalLink?: string
+  content: string
+  tags: string[]
 }
 
 export interface ArticleQuery {
@@ -41,29 +41,29 @@ export interface ArticleQuery {
    * `slug` field which acts as our identifier
    * and will ALWAYS be picked.
    * */
-  readonly content?: boolean;
-  readonly wordCount?: boolean;
-  readonly description?: boolean;
-  readonly published?: boolean;
-  readonly title?: boolean;
-  readonly excerpt?: boolean;
-  readonly slug?: boolean;
-  readonly tags?: boolean;
-  readonly minutesToRead?: boolean;
+  readonly content?: boolean
+  readonly wordCount?: boolean
+  readonly description?: boolean
+  readonly published?: boolean
+  readonly title?: boolean
+  readonly excerpt?: boolean
+  readonly slug?: boolean
+  readonly tags?: boolean
+  readonly minutesToRead?: boolean
 }
 
-type KeysToPick = DeepPartial<DeepReplaceKeys<Article, any>>;
+type KeysToPick = DeepPartial<DeepReplaceKeys<Article, any>>
 
 interface MarkdownAdditions {
-  content: string;
-  wordCount: number;
-  minutesToRead: number;
+  content: string
+  wordCount: number
+  minutesToRead: number
 }
 
-export const articlesDirectory = join(process.cwd(), "content/articles");
+export const articlesDirectory = join(process.cwd(), 'content/articles')
 
 export function getArticleSlugs() {
-  return fs.readdirSync(articlesDirectory);
+  return fs.readdirSync(articlesDirectory)
 }
 
 export function readMarkdownFile<
@@ -75,24 +75,24 @@ export function readMarkdownFile<
   filePath: string,
   fields: ArticleQuery
 ): {
-  frontmatterData: Record<string, any>;
-  data: PickDeep<T & MarkdownAdditions, ToPick, any>;
-  content: string;
+  frontmatterData: Record<string, any>
+  data: PickDeep<T & MarkdownAdditions, ToPick, any>
+  content: string
 } {
-  const fileContents = fs.readFileSync(filePath, "utf8");
-  const { data: frontmatterData, content } = matter(fileContents);
+  const fileContents = fs.readFileSync(filePath, 'utf8')
+  const { data: frontmatterData, content } = matter(fileContents)
   const counts = countContent(content) as {
-    InlineCodeWords: number;
-    RootNode: number;
-    ParagraphNode: number;
-    SentenceNode: number;
-    WordNode: number;
-    TextNode: number;
-    WhiteSpaceNode: number;
-    PunctuationNode: number;
-    SymbolNode: number;
-    SourceNode: number;
-  };
+    InlineCodeWords: number
+    RootNode: number
+    ParagraphNode: number
+    SentenceNode: number
+    WordNode: number
+    TextNode: number
+    WhiteSpaceNode: number
+    PunctuationNode: number
+    SymbolNode: number
+    SourceNode: number
+  }
 
   /*
    * Handle default fields to pick
@@ -104,89 +104,89 @@ export function readMarkdownFile<
   if (!fields) {
     fields = {
       slug: true,
-    };
+    }
   }
 
   const data = pickDeep(
     frontmatterData,
     fields as DeepReplaceKeys<typeof frontmatterData, Article>
-  );
+  )
 
-  data.content = content;
+  data.content = content
 
-  data.wordCount = (counts.InlineCodeWords || 0) + (counts.WordNode || 0);
+  data.wordCount = (counts.InlineCodeWords || 0) + (counts.WordNode || 0)
 
-  data.minutesToRead = wordCountToMinutesToRead(data.wordCount);
+  data.minutesToRead = wordCountToMinutesToRead(data.wordCount)
 
   return {
     frontmatterData,
     data: data as any,
     content,
-  };
+  }
 }
 
 export function getArticlesBySlug<ToPick extends KeysToPick>(
   slug: string,
   fields?: ArticleQuery
 ): PickDeep<Article, ToPick, any> {
-  const realSlug = slug.replace(/\.md$/, "");
-  const fullPath = join(articlesDirectory, realSlug, `index.md`);
+  const realSlug = slug.replace(/\.md$/, '')
+  const fullPath = join(articlesDirectory, realSlug, `index.md`)
 
   const {
     frontmatterData,
     data,
     content,
   }: { frontmatterData: Record<string, any>; data: any; content: string } =
-    readMarkdownFile(fullPath, fields);
+    readMarkdownFile(fullPath, fields)
 
-  data.slug = realSlug;
+  data.slug = realSlug
 
-  data.excerpt = getExcerpt(content);
+  data.excerpt = getExcerpt(content)
 
   const article = {
     ...data,
     ...frontmatterData,
-  };
+  }
 
-  return article as any;
+  return article as any
 }
 
-let allArticlesCache = new WeakMap<object, Article[]>();
+let allArticlesCache = new WeakMap<object, Article[]>()
 
 export function getAllArticles<ToPick extends KeysToPick>(
   fields?: ArticleQuery,
   cacheString: object | null = null
 ): Array<PickDeep<Article, ToPick, any>> {
   if (cacheString) {
-    const cacheData = allArticlesCache.get(cacheString);
-    if (cacheData) return cacheData as any;
+    const cacheData = allArticlesCache.get(cacheString)
+    if (cacheData) return cacheData as any
   }
 
-  const slugs = getArticleSlugs();
-  const articles = slugs.map((slug) => getArticlesBySlug(slug, fields));
+  const slugs = getArticleSlugs()
+  const articles = slugs.map((slug) => getArticlesBySlug(slug, fields))
 
   if (cacheString)
-    allArticlesCache.set(cacheString, articles as never as Article[]);
+    allArticlesCache.set(cacheString, articles as never as Article[])
 
-  return articles as any[];
+  return articles as any[]
 }
 
 export function getTopArticles(count: number) {
-  const slugs = getArticleSlugs();
-  const slicedSlugs = slugs.slice(0, count);
+  const slugs = getArticleSlugs()
+  const slicedSlugs = slugs.slice(0, count)
 
-  const articles = slicedSlugs.map((slug) => getArticlesBySlug(slug));
+  const articles = slicedSlugs.map((slug) => getArticlesBySlug(slug))
 
-  return articles as any[];
+  return articles as any[]
 }
 
 export function getArticleTags() {
-  const slugs = getArticleSlugs();
+  const slugs = getArticleSlugs()
 
-  const articles = slugs.map((slug) => getArticlesBySlug(slug));
-  const tags = articles.map((article) => article.tags);
+  const articles = slugs.map((slug) => getArticlesBySlug(slug))
+  const tags = articles.map((article) => article.tags)
 
-  return tags as any[];
+  return tags as any[]
 }
 
-export type ListViewArticles = ReturnType<typeof getAllArticles>;
+export type ListViewArticles = ReturnType<typeof getAllArticles>

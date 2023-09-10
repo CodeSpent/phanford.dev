@@ -1,48 +1,47 @@
-import { Fragment, useEffect, useState } from "react";
-import { Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState } from 'react'
+import { Transition } from '@headlessui/react'
 
 const taglines = [
-  "Software",
-  "Web Applications",
-  "Websites",
-  "Native Apps",
-  "REST APIs",
-  "Automation Tools",
-  "Battle Roombas",
-  "Schemas",
-  "GraphQL APIs",
-  "CI/CD Pipelines",
-  "Clusters",
-  "Aggregators",
-  "Interfaces",
-  "Cross-platform apps",
-  "Infrastructure",
+  'Software',
+  'Web Applications',
+  'Websites',
+  'Native Apps',
+  'REST APIs',
+  'Automation Tools',
+  'Battle Roombas',
+  'Schemas',
+  'GraphQL APIs',
+  'CI/CD Pipelines',
+  'Clusters',
+  'Aggregators',
+  'Interfaces',
+  'Cross-platform apps',
+  'Infrastructure',
 
   // Landing tagline remains as last element
-  "Solutions",
-];
+  'Solutions',
+]
 
 const getRandomLineWidth = (min, max) => {
-  return `w-${Math.floor(Math.random() * (max - min + 1) + min)}`;
-};
+  return `w-${Math.floor(Math.random() * (max - min + 1) + min)}`
+}
 
 const HeroComponent = () => {
-  const [tagline, setTagline] = useState("Solutions");
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [tagline, setTagline] = useState('Solutions')
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (currentIndex + 1 != taglines.length)
-        setCurrentIndex(currentIndex + 1);
-      setTagline(taglines[currentIndex]);
-    }, 250);
+      if (currentIndex + 1 != taglines.length) setCurrentIndex(currentIndex + 1)
+      setTagline(taglines[currentIndex])
+    }, 250)
 
-    return () => clearInterval(interval);
-  }, [currentIndex]);
+    return () => clearInterval(interval)
+  }, [currentIndex])
 
   return (
     <div className="flex h-screen flex-col justify-center p-4 leading-6 tracking-widest">
-      <div className="min-h-max" style={{ minHeight: "200px" }}>
+      <div className="min-h-max" style={{ minHeight: '200px' }}>
         <div className="my-10 flex flex-col gap-3">
           <div className="flex h-4 gap-3">
             <div
@@ -51,7 +50,7 @@ const HeroComponent = () => {
 
             <div
               className={
-                "w-48 rounded bg-gradient-to-r from-orange-500 to-orange-500"
+                'w-48 rounded bg-gradient-to-r from-orange-500 to-orange-500'
               }
             ></div>
 
@@ -142,7 +141,7 @@ const HeroComponent = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeroComponent;
+export default HeroComponent

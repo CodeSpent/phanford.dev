@@ -2,9 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5",
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext"],
     "paths": {
       "contentlayer/generated": [".contentlayer/generated"]
     },
@@ -19,10 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
+    "typeRoots": ["node_modules/@types", "types"],
     "incremental": true
   },
   "include": [
@@ -31,7 +26,5 @@
     "**/*.tsx",
     ".contentlayer/generated"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

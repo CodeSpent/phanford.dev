@@ -1,52 +1,60 @@
-import Link from "next/link";
-import { useMarkdownRenderer } from "../../../utils/markdown/useMarkdownRenderer";
-import ArticleLayout from "../../../components/blog/ArticleLayout";
+import Link from 'next/link'
+import { useMarkdownRenderer } from '../../../utils/markdown/useMarkdownRenderer'
+import ArticleLayout from '../../../components/blog/ArticleLayout'
 import {
   getArticlesBySlug,
   getAllArticles,
   articlesDirectory,
   Article,
-} from "../../../utils/fs/api";
-import markdownToHtml from "../../../utils/markdown/markdownToHtml";
+} from '../../../utils/fs/api'
+import markdownToHtml from '../../../utils/markdown/markdownToHtml'
 import {
   CalendarIcon,
   ClockIcon,
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
-} from "@heroicons/react/solid";
-import path from "path";
-import {allArticles} from "contentlayer/generated";
-import NotFound from "next/dist/client/components/not-found-error";
+} from '@heroicons/react/solid'
+import path from 'path'
+import { allArticles } from 'contentlayer/generated'
+import NotFound from 'next/dist/client/components/not-found-error'
 
 type Props = {
-  article: Partial<Article>;
-  markdownHTML: string;
-  slug: string;
-  articlesDirectory: string;
-};
+  article: Partial<Article>
+  markdownHTML: string
+  slug: string
+  articlesDirectory: string
+}
 
 const Article = ({ article, markdownHTML, slug, articlesDirectory }: Props) => {
   const articleBody = useMarkdownRenderer({
     markdownHTML,
-    serverPath: ["/articles", slug],
-  });
+    serverPath: ['/articles', slug],
+  })
 
   return (
     <ArticleLayout>
       <div className="rounded bg-gray-900 p-8">
         <div className="flex justify-between">
-          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1 group">
-              <ChevronDoubleLeftIcon className="h-4 w-4 group-hover:text-white" />
-              <p className="text-gray-400 hover:text-gray-200">Back to articles</p>
+          <Link
+            href="/blog"
+            className="text-decoration-white mb-8 flex items-center gap-1 group"
+          >
+            <ChevronDoubleLeftIcon className="h-4 w-4 group-hover:text-white" />
+            <p className="text-gray-400 hover:text-gray-200">
+              Back to articles
+            </p>
           </Link>
-          <Link href="/blog" className="text-decoration-white mb-8 flex items-center gap-1 group">
-              <p className="text-gray-400 hover:text-white">Next Article</p>
-              <ChevronDoubleRightIcon className="h-4 w-4 group-hover:text-gray-200" />
+          <Link
+            href="/blog"
+            className="text-decoration-white mb-8 flex items-center gap-1 group"
+          >
+            <p className="text-gray-400 hover:text-white">Next Article</p>
+            <ChevronDoubleRightIcon className="h-4 w-4 group-hover:text-gray-200" />
           </Link>
         </div>
         <div className="mb-12">
           <div className="mb-4">
-            <p className="text-lg text-gray-400">{article.tags?.join(" | ")}</p>
+            <p className="text-lg text-gray-400">{article.tags?.join(' | ')}</p>
             <h1 className="text-6xl text-gray-300">{article.title}</h1>
           </div>
           <div className="my-4 flex gap-7">
@@ -68,25 +76,25 @@ const Article = ({ article, markdownHTML, slug, articlesDirectory }: Props) => {
         <article className="article-body text-gray-400">{articleBody}</article>
       </div>
     </ArticleLayout>
-  );
-};
+  )
+}
 
 export async function getStaticProps({ params }: any) {
-  const article = getArticlesBySlug(params.slug);
+  const article = getArticlesBySlug(params.slug)
 
-  const isStr = (val: any): val is string => typeof val === "string";
-  const slug = isStr(article.slug) ? article.slug : "";
+  const isStr = (val: any): val is string => typeof val === 'string'
+  const slug = isStr(article.slug) ? article.slug : ''
 
   const { html: markdownHTML, headingsWithId } = await markdownToHtml(
     article.content,
     path.resolve(articlesDirectory, slug)
-  );
+  )
 
   return {
     props: {
       article: {
         ...article,
-        content: "",
+        content: '',
         headingsWithId,
         markdownHTML,
       },
@@ -94,9 +102,8 @@ export async function getStaticProps({ params }: any) {
       slug: slug,
       articlesDirectory,
     } as Props,
-  };
+  }
 }
-
 
 async function getArticlesFromDoc(slug: string) {
   const article = allArticles.find((article) => article.slugAsParams === slug)
@@ -111,13 +118,13 @@ export async function getStaticPaths() {
       params: {
         slug: article.slugAsParams,
       },
-    };
-  });
+    }
+  })
 
   return {
     paths,
     fallback: false,
-  };
+  }
 }
 
-export default Article;
+export default Article

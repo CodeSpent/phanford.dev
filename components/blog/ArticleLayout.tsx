@@ -1,11 +1,11 @@
-import React, { ReactNode } from "react";
-import Head from "next/head";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
+import React, { ReactNode } from 'react'
+import Head from 'next/head'
+import Navbar from '../Navbar'
+import Footer from '../Footer'
 
 type Props = {
-  children?: ReactNode;
-};
+  children?: ReactNode
+}
 
 const ArticleLayout = ({ children }: Props) => {
   return (
@@ -26,7 +26,7 @@ const ArticleLayout = ({ children }: Props) => {
         <Footer />
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default ArticleLayout;
+export default ArticleLayout

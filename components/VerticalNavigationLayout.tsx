@@ -1,15 +1,15 @@
-import React, { ReactNode } from "react";
-import Head from "next/head";
-import VerticalNavbar from "./vertical-navbars/VerticalNavbar";
+import React, { ReactNode } from 'react'
+import Head from 'next/head'
+import VerticalNavbar from './vertical-navbars/VerticalNavbar'
 
 type Props = {
-  children?: ReactNode;
-  title?: string;
-};
+  children?: ReactNode
+  title?: string
+}
 
 const VerticalNavigationLayout = ({
   children,
-  title = "Patrick Hanford | Software Engineer",
+  title = 'Patrick Hanford | Software Engineer',
 }: Props) => {
   return (
     <div className="relative mx-auto">
@@ -23,7 +23,7 @@ const VerticalNavigationLayout = ({
         <VerticalNavbar />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default VerticalNavigationLayout;
+export default VerticalNavigationLayout

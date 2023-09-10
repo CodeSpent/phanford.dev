@@ -1,19 +1,19 @@
-import rehypeSlug from "rehype-slug";
-import {defineDocumentType, makeSource } from 'contentlayer/source-files'
-import remarkGfm from "remark-gfm";
-import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from 'rehype-slug'
+import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+import remarkGfm from 'remark-gfm'
+import rehypePrettyCode from 'rehype-pretty-code'
 
 /** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
   slug: {
-    type: "string",
-    resolve: (doc) => `/${doc._raw.flattenedPath.split("/").pop()}`,
+    type: 'string',
+    resolve: (doc) => `/${doc._raw.flattenedPath.split('/').pop()}`,
   },
   slugAsParams: {
-    type: "string",
-    resolve: (doc) => doc._raw.flattenedPath.split("/").pop(),
+    type: 'string',
+    resolve: (doc) => doc._raw.flattenedPath.split('/').pop(),
   },
-};
+}
 
 export const Article = defineDocumentType(() => ({
   name: 'Article',
@@ -22,23 +22,23 @@ export const Article = defineDocumentType(() => ({
   fields: {
     title: {
       type: 'string',
-      required: true
+      required: true,
     },
     description: {
       type: 'string',
-      required: true
+      required: true,
     },
     published: {
       type: 'date',
-      required: true
+      required: true,
     },
     tags: {
       type: 'list',
-      of: { type: 'string'},
-      required: false
+      of: { type: 'string' },
+      required: false,
     },
   },
-  computedFields
+  computedFields,
 }))
 
 export default makeSource({
@@ -53,11 +53,10 @@ export default makeSource({
         {
           theme: 'github-dark',
           onVisitLine(node) {
-
             // Prevent collapsing in `grid` mode and allow
             // copy/paste of empty lines.
             if (node.children.length === 0) {
-              node.children =[{ type: 'text', value: ' '}]
+              node.children = [{ type: 'text', value: ' ' }]
             }
           },
           onVisitHighlightedLine(node) {
@@ -65,9 +64,9 @@ export default makeSource({
           },
           onVisitHighlightedWords(node) {
             node.properties.className.push('word-highlighted')
-          }
-        }
-      ]
-    ]
-  }
+          },
+        },
+      ],
+    ],
+  },
 })

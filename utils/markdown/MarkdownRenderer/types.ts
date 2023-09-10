@@ -1,4 +1,4 @@
 export interface useMarkdownRendererProps {
-  serverPath: string[];
-  markdownHTML: string;
+  serverPath: string[]
+  markdownHTML: string
 }

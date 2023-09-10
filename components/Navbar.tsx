@@ -1,40 +1,40 @@
-import { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { ChartBarIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import { ChevronDownIcon, CodeIcon } from "@heroicons/react/solid";
-import Link from "next/link";
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
+import { ChartBarIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { ChevronDownIcon, CodeIcon } from '@heroicons/react/solid'
+import Link from 'next/link'
 
 const projects = [
   {
-    name: "DevStreams.io",
+    name: 'DevStreams.io',
     description:
-      "Discover streams in your stack with granular search for programming live streams.",
-    href: "https://devstreams.io/",
-    image: "/images/devstreams-logo.png",
+      'Discover streams in your stack with granular search for programming live streams.',
+    href: 'https://devstreams.io/',
+    image: '/images/devstreams-logo.png',
     icon: null,
     unannounced: false,
   },
   {
-    name: "GigHire",
+    name: 'GigHire',
     description:
-      "Gig-based hiring made simpler, streamlined, and more effective.",
-    href: "",
+      'Gig-based hiring made simpler, streamlined, and more effective.',
+    href: '',
     image: null,
     icon: ChartBarIcon,
     unannounced: true,
   },
   {
-    name: "Your Product",
+    name: 'Your Product',
     description:
       "Let's get in touch & add your product to what I'm working on!",
-    href: "mailto:patrick@phanford.dev",
+    href: 'mailto:patrick@phanford.dev',
     image: null,
     icon: CodeIcon,
   },
-];
+]
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
@@ -49,10 +49,11 @@ export default function Navbar() {
                 src="https://github.com/codespent.png"
                 alt="Patrick Hanford profile photo."
               />
-              <div className={"mx-2 flex flex-col"}>
+              <div className={'mx-2 flex flex-col'}>
                 <h1 className="text-2xl text-white">Patrick Hanford</h1>
-                <p className={"text-xs italic text-white"}>
-                  <span className="font-semibold">Software Engineer</span> building tools for the web.
+                <p className={'text-xs italic text-white'}>
+                  <span className="font-semibold">Software Engineer</span>{' '}
+                  building tools for the web.
                 </p>
               </div>
             </div>
@@ -67,7 +68,7 @@ export default function Navbar() {
         <Popover.Group
           as="nav"
           className="ml-auto hidden space-x-4 md:flex"
-          style={{ marginLeft: "auto" }}
+          style={{ marginLeft: 'auto' }}
         >
           <Link href="/">
             <div className="text-base font-medium text-white hover:text-white">
@@ -91,15 +92,15 @@ export default function Navbar() {
               <>
                 <Popover.Button
                   className={classNames(
-                    open ? "text-white" : "text-white",
-                    "group inline-flex items-center rounded-md bg-transparent text-base font-medium hover:text-white"
+                    open ? 'text-white' : 'text-white',
+                    'group inline-flex items-center rounded-md bg-transparent text-base font-medium hover:text-white'
                   )}
                 >
                   <span>Tools</span>
                   <ChevronDownIcon
                     className={classNames(
-                      open ? "text-white" : "text-gray-400",
-                      "ml-2 h-5 w-5 group-hover:text-white"
+                      open ? 'text-white' : 'text-gray-400',
+                      'ml-2 h-5 w-5 group-hover:text-white'
                     )}
                     aria-hidden="true"
                   />
@@ -123,8 +124,8 @@ export default function Navbar() {
                             href={project.href}
                             target="_blank"
                             className={
-                              "-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50 " +
-                              (project.unannounced ? "blur-sm" : "")
+                              '-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50 ' +
+                              (project.unannounced ? 'blur-sm' : '')
                             }
                           >
                             <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md text-white sm:h-12 sm:w-12">
@@ -198,10 +199,11 @@ export default function Navbar() {
                       src="https://github.com/codespent.png"
                       alt="Patrick Hanford profile photo."
                     />
-                    <div className={"mx-2 flex flex-col"}>
+                    <div className={'mx-2 flex flex-col'}>
                       <h1 className="text-2xl text-white">Patrick Hanford</h1>
-                      <p className={"text-xs italic text-white"}>
-                        <span className="font-semibold">Software Engineer</span> building tools for the web.
+                      <p className={'text-xs italic text-white'}>
+                        <span className="font-semibold">Software Engineer</span>{' '}
+                        building tools for the web.
                       </p>
                     </div>
                   </a>
@@ -248,7 +250,7 @@ export default function Navbar() {
                       href={project.href}
                       target="_blank"
                       className={
-                        "relative -m-3 rounded-lg bg-gray-50 p-3 text-white"
+                        'relative -m-3 rounded-lg bg-gray-50 p-3 text-white'
                       }
                     >
                       {project.unannounced && (
@@ -261,8 +263,8 @@ export default function Navbar() {
                       )}
                       <div
                         className={
-                          "flex items-center " +
-                          (project.unannounced ? "blur-sm" : "")
+                          'flex items-center ' +
+                          (project.unannounced ? 'blur-sm' : '')
                         }
                       >
                         <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md text-white">
@@ -295,5 +297,5 @@ export default function Navbar() {
         </Popover.Panel>
       </Transition>
     </Popover>
-  );
+  )
 }

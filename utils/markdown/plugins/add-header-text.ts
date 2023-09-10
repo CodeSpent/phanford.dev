@@ -1,29 +1,29 @@
-import { headingRank } from "hast-util-heading-rank";
-import { hasProperty } from "hast-util-has-property";
-import { toString } from "hast-util-to-string";
-import { Root, Parent } from "hast";
-import visit from "unist-util-visit";
+import { headingRank } from 'hast-util-heading-rank'
+import { hasProperty } from 'hast-util-has-property'
+import { toString } from 'hast-util-to-string'
+import { Root, Parent } from 'hast'
+import visit from 'unist-util-visit'
 
 /**
  * Plugin to add `data-header-text`s to headings.
  */
-export const rehypeHeaderText = (post: Pick<any, "headingsWithId">) => () => {
+export const rehypeHeaderText = (post: Pick<any, 'headingsWithId'>) => () => {
   return (tree: Root) => {
-    visit(tree, "element", (node: Parent["children"][number]) => {
+    visit(tree, 'element', (node: Parent['children'][number]) => {
       if (
         headingRank(node) &&
-        "properties" in node &&
+        'properties' in node &&
         node.properties &&
-        !hasProperty(node, "data-header-text")
+        !hasProperty(node, 'data-header-text')
       ) {
-        const headerText = toString(node);
-        node.properties["data-header-text"] = headerText;
+        const headerText = toString(node)
+        node.properties['data-header-text'] = headerText
         post.headingsWithId?.push({
           value: headerText,
           depth: headingRank(node)!,
-          slug: node.properties["id"] as string,
-        });
+          slug: node.properties['id'] as string,
+        })
       }
-    });
-  };
-};
+    })
+  }
+}

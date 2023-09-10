@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
-import Input from "../common/Input";
+import React, { useState, useEffect } from 'react'
+import Input from '../common/Input'
 
 export default function SearchControl({
-                                      label,
-                                      placeholder,
-                                      value,
-                                      onChange,
-                                      hotkey,
-                                    }) {
-  const [searchValue, setSearchValue] = useState(value);
+  label,
+  placeholder,
+  value,
+  onChange,
+  hotkey,
+}) {
+  const [searchValue, setSearchValue] = useState(value)
 
   useEffect(() => {
-    setSearchValue(value); // Synchronize internal state with the prop value
-  }, [value]);
+    setSearchValue(value) // Synchronize internal state with the prop value
+  }, [value])
 
   const handleChange = (event) => {
-    const newValue = event.target.value;
-    setSearchValue(newValue);
+    const newValue = event.target.value
+    setSearchValue(newValue)
 
     if (onChange) {
-      onChange(newValue);
+      onChange(newValue)
     }
-  };
+  }
 
   return (
     <div>
@@ -42,5 +42,5 @@ export default function SearchControl({
         )}
       </div>
     </div>
-  );
+  )
 }

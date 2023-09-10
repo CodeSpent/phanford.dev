@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { ComboBoxInput } from "../common/Input";
-import { useArticleSearchContext } from "../../constants/article-list-context/article-list-context";
-import TagFilterControl from "../controls/tag-filter-control";
+import { useState } from 'react'
+import { ComboBoxInput } from '../common/Input'
+import { useArticleSearchContext } from '../../constants/article-list-context/article-list-context'
+import TagFilterControl from '../controls/tag-filter-control'
 
 type Props = {
-  tags: string[];
-};
+  tags: string[]
+}
 
 export default function ArticleTagFilter({ tags }: Props) {
   const { filterValue, setFilterValue } = useArticleSearchContext()
-  const [filteredTags] = useState(tags);
+  const [filteredTags] = useState(tags)
 
   return (
     <TagFilterControl
@@ -18,5 +18,5 @@ export default function ArticleTagFilter({ tags }: Props) {
       value={filterValue}
       onChange={setFilterValue}
     />
-  );
+  )
 }

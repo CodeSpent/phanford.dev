@@ -1,7 +1,7 @@
 ---
-title: "Generating Mock Data with ChatGPT: A Practical Guide"
-description: "Learn how to use ChatGPT to generate realistic mock data for testing and development purposes."
-published: "2023-08-30T11:00:00.000Z"
+title: 'Generating Mock Data with ChatGPT: A Practical Guide'
+description: 'Learn how to use ChatGPT to generate realistic mock data for testing and development purposes.'
+published: '2023-08-30T11:00:00.000Z'
 tags: ['testing', 'ChatGPT']
 ---
 
@@ -56,4 +56,7 @@ While ChatGPT is a powerful tool, it's important to handle sensitive data respon
 Generating mock data using ChatGPT can significantly streamline your testing and development process. By leveraging the language model's capabilities, you can create diverse and contextually relevant mock data that closely resembles real-world scenarios. Remember to use the generated data responsibly and within ethical guidelines.
 
 With this practical guide, you're well-equipped to harness the power of ChatGPT for creating realistic mock data to enhance your software development efforts.
+
+```
+
 ```

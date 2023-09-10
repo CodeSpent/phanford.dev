@@ -1,18 +1,18 @@
-import { createContext, useEffect, useMemo, useState } from "react";
-import { useLunr } from "../../utils/useLunr";
-import { ArticleInfo } from "../../types/ArticleInfo";
+import { createContext, useEffect, useMemo, useState } from 'react'
+import { useLunr } from '../../utils/useLunr'
+import { ArticleInfo } from '../../types/ArticleInfo'
 
 const articleSearchContext = {
-  searchValue: "",
+  searchValue: '',
   setSearchValue: (value: string) => {},
   filterValue: [] as string[],
   setFilterValue: (value: any[]) => {},
-};
+}
 
-export const ArticleSearchContext = createContext(articleSearchContext);
+export const ArticleSearchContext = createContext(articleSearchContext)
 
 export const useSearchValue = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
+  const [searchValue, setSearchValue] = useState<string>('')
 
   return useMemo(
     () => ({
@@ -20,11 +20,11 @@ export const useSearchValue = () => {
       setSearchValue,
     }),
     [searchValue, setSearchValue]
-  );
-};
+  )
+}
 
 export const useFilterValue = () => {
-  const [filterValue, setFilterValue] = useState<string[]>([]);
+  const [filterValue, setFilterValue] = useState<string[]>([])
 
   return useMemo(
     () => ({
@@ -32,55 +32,49 @@ export const useFilterValue = () => {
       setFilterValue,
     }),
     [filterValue, setFilterValue]
-  );
-};
+  )
+}
 
 export const useSearchResults = (
   searchValue: string,
   filterValue: string[]
 ) => {
-  const { searchUsingLunr: filterUsingLunr, results: lunrFilterIds } = useLunr();
-  const { searchUsingLunr, results: lunrSearchIds } = useLunr();
+  const { searchUsingLunr: filterUsingLunr, results: lunrFilterIds } = useLunr()
+  const { searchUsingLunr, results: lunrSearchIds } = useLunr()
 
   useEffect(() => {
     if (!filterValue || !filterValue.length) {
-      filterUsingLunr("");
+      filterUsingLunr('')
     } else {
-      filterUsingLunr(`tags: ${filterValue.join(" ")}`);
+      filterUsingLunr(`tags: ${filterValue.join(' ')}`)
     }
-  }, [filterValue]);
+  }, [filterValue])
 
   useEffect(() => {
-    searchUsingLunr(searchValue);
-  }, [searchValue]);
+    searchUsingLunr(searchValue)
+  }, [searchValue])
 
   const lunrResultSlugs = useMemo(() => {
     if (lunrFilterIds && lunrSearchIds) {
-      const lunrFilterSlugs = lunrFilterIds.map(
-        (articleRef) => articleRef.slug
-      );
-      const lunrSearchSlugs = lunrSearchIds.map(
-        (articleRef) => articleRef.slug
-      );
+      const lunrFilterSlugs = lunrFilterIds.map((articleRef) => articleRef.slug)
+      const lunrSearchSlugs = lunrSearchIds.map((articleRef) => articleRef.slug)
 
       return lunrFilterSlugs.filter((filterSlug) =>
         lunrSearchSlugs.includes(filterSlug)
-      );
+      )
     }
 
-    if (lunrFilterIds)
-      return lunrFilterIds.map((articleRef) => articleRef.slug);
+    if (lunrFilterIds) return lunrFilterIds.map((articleRef) => articleRef.slug)
 
-    if (lunrSearchIds)
-      return lunrSearchIds.map((articleRef) => articleRef.slug);
+    if (lunrSearchIds) return lunrSearchIds.map((articleRef) => articleRef.slug)
 
-    return [];
-  }, [lunrFilterIds, lunrSearchIds]);
+    return []
+  }, [lunrFilterIds, lunrSearchIds])
 
   return useMemo(
     () => ({
       lunrResultSlugs,
     }),
     [lunrResultSlugs]
-  );
-};
+  )
+}

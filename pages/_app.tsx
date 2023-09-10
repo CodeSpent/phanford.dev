@@ -1,23 +1,23 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { AppProps } from "next/app";
-import Particles from "react-tsparticles";
-import { Transition } from "@headlessui/react";
-import "../styles/index.css";
-import "../global.scss";
-import AnnouncementBanner from "../components/AnnouncementBanner";
+import React, { Fragment, useEffect, useState } from 'react'
+import { AppProps } from 'next/app'
+import Particles from 'react-tsparticles'
+import { Transition } from '@headlessui/react'
+import '../styles/index.css'
+import '../global.scss'
+import AnnouncementBanner from '../components/AnnouncementBanner'
 
 function AppComponent({ Component, pageProps }: AppProps) {
-  const [announcementVisible, setAnnouncementVisible] = useState(false);
+  const [announcementVisible, setAnnouncementVisible] = useState(false)
 
   const closeAnnouncementBanner = () => {
-    setAnnouncementVisible(false);
-  };
+    setAnnouncementVisible(false)
+  }
 
   useEffect(() => {
     setTimeout(() => {
-      setAnnouncementVisible(true);
-    }, 1500);
-  }, [setAnnouncementVisible]);
+      setAnnouncementVisible(true)
+    }, 1500)
+  }, [setAnnouncementVisible])
 
   return (
     <Fragment>
@@ -29,11 +29,11 @@ function AppComponent({ Component, pageProps }: AppProps) {
             events: {
               onClick: {
                 enable: false,
-                mode: "push",
+                mode: 'push',
               },
               onHover: {
                 enable: false,
-                mode: "repulse",
+                mode: 'repulse',
               },
               resize: true,
             },
@@ -55,10 +55,10 @@ function AppComponent({ Component, pageProps }: AppProps) {
           },
           particles: {
             color: {
-              value: "#ffffff",
+              value: '#ffffff',
             },
             links: {
-              color: "#ffffff",
+              color: '#ffffff',
               distance: 150,
               enable: true,
               opacity: 0.5,
@@ -68,9 +68,9 @@ function AppComponent({ Component, pageProps }: AppProps) {
               enable: true,
             },
             move: {
-              direction: "none",
+              direction: 'none',
               enable: true,
-              outMode: "bounce",
+              outMode: 'bounce',
               random: false,
               speed: 0.5,
               straight: false,
@@ -86,7 +86,7 @@ function AppComponent({ Component, pageProps }: AppProps) {
               value: 0.5,
             },
             shape: {
-              type: "circle",
+              type: 'circle',
             },
             size: {
               random: false,
@@ -119,7 +119,7 @@ function AppComponent({ Component, pageProps }: AppProps) {
       </Transition>
       <Component {...pageProps} />
     </Fragment>
-  );
+  )
 }
 
-export default AppComponent;
+export default AppComponent

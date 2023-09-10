@@ -1,16 +1,17 @@
-import { Fragment, useContext, useState } from "react";
-import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import { Fragment, useContext, useState } from 'react'
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import {
   ArticleListContextProvider,
   ArticleSearchContextProvider,
   ArticleSortOptionValue,
-  sortOptions, useArticleListContext,
-} from "../../constants/article-list-context/article-list-context";
-import {ListBoxInput} from "../common/Input";
+  sortOptions,
+  useArticleListContext,
+} from '../../constants/article-list-context/article-list-context'
+import { ListBoxInput } from '../common/Input'
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function ArticleSortFilter() {
@@ -18,7 +19,12 @@ export default function ArticleSortFilter() {
 
   return (
     <>
-      <ListBoxInput label="Sort" options={sortOptions} value={sortValue.value} onChange={setSortValue} />
+      <ListBoxInput
+        label="Sort"
+        options={sortOptions}
+        value={sortValue.value}
+        onChange={setSortValue}
+      />
     </>
     // <div>
     //   <Listbox value={sortValue} onChange={setSortValue}>
@@ -94,5 +100,5 @@ export default function ArticleSortFilter() {
     //     )}
     //   </Listbox>
     // </div>
-  );
+  )
 }

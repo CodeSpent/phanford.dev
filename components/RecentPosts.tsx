@@ -1,7 +1,7 @@
-import ArticleCard from "./blog/ArticleCard";
+import ArticleCard from './blog/ArticleCard'
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function RecentPosts({ articles }) {
@@ -26,11 +26,11 @@ export default function RecentPosts({ articles }) {
               publishedDate={article.date}
               publishedDateTime={article.datetime}
               tags={article.tags}
-              color={"#000"}
+              color={'#000'}
             />
           ))}
         </div>
       </div>
     </div>
-  );
+  )
 }

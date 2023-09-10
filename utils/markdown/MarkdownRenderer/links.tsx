@@ -1,13 +1,13 @@
-import * as React from "react";
-import {useMarkdownRendererProps} from "./types";
-import {isRelativePath} from "../../urls";
-import Link from "next/link";
+import * as React from 'react'
+import { useMarkdownRendererProps } from './types'
+import { isRelativePath } from '../../urls'
+import Link from 'next/link'
 
 export const getLinks = (_: useMarkdownRendererProps) => {
   return {
     a(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-      const {href, ...restProps} = props;
-      const isInternalLink = isRelativePath(href || "");
+      const { href, ...restProps } = props
+      const isInternalLink = isRelativePath(href || '')
       if (!isInternalLink) {
         return (
           <a
@@ -18,13 +18,13 @@ export const getLinks = (_: useMarkdownRendererProps) => {
           >
             {props.children}
           </a>
-        );
+        )
       }
       return (
-        <Link {...restProps} href={href || ""} passHref>
+        <Link {...restProps} href={href || ''} passHref>
           {props.children}
         </Link>
-      );
+      )
     },
-  };
-};
+  }
+}
