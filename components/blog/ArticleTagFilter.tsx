@@ -1,10 +1,7 @@
-import { useContext, useState } from "react";
-import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import { Combobox } from "@headlessui/react";
-import { useFilterValue} from "../../constants/article-search-context/article-search-context";
-import {ComboBoxInput} from "../common/Input";
-import {classNames} from "../../utils/common";
-import {useArticleSearchContext} from "../../constants/article-list-context/article-list-context";
+import { useState } from "react";
+import { ComboBoxInput } from "../common/Input";
+import { useArticleSearchContext } from "../../constants/article-list-context/article-list-context";
+import TagFilterControl from "../controls/tag-filter-control";
 
 type Props = {
   tags: string[];
@@ -12,21 +9,14 @@ type Props = {
 
 export default function ArticleTagFilter({ tags }: Props) {
   const { filterValue, setFilterValue } = useArticleSearchContext()
-  const [filteredTags, setFilteredTags] = useState(tags);
+  const [filteredTags] = useState(tags);
 
   return (
-   <>
-    <ComboBoxInput label="Filter by Tag"
-                   placeholder="Select Tags"
-                   value={filterValue}
-                   onChange={(e) => setFilterValue(e)}
-                   options={filteredTags.map((tag) => {
-                     return {
-                       label: tag,
-                       value: tag
-                     }
-                   })}
+    <TagFilterControl
+      label="Filter by Tag"
+      tags={tags}
+      value={filterValue}
+      onChange={setFilterValue}
     />
-   </>
   );
 }

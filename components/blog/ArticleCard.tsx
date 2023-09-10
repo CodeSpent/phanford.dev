@@ -32,10 +32,10 @@ print(squared_numbers)
 `;
   return (
     <Link href={["blog", slug].join("")}>
-      <div className={`flex flex-col min-h-full bg-card-background group mt-4 rounded-lg border-t-4 border-solid 
-      border-purple-600 shadow-md transition duration-300 hover:z-50 hover:scale-105 hover:shadow-lg`}>
+      <div className={`flex flex-col h-full bg-card-background group mt-4 rounded-lg shadow-md transition duration-300 
+      hover:z-50 hover:scale-105 hover:shadow-lg`}>
 
-        <div style={{ borderTopColor: color }} className="p-4 border-t-4 border-solid border-t-4 h-full flex
+        <div style={{ borderTopColor: color }} className="p-4 border-t-4 rounded-lg border-solid h-full flex
         flex-col">
           <div className="flex flex-col h-full">
             <p className="text-sm text-gray-200">
@@ -61,7 +61,7 @@ print(squared_numbers)
           </div>
 
           <div className="flex flex-col">
-            <div className="mt-auto pb-4 pt-6 flex flex-wrap gap-2 items-center">
+            <div className="self-start align-end pb-4 pt-6 flex flex-wrap gap-2 items-center">
               {tags.map((tag, index) =>
                 <span
                   key={index}

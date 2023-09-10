@@ -16,7 +16,9 @@ export default function ArticlePagesFilter() {
 
   return (
     <>
-    <ListBoxInput label="Posts Per Page" options={paginationOptions} value={articlesPerPage.toString()}
+    <ListBoxInput label="Posts Per Page"
+                  options={paginationOptions}
+                  value={articlesPerPage.toString()}
                   onChange={setArticlesPerPage} />
     </>
   );

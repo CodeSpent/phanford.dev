@@ -100,22 +100,22 @@ function AppComponent({ Component, pageProps }: AppProps) {
         as="div"
         show={announcementVisible}
         enter="transition ease-out duration-500"
-        enterFrom="transform opacity-0 top-0"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
+        enterFrom="transform opacity-0 bottom-0"
+        enterTo="transform opacity-100 scale-100 bottom-0"
+        leave="transition ease-in duration-200"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
-        className="fixed z-50 w-full"
+        className="fixed bottom-0 z-50 w-full opacity-80 hover:opacity-100 duration-200"
       >
-        {/* <AnnouncementBanner
+        <AnnouncementBanner
           color="warning"
           shortMessage="Site incomplete! Bugs ahead."
-          longMessage="You're early! I'm still actively building this site. Bugs ahead."
-          linkText="Report an issue"
+          longMessage="Woah, you're early. I'm still actively building this site, expect bugs."
+          linkText="Report any Bugs or Suggestions on GitHub."
           linkHref="https://github.com/CodeSpent/phanford.dev/issues"
           announcementDate="Aug 21, 2020 at 11:52 am (EST)"
           onClose={closeAnnouncementBanner}
-        />*/}
+        />
       </Transition>
       <Component {...pageProps} />
     </Fragment>

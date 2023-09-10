@@ -52,7 +52,7 @@ export default function Navbar() {
               <div className={"mx-2 flex flex-col"}>
                 <h1 className="text-2xl text-white">Patrick Hanford</h1>
                 <p className={"text-xs italic text-white"}>
-                  Web, Mobile, Software, DevOps
+                  <span className="font-semibold">Software Engineer</span> building tools for the web.
                 </p>
               </div>
             </div>
@@ -81,12 +81,6 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <Link href="/tools">
-            <div className="text-base font-medium text-white hover:text-white">
-              Tools
-            </div>
-          </Link>
-
           <Link href="#">
             <div className="text-base font-medium text-white hover:text-white">
               Resume
@@ -101,7 +95,7 @@ export default function Navbar() {
                     "group inline-flex items-center rounded-md bg-transparent text-base font-medium hover:text-white"
                   )}
                 >
-                  <span>Projects</span>
+                  <span>Tools</span>
                   <ChevronDownIcon
                     className={classNames(
                       open ? "text-white" : "text-gray-400",
@@ -207,7 +201,7 @@ export default function Navbar() {
                     <div className={"mx-2 flex flex-col"}>
                       <h1 className="text-2xl text-white">Patrick Hanford</h1>
                       <p className={"text-xs italic text-white"}>
-                        Web, Mobile, Software, DevOps
+                        <span className="font-semibold">Software Engineer</span> building tools for the web.
                       </p>
                     </div>
                   </a>

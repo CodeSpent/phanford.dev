@@ -36,34 +36,34 @@ type Props = {
 };
 
 export default function BlogPage({
-  articles,
-  tags,
-  numberOfPages,
-  pageNumber,
-  articlesPerPage,
-}: Props) {
+                                   articles,
+                                   tags,
+                                   numberOfPages,
+                                   pageNumber,
+                                   articlesPerPage,
+                                 }: Props) {
   return (
     <Layout title="Blog | Patrick Hanford">
       <div className="px-4">
         <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
-                <ArticleSearchContextProvider>
-          <ArticleListContextProvider articles={articles} pageIndex={pageNumber}>
-            <div>
-              <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                Blog
-              </h2>
+          <ArticleSearchContextProvider>
+            <ArticleListContextProvider articles={articles} pageIndex={pageNumber}>
+              <div>
+                <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                  DevStreams
+                </h2>
 
-              <div className="sm:fl mt-3 flex flex-col gap-3 py-4 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
+                <div className="sm:fl mt-3 flex flex-col gap-3 py-4 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
                   <ArticleSearch />
-                <ArticleTagFilter tags={tags} />
-                <ArticleSortFilter />
-                <ArticlePagesFilter />
+                  <ArticleTagFilter tags={tags} />
+                  <ArticleSortFilter />
+                  <ArticlePagesFilter />
+                </div>
               </div>
-            </div>
-            <ArticleList />
-            <ArticlePaginator />
-          </ArticleListContextProvider>
-                </ArticleSearchContextProvider>
+              <ArticleList />
+              <ArticlePaginator />
+            </ArticleListContextProvider>
+          </ArticleSearchContextProvider>
         </div>
       </div>
     </Layout>
