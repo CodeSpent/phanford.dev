@@ -1,4 +1,4 @@
-import VerticalNavigationLayout from '../components/VerticalNavigationLayout'
+import VerticalNavigationLayout from '../layouts/VerticalNavigationLayout'
 import HeroComponent from '../components/Hero'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { getTopArticles } from '../utils/fs/api'

@@ -1,4 +1,4 @@
-import Layout from '../../components/Layout'
+import DefaultLayout from '../../layouts/DefaultLayout'
 import Link from 'next/link'
 import {
   ArticleQuery,
@@ -44,7 +44,7 @@ export default function BlogPage({
   articlesPerPage,
 }: Props) {
   return (
-    <Layout title="Blog | Patrick Hanford">
+    <DefaultLayout title="Blog | Patrick Hanford">
       <div className="px-4">
         <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
           <ArticleSearchContextProvider>
@@ -70,7 +70,7 @@ export default function BlogPage({
           </ArticleSearchContextProvider>
         </div>
       </div>
-    </Layout>
+    </DefaultLayout>
   )
 }
 

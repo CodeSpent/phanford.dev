@@ -1,14 +1,13 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
-import Navbar from './Navbar'
-import Footer from './Footer'
+import Footer from '../components/common/navbars/Footer'
 
 type Props = {
   children?: ReactNode
   title?: string
 }
 
-const Layout = ({
+const DefaultLayout = ({
   children,
   title = 'Patrick Hanford | Software Engineer',
 }: Props) => (
@@ -24,4 +23,4 @@ const Layout = ({
   </div>
 )
 
-export default Layout
+export default DefaultLayout
