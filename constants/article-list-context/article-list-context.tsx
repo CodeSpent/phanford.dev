@@ -204,7 +204,6 @@ export const ArticleListContextProvider: React.FC<ArticleListContextProps> = ({
 
   // @ts-ignore
   const articleTags = useArticleTagsFromNodes(articles) as string[]
-  console.log(articleTags)
 
   const articleListContextValue: ArticleListContextValue = useMemo(
     () => ({
