@@ -1,23 +1,23 @@
-import { unified } from "unified";
-import remarkParse from "remark-parse";
-import remarkStringify from "remark-stringify";
-import remarkToRehype from "remark-rehype";
-import rehypeStringify from "rehype-stringify";
-import remarkUnwrapImages from "remark-unwrap-images";
-import remarkGfm from "remark-gfm";
-import rehypeImageSize from "rehype-img-size";
-import remarkEmbedder, { RemarkEmbedderOptions } from "@remark-embedder/core";
-import rehypeSlug from "rehype-slug";
-import { rehypeHeaderText } from "./plugins/add-header-text";
-import remarkTwoslash from "remark-shiki-twoslash";
-import { UserConfigSettings } from "shiki-twoslash";
-import { rehypeTabs } from "../markdown/plugins/tabs";
-import { PluggableList } from "unified";
-import behead from "remark-behead";
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkStringify from 'remark-stringify'
+import remarkToRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import remarkUnwrapImages from 'remark-unwrap-images'
+import remarkGfm from 'remark-gfm'
+import rehypeImageSize from 'rehype-img-size'
+import remarkEmbedder, { RemarkEmbedderOptions } from '@remark-embedder/core'
+import rehypeSlug from 'rehype-slug'
+import { rehypeHeaderText } from './plugins/add-header-text'
+import remarkTwoslash from 'remark-shiki-twoslash'
+import { UserConfigSettings } from 'shiki-twoslash'
+import { rehypeTabs } from '../markdown/plugins/tabs'
+import { PluggableList } from 'unified'
+import behead from 'remark-behead'
 
 interface markdownChainProps {
-  remarkPlugins: PluggableList;
-  rehypePlugins: PluggableList;
+  remarkPlugins: PluggableList
+  rehypePlugins: PluggableList
 }
 
 const unifiedChain = ({ remarkPlugins, rehypePlugins }: markdownChainProps) => {
@@ -27,10 +27,10 @@ const unifiedChain = ({ remarkPlugins, rehypePlugins }: markdownChainProps) => {
     .use(remarkStringify)
     .use(remarkToRehype, { allowDangerousHtml: true })
     .use(rehypePlugins)
-    .use(rehypeStringify, { allowDangerousHtml: true });
+    .use(rehypeStringify, { allowDangerousHtml: true })
 
-  return unifiedChain;
-};
+  return unifiedChain
+}
 
 export default async function markdownToHtml(
   content: string,
@@ -38,7 +38,7 @@ export default async function markdownToHtml(
 ) {
   const renderData = {
     headingsWithId: [],
-  };
+  }
 
   const result = await unifiedChain({
     remarkPlugins: [
@@ -55,7 +55,7 @@ export default async function markdownToHtml(
       [
         remarkTwoslash,
         {
-          themes: ["css-variables"],
+          themes: ['css-variables'],
         } as UserConfigSettings,
       ],
     ],
@@ -77,10 +77,10 @@ export default async function markdownToHtml(
       ],
       [rehypeHeaderText(renderData)],
     ],
-  }).process(content);
+  }).process(content)
 
   return {
     html: result.toString(),
     headingsWithId: renderData.headingsWithId,
-  };
+  }
 }

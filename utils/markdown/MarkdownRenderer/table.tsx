@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useMarkdownRendererProps } from "./types";
+import * as React from 'react'
+import { useMarkdownRendererProps } from './types'
 
 export const getTable = ({ serverPath }: useMarkdownRendererProps) => {
   return {
@@ -8,7 +8,7 @@ export const getTable = ({ serverPath }: useMarkdownRendererProps) => {
         <div className="table-container">
           <table {...props}>{props.children}</table>
         </div>
-      );
+      )
     },
-  };
-};
+  }
+}

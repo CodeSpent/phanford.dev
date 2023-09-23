@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useMarkdownRendererProps } from "./types";
+import * as React from 'react'
+import { useMarkdownRendererProps } from './types'
 
 const HeaderLink: React.FC<{ id: string; headerText: string }> = ({
   id,
@@ -17,7 +17,7 @@ const HeaderLink: React.FC<{ id: string; headerText: string }> = ({
         viewBox="0 0 36 36"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ margin: "5px" }}
+        style={{ margin: '5px' }}
       >
         <path
           d="M8.10021 27.8995C6.14759 25.9469 6.14759 22.7811 8.10021 20.8284L12.6964 16.2322C14.4538 14.4749 17.303 14.4749 19.0604 16.2322L20.121 17.2929C20.7068 17.8787 21.6566 17.8787 22.2423 17.2929C22.8281 16.7071 22.8281 15.7574 22.2423 15.1716L21.1817 14.1109C18.2528 11.182 13.504 11.182 10.5751 14.1109L5.97889 18.7071C2.85469 21.8313 2.85469 26.8966 5.97889 30.0208C9.10308 33.145 14.1684 33.145 17.2926 30.0208L18.3533 28.9602C18.939 28.3744 18.939 27.4246 18.3533 26.8388C17.7675 26.2531 16.8177 26.2531 16.2319 26.8388L15.1713 27.8995C13.2187 29.8521 10.0528 29.8521 8.10021 27.8995Z"
@@ -29,12 +29,12 @@ const HeaderLink: React.FC<{ id: string; headerText: string }> = ({
         />
       </svg>
     </a>
-  );
-};
+  )
+}
 
 type HeadingProps = React.HTMLAttributes<HTMLHeadingElement> & {
-  ["data-header-text"]: string;
-};
+  ['data-header-text']: string
+}
 
 export const getHeadings = (_: useMarkdownRendererProps) => {
   return {
@@ -42,91 +42,91 @@ export const getHeadings = (_: useMarkdownRendererProps) => {
       const {
         children,
         id,
-        ["data-header-text"]: headerText,
+        ['data-header-text']: headerText,
         ...props
-      } = headerProps;
+      } = headerProps
 
       return (
-        <h2 {...props} id={id} style={{ position: "relative" }}>
+        <h2 {...props} id={id} style={{ position: 'relative' }}>
           {children}
-          <HeaderLink id={id || ""} headerText={headerText} />
+          <HeaderLink id={id || ''} headerText={headerText} />
         </h2>
-      );
+      )
     },
     h2: (headerProps: HeadingProps) => {
       const {
         children,
         id,
-        ["data-header-text"]: headerText,
+        ['data-header-text']: headerText,
         ...props
-      } = headerProps;
+      } = headerProps
 
       return (
-        <h2 id={id} style={{ position: "relative" }}>
+        <h2 id={id} style={{ position: 'relative' }}>
           {children}
-          <HeaderLink id={id || ""} headerText={headerText} />
+          <HeaderLink id={id || ''} headerText={headerText} />
         </h2>
-      );
+      )
     },
     h3: (headerProps: HeadingProps) => {
       const {
         children,
         id,
-        ["data-header-text"]: headerText,
+        ['data-header-text']: headerText,
         ...props
-      } = headerProps;
+      } = headerProps
 
       return (
-        <h2 id={id} style={{ position: "relative" }}>
+        <h2 id={id} style={{ position: 'relative' }}>
           {children}
-          <HeaderLink id={id || ""} headerText={headerText} />
+          <HeaderLink id={id || ''} headerText={headerText} />
         </h2>
-      );
+      )
     },
     h4: (headerProps: HeadingProps) => {
       const {
         children,
         id,
-        ["data-header-text"]: headerText,
+        ['data-header-text']: headerText,
         ...props
-      } = headerProps;
+      } = headerProps
 
       return (
-        <h2 id={id} style={{ position: "relative" }}>
+        <h2 id={id} style={{ position: 'relative' }}>
           {children}
-          <HeaderLink id={id || ""} headerText={headerText} />
+          <HeaderLink id={id || ''} headerText={headerText} />
         </h2>
-      );
+      )
     },
     h5: (headerProps: HeadingProps) => {
       const {
         children,
         id,
-        ["data-header-text"]: headerText,
+        ['data-header-text']: headerText,
         ...props
-      } = headerProps;
+      } = headerProps
 
       return (
-        <h2 id={id} style={{ position: "relative" }}>
+        <h2 id={id} style={{ position: 'relative' }}>
           {children}
-          <HeaderLink id={id || ""} headerText={headerText} />
+          <HeaderLink id={id || ''} headerText={headerText} />
         </h2>
-      );
+      )
     },
     h6: (headerProps: HeadingProps) => {
       const {
         children,
         id,
-        ["data-header-text"]: headerText,
+        ['data-header-text']: headerText,
         ...props
-      } = headerProps;
+      } = headerProps
 
       return (
-        <h2 id={id} style={{ position: "relative" }}>
+        <h2 id={id} style={{ position: 'relative' }}>
           {children}
-          <HeaderLink id={id || ""} headerText={headerText} />
+          <HeaderLink id={id || ''} headerText={headerText} />
         </h2>
-      );
+      )
     },
-  };
-};
+  }
+}

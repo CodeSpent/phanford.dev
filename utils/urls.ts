@@ -1,4 +1,4 @@
-import slash from "slash";
+import slash from 'slash'
 
 /**
  * FIXME
@@ -9,9 +9,9 @@ import slash from "slash";
  * `TypeError: path__WEBPACK_IMPORTED_MODULE_1__.join is undefined`
  */
 
-import { join } from "path";
+import { join } from 'path'
 
-export const absolutePathRegex = /^(?:[a-z]+:)?\/\//;
+export const absolutePathRegex = /^(?:[a-z]+:)?\/\//
 
 /**
  Matches:
@@ -22,14 +22,14 @@ export const absolutePathRegex = /^(?:[a-z]+:)?\/\//;
 
 export const isRelativePath = (str: string) => {
   if (absolutePathRegex.exec(str)) {
-    return false;
+    return false
   }
-  return true;
-};
+  return true
+}
 
 export const getFullRelativePath = (...paths: string[]) => {
   if (isRelativePath(paths[paths.length - 1])) {
-    return slash(join(...paths));
+    return slash(join(...paths))
   }
-  return paths[paths.length - 1];
-};
+  return paths[paths.length - 1]
+}

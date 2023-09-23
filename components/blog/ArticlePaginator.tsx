@@ -1,19 +1,22 @@
 import {
   ArrowNarrowLeftIcon,
   ArrowNarrowRightIcon,
-} from "@heroicons/react/solid";
-import { useContext } from "react";
-import { ArticleListContext } from "../../constants/article-list-context/article-list-context";
-import ReactPaginate from "react-paginate";
-import { ArticleSearchContext } from "../../constants/article-search-context/article-search-context";
-import { useRouter } from "next/router";
+} from '@heroicons/react/solid'
+import { useContext } from 'react'
+import {
+  useArticleListContext,
+  useArticleSearchContext,
+} from '../../constants/article-list-context/article-list-context'
+import ReactPaginate from 'react-paginate'
+import { ArticleSearchContext } from '../../constants/article-search-context/article-search-context'
+import { useRouter } from 'next/router'
 
 export default function ArticlePaginator() {
   const { numberOfPages, pageIndex, setCurrentPageIndex } =
-    useContext(ArticleListContext);
-  const { searchValue, filterValue } = useContext(ArticleSearchContext);
+    useArticleListContext()
+  const { searchValue, filterValue } = useArticleSearchContext()
 
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <>
@@ -32,31 +35,25 @@ export default function ArticlePaginator() {
         nextClassName="ml-auto -left-16 relative"
         nextLabel={
           <div className="-mt-px ml-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium"
-            >
+            <div className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium">
               Next
               <ArrowNarrowRightIcon
                 className="ml-3 h-5 w-5"
                 aria-hidden="true"
               />
-            </a>
+            </div>
           </div>
         }
         previousClassName="mr-auto"
         previousLabel={
           <div className="-mt-px mr-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium"
-            >
+            <div className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium">
               <ArrowNarrowLeftIcon
                 className="mr-3 h-5 w-5 text-gray-300"
                 aria-hidden="true"
               />
               Previous
-            </a>
+            </div>
           </div>
         }
         disabledClassName="text-gray-400"
@@ -69,64 +66,24 @@ export default function ArticlePaginator() {
         pageRangeDisplayed={7}
         hrefBuilder={(pageIndex) => {
           if (pageIndex === 1) {
-            return `${"/blog"}`;
+            return `${'/blog'}`
           }
-          return `/blog?page=${pageIndex}`;
+          return `/blog?page=${pageIndex}`
         }}
         onPageChange={({ selected }) => {
           if (filterValue.length || searchValue) {
-            setCurrentPageIndex(selected);
-            return;
+            setCurrentPageIndex(selected)
+            return
           }
 
           /*
            * ReactPaginate 0 indexes pages while we
            * index pages at 1 for `currentPageIndex`.
            * */
-          const newPageIndex = selected;
-          router.push(`blog?page=${newPageIndex + 1}`);
+          const newPageIndex = selected
+          router.push(`blog?page=${newPageIndex + 1}`)
         }}
       />
     </>
-  );
-
-  /*return (
-    <nav className="flex items-center justify-between px-4 sm:px-0">
-      <div className="-mt-px flex w-0 flex-1">
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          <ArrowNarrowLeftIcon
-            className="mr-3 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-          Previous
-        </a>
-      </div>
-        {[...Array(numberOfPages)].map((x: any, index: number) => (
-      <div className="md:-mt-px md:flex">
-          <a
-            href="#"
-            className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-          >
-            {index + 1}
-          </a>
-      </div>
-        ))}
-        {/!* Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" *!/}
-      <div className="-mt-px flex w-0 flex-1 justify-end">
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          Next
-          <ArrowNarrowRightIcon
-            className="ml-3 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </a>
-      </div>
-    </nav>
-  );*/
+  )
 }

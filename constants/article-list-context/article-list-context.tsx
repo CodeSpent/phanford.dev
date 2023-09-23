@@ -1,233 +1,253 @@
-import {
+import React, {
   createContext,
-  default as React,
+  useContext,
   useEffect,
   useMemo,
   useState,
-} from "react";
-
-import {
-  ArticleSearchContext,
-  useSearchFilterValue,
-} from "../article-search-context/article-search-context";
-
-import { ListViewArticles } from "../../utils/fs/api";
+} from 'react'
+import { useLunr } from '../../utils/useLunr'
+import { ListViewArticles } from '../../utils/fs/api'
 import {
   getCurrentListViewPageArticles,
   getInitialListViewPageArticles,
   getNumberOfPages,
   getSortedListViewArticles,
   useArticleTagsFromNodes,
-} from "../../utils/blog";
+} from '../../utils/blog'
+import { ComboBoxOption } from '../../components/common/Input'
+import { filter } from 'react-children-utilities'
+import { Article } from '../../contentlayer.config'
 
 export enum ArticleSortOptionValue {
-  TIME_ASCENDING = "time_asc",
-  TIME_DESCENDING = "time_desc",
-  DATE_ASCENDING = "date_asc",
-  DATE_DESCENDING = "date_desc",
-  RELEVANCE = "relevance",
+  TIME_ASCENDING = 'time_asc',
+  TIME_DESCENDING = 'time_desc',
+  DATE_ASCENDING = 'date_asc',
+  DATE_DESCENDING = 'date_desc',
+  RELEVANCE = 'relevance',
 }
 
 export type ArticleSortOption = {
-  name: string;
-  value: ArticleSortOptionValue;
-};
-
-export const sortOptions: ArticleSortOption[] = [
-  { name: "Relevance", value: ArticleSortOptionValue.RELEVANCE },
-  { name: "Date ↑", value: ArticleSortOptionValue.DATE_ASCENDING },
-  { name: "Date ↓", value: ArticleSortOptionValue.DATE_DESCENDING },
-  { name: "Time to Read ↑", value: ArticleSortOptionValue.TIME_ASCENDING },
-  { name: "Time to Read ↓", value: ArticleSortOptionValue.TIME_DESCENDING },
-];
-
-export const articlesPerPageOptions = [6, 9, 18, 36];
-
-interface ArticleListContextProps {
-  pageIndex: number;
-  articles: ListViewArticles;
+  label: string
+  value: ArticleSortOptionValue
 }
 
-const initialArticleListContext = {
-  articlesToDisplay: [] as ListViewArticles,
-  pageCount: 0 as number,
-  pageIndex: 0 as number,
-  setCurrentPageIndex: (val: number) => {},
-  articleTags: [] as string[],
-  sortValue: sortOptions[2] as ArticleSortOption,
-  setSortValue: (value: {}) => {},
-  articlesPerPage: articlesPerPageOptions[1] as number,
-  setArticlesPerPage: (value: {}) => {},
-  numberOfPages: 0 as number,
-  setNumberOfPages: (value: {}) => {},
-};
+export const sortOptions: ArticleSortOption[] = [
+  { label: 'Relevance', value: ArticleSortOptionValue.RELEVANCE },
+  { label: 'Date ↑', value: ArticleSortOptionValue.DATE_ASCENDING },
+  { label: 'Date ↓', value: ArticleSortOptionValue.DATE_DESCENDING },
+  { label: 'Time to Read ↑', value: ArticleSortOptionValue.TIME_ASCENDING },
+  { label: 'Time to Read ↓', value: ArticleSortOptionValue.TIME_DESCENDING },
+]
 
-export const ArticleListContext = createContext(initialArticleListContext);
+export const paginationOptions: ComboBoxOption[] = [
+  { label: '6', value: '6' },
+  { label: '9', value: '9' },
+  { label: '18', value: '18' },
+  { label: '36', value: '36' },
+]
 
-export const ArticleListProvider: React.FC<ArticleListContextProps> = ({
+interface ArticleListContextProps {
+  pageIndex: number
+  articles: ListViewArticles
+}
+
+interface ArticleSearchContextValue {
+  searchValue: string
+  setSearchValue: (value: string) => void
+  filterValue: string[]
+  setFilterValue: (value: string[]) => void
+  lunrResultSlugs: string[]
+}
+
+const ArticleSearchContext = createContext<
+  ArticleSearchContextValue | undefined
+>(undefined)
+
+export const useArticleSearchContext = () => {
+  const context = useContext(ArticleSearchContext)
+  if (!context) {
+    throw new Error(
+      'useArticleSearchContext must be used within an ArticleSearchContextProvider'
+    )
+  }
+  return context
+}
+
+export const ArticleSearchContextProvider: React.FC = ({ children }) => {
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [filterValue, setFilterValue] = useState<string[]>([])
+
+  const { searchUsingLunr: filterUsingLunr, results: lunrFilterIds } = useLunr()
+  const { searchUsingLunr, results: lunrSearchIds } = useLunr()
+
+  useEffect(() => {
+    if (!filterValue || !filterValue.length) {
+      filterUsingLunr('')
+    } else {
+      filterUsingLunr(`tags: ${filterValue.join(' ')}`)
+    }
+  }, [filterValue, setFilterValue])
+
+  useEffect(() => {
+    searchUsingLunr(searchValue)
+  }, [searchValue])
+
+  const lunrResultSlugs = useMemo(() => {
+    if (lunrFilterIds && lunrSearchIds) {
+      const lunrFilterSlugs = lunrFilterIds.map((articleRef) => articleRef.slug)
+      const lunrSearchSlugs = lunrSearchIds.map((articleRef) => articleRef.slug)
+
+      return lunrFilterSlugs.filter((filterSlug) =>
+        lunrSearchSlugs.includes(filterSlug)
+      )
+    }
+
+    if (lunrFilterIds) return lunrFilterIds.map((articleRef) => articleRef.slug)
+    if (lunrSearchIds) return lunrSearchIds.map((articleRef) => articleRef.slug)
+
+    return []
+  }, [lunrFilterIds, lunrSearchIds])
+
+  const articleSearchContextValue = useMemo(
+    () => ({
+      searchValue,
+      setSearchValue,
+      filterValue,
+      setFilterValue,
+      lunrResultSlugs,
+    }),
+    [searchValue, setSearchValue, filterValue, setFilterValue, lunrResultSlugs]
+  )
+
+  return (
+    <ArticleSearchContext.Provider value={articleSearchContextValue}>
+      {children}
+    </ArticleSearchContext.Provider>
+  )
+}
+
+const ArticleListContext = createContext<ArticleListContextValue | undefined>(
+  undefined
+)
+
+export const useArticleListContext = () => {
+  const context = useContext(ArticleListContext)
+  if (!context) {
+    throw new Error(
+      'useArticleListContext must be used within an ArticleListContextProvider'
+    )
+  }
+  return context
+}
+
+interface ArticleListContextValue {
+  articlesToDisplay: ListViewArticles
+  pageCount: number
+  pageIndex: number
+  setCurrentPageIndex: (val: number) => void
+  articleTags: string[]
+  sortValue: ArticleSortOption
+  setSortValue: (value: ArticleSortOption) => void
+  articlesPerPage: number
+  setArticlesPerPage: (value: number) => void
+  numberOfPages: number
+  searchResultsContextValue: ArticleSearchContextValue
+}
+
+export const ArticleListContextProvider: React.FC<ArticleListContextProps> = ({
   children,
   pageIndex: originalPageIndex,
   articles,
 }) => {
-  const searchContextValue = useSearchFilterValue();
+  const articleSearchContextValue = useArticleSearchContext()
+  const { searchValue, filterValue, lunrResultSlugs } =
+    articleSearchContextValue
 
-  const [sortValue, setSortValue] = useState(sortOptions[2]);
+  const [sortValue, setSortValue] = useState<ArticleSortOption>(sortOptions[2])
+  const [currentPageIndex, setCurrentPageIndex] =
+    useState<number>(originalPageIndex)
+  const [articlesPerPage, setArticlesPerPage] = useState<number>(9)
 
-  const [currentPageIndex, setCurrentPageIndex] = useState(originalPageIndex);
-  const [articlesPerPage, setArticlesPerPage] = useState(9);
+  const currentSkipNumber = currentPageIndex * articlesPerPage
 
-  const currentSkipNumber = currentPageIndex * articlesPerPage;
-
-  const [filteredArticles, setFilteredArticles] = useState([]);
-  const [sortedArticles, setSortedArticles] = useState([]);
-  const [articlesToDisplay, setArticlesToDisplay] = useState(
-    getInitialListViewPageArticles(articles, originalPageIndex, articlesPerPage)
-  );
-
-  const [numberOfPages, setNumberOfPages] = useState(
-    getNumberOfPages(filteredArticles.length, articlesPerPage)
-  );
-
-  useEffect(() => {
-    /*
-     * Sort articles before any other filters are applied
-     * to ensure that we know the order of articles before
-     * we decide which articles to display per page.
-     *
-     * Default sort order: DATE_DESCENDING
-     * */
-
-    setSortedArticles(
-      getSortedListViewArticles(
-        articles,
-        sortValue,
-        searchContextValue.lunrResultSlugs
-      )
-    );
-
-    if (
-      !searchContextValue.searchValue &&
-      !searchContextValue.filterValue.length
-    ) {
-      setCurrentPageIndex(originalPageIndex || 0);
-      setFilteredArticles(sortedArticles);
-      setNumberOfPages(
-        getNumberOfPages(filteredArticles.length, articlesPerPage)
-      );
-
-      return;
-    }
-
-    setFilteredArticles(
-      sortedArticles.filter(({ slug }) =>
-        searchContextValue.lunrResultSlugs.includes(slug)
-      )
-    );
-
-    setCurrentPageIndex(0);
-    setNumberOfPages(
-      getNumberOfPages(filteredArticles.length, articlesPerPage)
-    );
-  }, [
-    searchContextValue.searchValue,
-    searchContextValue.filterValue,
+  const sortedArticles = getSortedListViewArticles(
     articles,
     sortValue,
-    sortedArticles,
-    filteredArticles,
-    originalPageIndex,
-    articlesPerPage,
-    numberOfPages,
-    setNumberOfPages,
-  ]);
+    lunrResultSlugs
+  )
+  const filteredArticles = sortedArticles.filter(({ slug }) => {
+    // @ts-ignore
+    return lunrResultSlugs.includes(slug.substring(1))
+  })
 
-  useEffect(() => {
-    setArticlesToDisplay(
-      getCurrentListViewPageArticles(
-        filteredArticles,
-        originalPageIndex,
-        articlesPerPage
-      )
-    );
-  }, [
-    currentPageIndex,
-    currentSkipNumber,
-    filteredArticles,
-    articlesPerPage,
-    sortValue,
-    sortedArticles,
-    searchContextValue.lunrResultSlugs,
-    numberOfPages,
-    setNumberOfPages,
-  ]);
+  let articlesToDisplay = []
 
-  const { pageCount, pageIndex } = useMemo(() => {
-    if (
-      !searchContextValue.searchValue &&
-      !searchContextValue.filterValue.length
-    )
-      return {
-        pageCount: numberOfPages,
-        pageIndex: originalPageIndex,
-      };
-    return {
-      pageCount: Math.ceil(filteredArticles.length / 10),
-      pageIndex: currentPageIndex,
-    };
-  }, [
-    searchContextValue.searchValue,
-    searchContextValue.filterValue,
-    searchContextValue.lunrResultSlugs,
-    numberOfPages,
-    setNumberOfPages,
-    filteredArticles,
-    articlesPerPage,
-    currentPageIndex,
-    originalPageIndex,
-    sortValue,
-    sortedArticles,
-    articlesPerPage,
-  ]);
-
-  /*
-   * TODO: Fix type error that doesn't affect functionality.
-   *
-   * Relates to use of PickDeepObj<Article, DeepPartial> in
-   * `fs/api.ts` (subject to move during refactors).
-   *
-   * Full error below.
-   *
-   * ```
-   * TS2345: Argument of type 'PickDeepObj<Article, DeepPartial<DeepReplaceKeysPartialObj<Article, any>>, any>[]'
-   * is not assignable to parameter of type '{ tags: string[]; }[]'.   Property 'tags' is missing in type
-   * 'PickDeepObj<Article, DeepPartial<DeepReplaceKeysPartialObj<Article, any>>, any>' but required in type
-   * '{ tags: string[]; }'.
-   * ```
-   *
-   *
-   * */
   // @ts-ignore
-  const articleTags = useArticleTagsFromNodes(articles) as string[];
+  if (!searchValue == '' || !filterValue.length == 0) {
+    articlesToDisplay = getCurrentListViewPageArticles(
+      filteredArticles,
+      originalPageIndex,
+      articlesPerPage
+    )
+  } else {
+    articlesToDisplay = getCurrentListViewPageArticles(
+      sortedArticles,
+      originalPageIndex,
+      articlesPerPage
+    )
+  }
 
-  const contextValue = {
-    pageCount,
-    pageIndex,
-    articlesToDisplay,
-    setCurrentPageIndex,
-    articleTags,
-    sortValue,
-    setSortValue,
-    articlesPerPage,
-    setArticlesPerPage,
-    numberOfPages,
-    setNumberOfPages,
-  };
+  const numberOfPages = getNumberOfPages(
+    filteredArticles.length,
+    articlesPerPage
+  )
+
+  // @ts-ignore
+  const articleTags = useArticleTagsFromNodes(articles) as string[]
+
+  const articleListContextValue: ArticleListContextValue = useMemo(
+    () => ({
+      articlesToDisplay,
+      pageCount: Math.ceil(filteredArticles.length / articlesPerPage),
+      pageIndex: currentPageIndex,
+      setCurrentPageIndex,
+      articleTags,
+      sortValue,
+      setSortValue,
+      articlesPerPage,
+      setArticlesPerPage,
+      numberOfPages,
+      searchResultsContextValue: articleSearchContextValue,
+    }),
+    [
+      articlesToDisplay,
+      filteredArticles,
+      currentPageIndex,
+      articleTags,
+      sortValue,
+      articlesPerPage,
+      numberOfPages,
+      articleSearchContextValue,
+    ]
+  )
 
   return (
-    <ArticleListContext.Provider value={contextValue}>
-      <ArticleSearchContext.Provider value={searchContextValue}>
-        {children}
-      </ArticleSearchContext.Provider>
+    <ArticleListContext.Provider value={articleListContextValue}>
+      {children}
     </ArticleListContext.Provider>
-  );
-};
+  )
+}
+
+export const ArticleContextProvider: React.FC<ArticleListContextProps> = ({
+  children,
+  pageIndex,
+  articles,
+}) => {
+  return (
+    <ArticleSearchContextProvider>
+      <ArticleListContextProvider pageIndex={pageIndex} articles={articles}>
+        {children}
+      </ArticleListContextProvider>
+    </ArticleSearchContextProvider>
+  )
+}

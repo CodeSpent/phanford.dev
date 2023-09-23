@@ -1,28 +1,28 @@
-import { XIcon } from "@heroicons/react/outline";
+import { XIcon } from '@heroicons/react/outline'
 
 type Props = {
-  shortMessage: string;
-  longMessage: string;
-  linkText?: string;
-  linkHref?: string;
+  shortMessage: string
+  longMessage: string
+  linkText?: string
+  linkHref?: string
   /* TODO: `color` could be validated with PropTypes. */
-  color?: string;
-  announcementDate: string;
-  onClose: () => void;
-};
+  color?: string
+  announcementDate: string
+  onClose: () => void
+}
 
 const getBackgroundColorClassName = (color: string): string => {
   switch (color) {
-    case "danger":
-      return "bg-red-500";
-    case "warning":
-      return "bg-orange-500";
-    case "positive":
-      return "bg-green-500";
+    case 'danger':
+      return 'bg-red-500'
+    case 'warning':
+      return 'bg-red-700'
+    case 'positive':
+      return 'bg-green-500'
     default:
-      return "bg-gray-500";
+      return 'bg-gray-500'
   }
-};
+}
 
 export default function AnnouncementBanner({
   color,
@@ -34,21 +34,31 @@ export default function AnnouncementBanner({
   onClose,
 }: Props) {
   return (
-    <div className={"w-full " + getBackgroundColorClassName(color)}>
+    <div className={'w-full shadow-xl ' + getBackgroundColorClassName(color)}>
       <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
         <div className="pr-16 sm:px-16 sm:text-center">
+          <div className="flexi items-center">
+            <p className="font-medium text-gray-200">
+              <span className="md:hidden">{shortMessage}</span>
+              <span className="hidden md:inline">{longMessage}</span>
+            </p>
+          </div>
+
           <p className="font-medium text-white">
-            <span className="md:hidden">{shortMessage}</span>
-            <span className="hidden md:inline">{longMessage}</span>
             <span className="block sm:ml-2 sm:inline-block">
-              <a href={linkHref} className="font-bold text-white underline">
-                {" "}
-                {linkText} <span aria-hidden="true">&rarr;</span>
+              <a
+                href={linkHref}
+                className="text-white hover:underline hover:font-bold duration-200"
+              >
+                {linkText}
+                <span className="ml-2" aria-hidden="true">
+                  &rarr;
+                </span>
               </a>
             </span>
           </p>
 
-          <p className="mt-1 text-xs font-medium text-gray-300 sm:text-center">
+          <p className="mt-1 hidden text-xs font-medium text-gray-300 sm:text-center">
             Announced: {announcementDate}
           </p>
         </div>
@@ -65,5 +75,5 @@ export default function AnnouncementBanner({
         </div>
       </div>
     </div>
-  );
+  )
 }

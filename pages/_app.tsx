@@ -1,23 +1,23 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { AppProps } from "next/app";
-import Particles from "react-tsparticles";
-import { Transition } from "@headlessui/react";
-import "../styles/index.css";
-import "../global.scss";
-import AnnouncementBanner from "../components/AnnouncementBanner";
+import React, { Fragment, useEffect, useState } from 'react'
+import { AppProps } from 'next/app'
+import Particles from 'react-tsparticles'
+import { Transition } from '@headlessui/react'
+import '../styles/index.css'
+import '../global.scss'
+import AnnouncementBanner from '../components/AnnouncementBanner'
 
 function AppComponent({ Component, pageProps }: AppProps) {
-  const [announcementVisible, setAnnouncementVisible] = useState(false);
+  const [announcementVisible, setAnnouncementVisible] = useState(false)
 
   const closeAnnouncementBanner = () => {
-    setAnnouncementVisible(false);
-  };
+    setAnnouncementVisible(false)
+  }
 
   useEffect(() => {
     setTimeout(() => {
-      setAnnouncementVisible(true);
-    }, 1500);
-  }, [setAnnouncementVisible]);
+      setAnnouncementVisible(true)
+    }, 1500)
+  }, [setAnnouncementVisible])
 
   return (
     <Fragment>
@@ -29,11 +29,11 @@ function AppComponent({ Component, pageProps }: AppProps) {
             events: {
               onClick: {
                 enable: false,
-                mode: "push",
+                mode: 'push',
               },
               onHover: {
                 enable: false,
-                mode: "repulse",
+                mode: 'repulse',
               },
               resize: true,
             },
@@ -55,10 +55,10 @@ function AppComponent({ Component, pageProps }: AppProps) {
           },
           particles: {
             color: {
-              value: "#ffffff",
+              value: '#ffffff',
             },
             links: {
-              color: "#ffffff",
+              color: '#ffffff',
               distance: 150,
               enable: true,
               opacity: 0.5,
@@ -68,11 +68,11 @@ function AppComponent({ Component, pageProps }: AppProps) {
               enable: true,
             },
             move: {
-              direction: "none",
+              direction: 'none',
               enable: true,
-              outMode: "bounce",
+              outMode: 'bounce',
               random: false,
-              speed: 1,
+              speed: 0.5,
               straight: false,
             },
             number: {
@@ -86,7 +86,7 @@ function AppComponent({ Component, pageProps }: AppProps) {
               value: 0.5,
             },
             shape: {
-              type: "circle",
+              type: 'circle',
             },
             size: {
               random: false,
@@ -100,18 +100,18 @@ function AppComponent({ Component, pageProps }: AppProps) {
         as="div"
         show={announcementVisible}
         enter="transition ease-out duration-500"
-        enterFrom="transform opacity-0 top-0"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
+        enterFrom="transform opacity-0 bottom-0"
+        enterTo="transform opacity-100 scale-100 bottom-0"
+        leave="transition ease-in duration-200"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
-        className="fixed z-50 w-full"
+        className="fixed bottom-0 z-50 w-full opacity-80 hover:opacity-100 duration-200"
       >
         <AnnouncementBanner
           color="warning"
           shortMessage="Site incomplete! Bugs ahead."
-          longMessage="You're early! I'm still actively building this site. Bugs ahead."
-          linkText="Report an issue"
+          longMessage="Woah, you're early. I'm still actively building this site, expect bugs."
+          linkText="Report any Bugs or Suggestions on GitHub."
           linkHref="https://github.com/CodeSpent/phanford.dev/issues"
           announcementDate="Aug 21, 2020 at 11:52 am (EST)"
           onClose={closeAnnouncementBanner}
@@ -119,7 +119,7 @@ function AppComponent({ Component, pageProps }: AppProps) {
       </Transition>
       <Component {...pageProps} />
     </Fragment>
-  );
+  )
 }
 
-export default AppComponent;
+export default AppComponent

@@ -1,10 +1,10 @@
 import {
   ArticleSortOption,
   ArticleSortOptionValue,
-} from "../../constants/article-list-context/article-list-context";
-import { Article, ListViewArticles } from "../fs/api";
-import { ArticleInfo } from "../../types/ArticleInfo";
-import { useMemo } from "react";
+} from '../../constants/article-list-context/article-list-context'
+import { Article, ListViewArticles } from '../fs/api'
+import { ArticleInfo } from '../../types/ArticleInfo'
+import { useMemo } from 'react'
 
 export const getSortedListViewArticles = (
   articlesToSort: ListViewArticles,
@@ -34,16 +34,16 @@ export const getSortedListViewArticles = (
        * */
 
       if (!searchResults) {
-        return articlesToSort;
+        return articlesToSort
       }
 
-      const sortedArticles = [];
+      const sortedArticles = []
 
       articlesToSort.forEach((article) => {
-        sortedArticles.splice(searchResults.indexOf(article.slug), 0, article);
-      });
+        sortedArticles.splice(searchResults.indexOf(article.slug), 0, article)
+      })
 
-      return sortedArticles;
+      return sortedArticles
 
     case ArticleSortOptionValue.DATE_DESCENDING:
       /* Date Descending
@@ -52,10 +52,8 @@ export const getSortedListViewArticles = (
        * the `published: string` date in descending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return (
-          new Date(b.published).valueOf() - new Date(a.published).valueOf()
-        );
-      });
+        return new Date(b.published).valueOf() - new Date(a.published).valueOf()
+      })
 
     case ArticleSortOptionValue.DATE_ASCENDING:
       /* Date Ascending
@@ -64,10 +62,8 @@ export const getSortedListViewArticles = (
        * the `published: string` date in ascending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return (
-          new Date(a.published).valueOf() - new Date(b.published).valueOf()
-        );
-      });
+        return new Date(a.published).valueOf() - new Date(b.published).valueOf()
+      })
 
     case ArticleSortOptionValue.TIME_DESCENDING:
       /* Time Descending
@@ -76,8 +72,8 @@ export const getSortedListViewArticles = (
        * the `minutesToRead: number` in descending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return b.minutesToRead - a.minutesToRead;
-      });
+        return b.minutesToRead - a.minutesToRead
+      })
 
     case ArticleSortOptionValue.TIME_ASCENDING:
       /* Time Ascending
@@ -86,48 +82,47 @@ export const getSortedListViewArticles = (
        * the `minutesToRead: number` in ascending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return a.minutesToRead - b.minutesToRead;
-      });
+        return a.minutesToRead - b.minutesToRead
+      })
 
     default:
       /* Default
        *
        * Return the array unsorted.
        * */
-      return articlesToSort;
+      return articlesToSort
   }
-};
+}
 
 export const getInitialListViewPageArticles = (
   articles: ListViewArticles,
   originalPageIndex: number,
   articlesPerPage: number
 ): ListViewArticles =>
-  articles.slice(originalPageIndex * articlesPerPage, articlesPerPage);
+  articles.slice(originalPageIndex * articlesPerPage, articlesPerPage)
 
 export const getCurrentListViewPageArticles = (
   articles: ListViewArticles,
   originalPageIndex: number,
   articlesPerPage: number
 ): ListViewArticles =>
-  articles.slice(originalPageIndex * articlesPerPage, articlesPerPage);
+  articles.slice(originalPageIndex * articlesPerPage, articlesPerPage)
 
-export const useArticleTagsFromNodes = <T extends { tags: Article["tags"] }>(
+export const useArticleTagsFromNodes = <T extends { tags: Article['tags'] }>(
   articles: T[]
 ) => {
   const articleTags = useMemo(() => {
     return Array.from(
       articles.reduce((previousValue, article) => {
-        article.tags.forEach((tag) => previousValue.add(tag));
-        return previousValue;
+        article.tags.forEach((tag) => previousValue.add(tag))
+        return previousValue
       }, new Set())
-    );
-  }, [articles]);
-
-  return articleTags.sort();
-};
+    )
+  }, [articles])
+  return articleTags
+}
 
 export const getNumberOfPages = (
   articlesArrayLength: number,
   articlesPerPage: number
-) => Math.ceil(articlesArrayLength / articlesPerPage);
+) => Math.ceil(articlesArrayLength / articlesPerPage)
