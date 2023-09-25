@@ -1,4 +1,4 @@
-import Layout from '../../components/DefaultLayout'
+import Layout from '../../layouts/DefaultLayout'
 import Link from 'next/link'
 import {
   ArticleQuery,
