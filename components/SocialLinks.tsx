@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
 import { faDev, faGithub, faLinkedinIn, faTwitch } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const socials = [
   {
@@ -12,6 +13,11 @@ const socials = [
     name: 'LinkedIn',
     href: 'https://linkedin.com/in/phanford/',
     icon: (props) => <FontAwesomeIcon icon={faLinkedinIn} {...props} />,
+  },
+  {
+    name: 'Email',
+    href: 'mailto:patrick@phanford.dev',
+    icon: (props) => <FontAwesomeIcon icon={faEnvelope} {...props} />,
   },
   {
     name: 'Dev.To',
