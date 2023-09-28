@@ -4,7 +4,7 @@ import { ChevronDownIcon } from '@heroicons/react/solid'
 import { getTopArticles } from '../utils/fs/api'
 import { Fragment } from 'react'
 
-const IndexPage = ({ recentArticles }) => (
+const IndexPage = () => (
   <VerticalNavigationLayout title="Patrick Hanford | Web, Software, Mobile, DevOps">
     <Fragment>
       <HeroComponent />
