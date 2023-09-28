@@ -63,7 +63,8 @@
     "strip-markdown": "^5.0.0",
     "unified": "^10.1.1",
     "unist-util-flat-filter": "^2.0.0",
-    "unist-util-replace-all-between": "^0.1.1"
+    "unist-util-replace-all-between": "^0.1.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^4.1.3",
