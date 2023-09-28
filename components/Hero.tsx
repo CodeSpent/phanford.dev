@@ -1,5 +1,6 @@
-import { Fragment, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
+import { v4 as uuidv4 } from 'uuid'
 
 const taglines = [
   'Software',
@@ -17,18 +18,129 @@ const taglines = [
   'Interfaces',
   'Cross-platform apps',
   'Infrastructure',
-
-  // Landing tagline remains as last element
   'Solutions',
 ]
 
-const getRandomLineWidth = (min, max) => {
-  return `w-${Math.floor(Math.random() * (max - min + 1) + min)}`
+const barWidths: string[] = [
+  'w-48',
+  'w-24',
+  'w-36',
+  'w-12',
+  'w-32',
+  'w-20',
+  'w-16',
+  'w-40',
+  'w-28',
+  'w-8',
+]
+
+const barColors: string[] = [
+  'from-blue-500 to-blue-600',
+  'from-red-500 to-red-600',
+  'from-green-500 to-green-600',
+  'from-yellow-500 to-yellow-600',
+  'from-pink-500 to-pink-600',
+  'from-purple-500 to-purple-600',
+  'from-indigo-500 to-indigo-600',
+  'from-orange-500 to-orange-600',
+  'from-gray-500 to-gray-600',
+  'from-blue-400 to-blue-500',
+  'from-red-400 to-red-500',
+  'from-green-400 to-green-500',
+  'from-yellow-400 to-yellow-500',
+  'from-pink-400 to-pink-500',
+  'from-purple-400 to-purple-500',
+  'from-indigo-400 to-indigo-500',
+  'from-orange-400 to-orange-500',
+  'from-gray-400 to-gray-500',
+  'from-blue-300 to-blue-400',
+  'from-red-300 to-red-400',
+]
+
+const widths = [
+  'w-8',
+  'w-10',
+  'w-12',
+  'w-16',
+  'w-20',
+  'w-24',
+  'w-28',
+  'w-32',
+  'w-36',
+  'w-40',
+  'w-42',
+  'w-46',
+  'w-48',
+  'w-50',
+  'w-54',
+]
+
+const colors = [
+  'from-blue-500 to-blue-500',
+  'from-orange-500 to-orange-500',
+  'from-pink-500 to-red-500',
+  'from-green-500 to-green-600',
+  'from-yellow-400 to-yellow-500',
+  'from-red-400 to-red-500',
+  'from-purple-400 to-purple-500',
+  'from-blue-400 to-blue-500',
+  'from-orange-400 to-orange-500',
+  'from-gray-500 to-gray-600',
+  'from-indigo-400 to-indigo-500',
+  'from-red-500 to-red-600',
+  'from-yellow-500 to-yellow-600',
+  'from-green-400 to-green-500',
+  'from-blue-400 to-blue-500',
+  'from-indigo-500 to-indigo-600',
+  'from-gray-400 to-gray-500',
+  'from-pink-400 to-pink-500',
+  'from-blue-600 to-blue-700',
+  'from-orange-600 to-orange-700',
+  'from-yellow-500 to-yellow-600',
+  'from-red-500 to-red-600',
+  'from-blue-500 to-blue-600',
+  'from-orange-500 to-orange-600',
+  'from-gray-600 to-gray-700',
+  'from-indigo-500 to-indigo-600',
+  'from-red-600 to-red-700',
+]
+
+const generateRandomBars = (count) => {
+  const bars = []
+  for (let i = 0; i < count; i++) {
+    const randomWidth = widths[Math.floor(Math.random() * widths.length)]
+    const randomColor = colors[Math.floor(Math.random() * colors.length)]
+    bars.push({ id: uuidv4(), width: randomWidth, colors: randomColor })
+  }
+  return bars
 }
+
+const barsData = generateRandomBars(28).map((bar) => ({ id: uuidv4(), ...bar }))
 
 const HeroComponent = () => {
   const [tagline, setTagline] = useState('Solutions')
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [bars, setBars] = useState(barsData)
+  const [rows, setRows] = useState([])
+
+  const itemsPerRow = 4
+
+  useEffect(() => {
+    const newRows = Array.from({ length: Math.ceil((24 + 1) / 4) }).map(
+      () => 2 + Math.floor(Math.random() * 3)
+    )
+    setRows(newRows)
+
+    const shiftInterval = setInterval(() => {
+      setBars((prevBars) => {
+        const shiftAmount = itemsPerRow
+        const shifted = prevBars.slice(0, shiftAmount)
+        return [...prevBars.slice(shiftAmount), ...shifted]
+      })
+    }, 900)
+
+    return () => clearInterval(shiftInterval)
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,105 +151,78 @@ const HeroComponent = () => {
     return () => clearInterval(interval)
   }, [currentIndex])
 
+  const renderBars = (startIndex, endIndex) => (
+    <div className="mb-1 flex flex-col gap-4">
+      {Array.from({ length: Math.ceil((endIndex - startIndex + 1) / 4) }).map(
+        (_, rowIndex) => {
+          const barsInRow = 2 + Math.floor(Math.random() * 3) // Generates a random number between 2 and 4.
+          const rowStart = startIndex + rowIndex * barsInRow
+          let rowEnd = rowStart + barsInRow
+
+          if (rowEnd > endIndex) {
+            rowEnd = endIndex
+          }
+
+          return (
+            <div key={rowIndex} className="flex flex-row gap-3">
+              {bars.slice(rowStart, rowEnd).map((section) => {
+                return (
+                  <Transition
+                    key={section.id}
+                    show={true}
+                    appear={true}
+                    enter="transition-all transform ease-in-out duration-500 opacity-0 translate-y-4"
+                    enterFrom="opacity-0 translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    className={`${section.width} rounded h-4 overflow-hidden`}
+                  >
+                    <div
+                      className={`bg-gradient-to-r ${section.colors} w-full h-full`}
+                    />
+                  </Transition>
+                )
+              })}
+            </div>
+          )
+        }
+      )}
+    </div>
+  )
+
   return (
-    <div className="flex h-screen flex-col justify-center p-4 leading-6 tracking-widest">
-      <div className="min-h-max" style={{ minHeight: '200px' }}>
-        <div className="my-10 flex flex-col gap-3">
-          <div className="flex h-4 gap-3">
-            <div
-              className={`w-48 rounded bg-gradient-to-l from-blue-500`}
-            ></div>
+    <div className="flex flex-col h-screen lg:justify-center p-4 leading-6 tracking-widest">
+      <div className="min-h-max" style={{ minHeight: '300px' }}>
+        <div className="my-10">
+          <div className="h-24">{renderBars(0, 12)}</div>
 
-            <div
-              className={
-                'w-48 rounded bg-gradient-to-r from-orange-500 to-orange-500'
-              }
-            ></div>
-
-            <div className="w-4 rounded bg-gradient-to-r from-pink-500 to-red-500 "></div>
+          <div className="lg:ml-0 lg:pl-4 my-8 flex items-center">
+            <div className="pl-4">
+              <div className="flex h-4 gap-3">
+                <span className="-mt-1.5 text-lg font-semibold italic text-gray-300">
+                  Hi, my name is
+                </span>
+              </div>
+              <h1 className="text-6xl text-white lg:text-8xl">
+                Patrick Hanford
+              </h1>
+              <Transition
+                enter="transition-opacity duration-75"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-opacity duration-150"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+                show
+              >
+                <h2 className="text-4xl font-thin italic text-gray-300 lg:text-6xl">
+                  I build <span className="font-semibold">{tagline}</span>
+                  <span className="font-semibold italic text-white">.</span>
+                </h2>
+              </Transition>
+            </div>
           </div>
 
-          <div className="flex h-4 gap-3">
-            <div className="transparent w-14"></div>
-            <div className="w-12 rounded bg-gradient-to-r from-blue-400 to-blue-500"></div>
-            <div className="w-36 rounded bg-gradient-to-r from-green-400 to-green-500"></div>
-          </div>
-
-          <div className="flex h-4 gap-3">
-            <div className="transparent w-24"></div>
-            <div className="w-12 rounded bg-gradient-to-r from-green-400 to-green-500"></div>
-            <div className="transparent w-4"></div>
-
-            <div className="w-12 rounded bg-gradient-to-r from-pink-500 to-red-500"></div>
-            <div className="w-72 rounded bg-gradient-to-r from-yellow-500 to-orange-500"></div>
-            <div className="w-36 rounded bg-gradient-to-r from-green-400 to-green-500"></div>
-          </div>
-        </div>
-
-        <div className="ml-16">
-          <div className="flex h-4 gap-3">
-            <span className="-mt-1.5 text-lg font-semibold italic text-gray-300">
-              Hi, my name is
-            </span>
-            <div className="transparent w-36"></div>
-            <div className="w-24 rounded bg-gradient-to-r from-green-500 to-green-500"></div>
-            <div className="w-4 rounded bg-gradient-to-r from-red-500 to-red-500"></div>
-          </div>
-
-          <h1 className="text-6xl text-white lg:text-8xl">Patrick Hanford</h1>
-          <Transition
-            enter-active-class="transition-opacity duration-75"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="transition-opacity duration-150"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-            show={true}
-          >
-            <h2 className="text-4xl font-thin italic text-gray-300 lg:text-6xl">
-              I build <span className="font-semibold">{tagline}</span>
-              <span className="font-semibold italic text-white">.</span>
-            </h2>
-          </Transition>
-        </div>
-
-        <div className="my-10 flex flex-col gap-3">
-          <div className="flex h-4 gap-3">
-            <div className="w-24 rounded bg-gradient-to-l from-blue-500"></div>
-            <div className="w-12 rounded bg-gradient-to-r from-yellow-500 to-orange-500"></div>
-            <div className="transparent w-36"></div>
-            <div className="w-36 rounded bg-gradient-to-r from-green-400 to-green-500"></div>
-          </div>
-
-          <div className="flex h-4 gap-3">
-            <div className="transparent w-14"></div>
-            <div className="w-36 rounded bg-gradient-to-r from-blue-400 to-blue-600"></div>
-            <div className="w-12 rounded bg-gradient-to-r from-pink-500 to-red-500"></div>
-            <div className="w-48 rounded bg-gradient-to-r from-yellow-500 to-orange-600"></div>
-          </div>
-          <div className="flex h-4 gap-3">
-            <div className="transparent w-14"></div>
-            <div className="w-12 rounded bg-gradient-to-r from-pink-500 to-red-500"></div>
-            <div className="w-24 rounded bg-gradient-to-r from-blue-400 to-blue-600"></div>
-            <div className="w-48 rounded bg-gradient-to-r from-yellow-500 to-orange-600"></div>
-          </div>
-
-          <div className="flex h-4 gap-3"></div>
-
-          <div className="flex h-4 gap-3">
-            <div className="w-12 rounded bg-gradient-to-l from-orange-600"></div>
-            <div className="w-36 rounded bg-gradient-to-r from-green-400 to-green-600"></div>
-            <div className="w-4 rounded bg-gradient-to-r from-blue-400 to-blue-500"></div>
-            <div className="w-24 rounded bg-gradient-to-r from-purple-500 to-red-500"></div>
-          </div>
-
-          <div className="flex h-4 gap-3">
-            <div className="transparent w-14"></div>
-            <div className="w-12 rounded bg-gradient-to-r from-yellow-400 to-yellow-500"></div>
-            <div className="w-4 rounded bg-gradient-to-r from-green-500 to-green-500"></div>
-            <div className="w-72 rounded bg-gradient-to-r from-red-500 to-purple-500"></div>
-            <div className="w-24 rounded bg-gradient-to-r from-blue-500 to-blue-600"></div>
-          </div>
+          <div className="h-24">{renderBars(12, 24)}</div>
         </div>
       </div>
     </div>
