@@ -2,62 +2,30 @@ import { useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { v4 as uuidv4 } from 'uuid'
 
-const taglines = [
-  'Software',
-  'Web Applications',
-  'Websites',
-  'Native Apps',
-  'REST APIs',
-  'Automation Tools',
-  'Battle Roombas',
-  'Schemas',
-  'GraphQL APIs',
-  'CI/CD Pipelines',
-  'Clusters',
-  'Aggregators',
-  'Interfaces',
-  'Cross-platform apps',
-  'Infrastructure',
-  'Solutions',
-]
+const taglines: { adverb: string, name: string }[] = [
+  { adverb: 'develop', name: 'Software' },
+  { adverb: 'build', name: 'Web Applications' },
+  { adverb: 'build', name: 'Websites' },
+  { adverb: 'create', name: 'Connected Experiences' },
+  { adverb: 'build', name: 'Native Mobile Apps' },
+  { adverb: 'design', name: 'REST APIs' },
+  { adverb: 'build', name: 'Automation Tools' },
+  { adverb: 'break', name: 'Security Systems' },
+  { adverb: 'build', name: 'IoT Devices' },
+  { adverb: 'build', name: 'Battle Roombas' },
+  { adverb: 'design', name: 'Schemas' },
+  { adverb: 'design', name: 'GraphQL APIs' },
+  { adverb: 'design', name: 'CI/CD Pipelines' },
+  { adverb: 'design', name: 'Unreal Engine UIs' },
+  { adverb: 'design', name: 'Infrastructure' },
+  { adverb: 'code', name: 'Infrastructure' },
+  { adverb: 'maintain', name: 'Infrastructure' },
+  { adverb: 'build', name: 'Solutions' },
+  { adverb: 'write', name: 'Code' },
+];
 
-const barWidths: string[] = [
-  'w-48',
-  'w-24',
-  'w-36',
-  'w-12',
-  'w-32',
-  'w-20',
-  'w-16',
-  'w-40',
-  'w-28',
-  'w-8',
-]
 
-const barColors: string[] = [
-  'from-blue-500 to-blue-600',
-  'from-red-500 to-red-600',
-  'from-green-500 to-green-600',
-  'from-yellow-500 to-yellow-600',
-  'from-pink-500 to-pink-600',
-  'from-purple-500 to-purple-600',
-  'from-indigo-500 to-indigo-600',
-  'from-orange-500 to-orange-600',
-  'from-gray-500 to-gray-600',
-  'from-blue-400 to-blue-500',
-  'from-red-400 to-red-500',
-  'from-green-400 to-green-500',
-  'from-yellow-400 to-yellow-500',
-  'from-pink-400 to-pink-500',
-  'from-purple-400 to-purple-500',
-  'from-indigo-400 to-indigo-500',
-  'from-orange-400 to-orange-500',
-  'from-gray-400 to-gray-500',
-  'from-blue-300 to-blue-400',
-  'from-red-300 to-red-400',
-]
-
-const widths = [
+const widths: string[] = [
   'w-8',
   'w-10',
   'w-12',
@@ -75,7 +43,7 @@ const widths = [
   'w-54',
 ]
 
-const colors = [
+const colors: string[] = [
   'from-blue-500 to-blue-500',
   'from-orange-500 to-orange-500',
   'from-pink-500 to-red-500',
@@ -105,7 +73,7 @@ const colors = [
   'from-red-600 to-red-700',
 ]
 
-const generateRandomBars = (count) => {
+const generateRandomBars = (count: number) => {
   const bars = []
   for (let i = 0; i < count; i++) {
     const randomWidth = widths[Math.floor(Math.random() * widths.length)]
@@ -115,13 +83,11 @@ const generateRandomBars = (count) => {
   return bars
 }
 
-const barsData = generateRandomBars(28).map((bar) => ({ id: uuidv4(), ...bar }))
-
 const HeroComponent = () => {
-  const [tagline, setTagline] = useState('Solutions')
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [bars, setBars] = useState(barsData)
-  const [rows, setRows] = useState([])
+  const [tagline, setTagline] = useState(taglines[0])
+  const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0)
+  const [bars, setBars] = useState([])
+  const [, setRows] = useState([])
 
   const itemsPerRow = 4
 
@@ -131,31 +97,33 @@ const HeroComponent = () => {
     )
     setRows(newRows)
 
+    setBars(generateRandomBars(28).map((bar) => ({ id: uuidv4(), ...bar })))
+
     const shiftInterval = setInterval(() => {
       setBars((prevBars) => {
         const shiftAmount = itemsPerRow
         const shifted = prevBars.slice(0, shiftAmount)
         return [...prevBars.slice(shiftAmount), ...shifted]
       })
-    }, 900)
+    }, 950)
 
     return () => clearInterval(shiftInterval)
   }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (currentIndex + 1 != taglines.length) setCurrentIndex(currentIndex + 1)
-      setTagline(taglines[currentIndex])
+      if (currentTaglineIndex + 1 != taglines.length) setCurrentTaglineIndex(currentTaglineIndex + 1)
+      setTagline(taglines[currentTaglineIndex])
     }, 250)
 
     return () => clearInterval(interval)
-  }, [currentIndex])
+  }, [currentTaglineIndex])
 
-  const renderBars = (startIndex, endIndex) => (
+  const renderBars = (startIndex:number, endIndex:number) => (
     <div className="mb-1 flex flex-col gap-4">
       {Array.from({ length: Math.ceil((endIndex - startIndex + 1) / 4) }).map(
         (_, rowIndex) => {
-          const barsInRow = 2 + Math.floor(Math.random() * 3) // Generates a random number between 2 and 4.
+          const barsInRow = 2 + Math.floor(Math.random() * 3)
           const rowStart = startIndex + rowIndex * barsInRow
           let rowEnd = rowStart + barsInRow
 
@@ -214,9 +182,11 @@ const HeroComponent = () => {
                 leaveTo="opacity-0"
                 show
               >
-                <h2 className="text-4xl font-thin italic text-gray-300 lg:text-6xl">
-                  I build <span className="font-semibold">{tagline}</span>
-                  <span className="font-semibold italic text-white">.</span>
+                <h2 className="text-4xl flex gap-2 font-thin italic text-gray-300 lg:text-6xl">
+                  I
+                  <span className="font-thin">{tagline.adverb}</span>
+                  <span className="font-semibold">{tagline.name}</span>
+                  <span className="-mx-2">.</span>
                 </h2>
               </Transition>
             </div>
