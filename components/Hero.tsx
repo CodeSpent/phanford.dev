@@ -1,17 +1,24 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { v4 as uuidv4 } from 'uuid'
+import { useSiteSettings } from 'constants/site-settings-context/site-settings-context'
+import SocialLinks from './SocialLinks'
+import { IBar, Tagline } from 'components/bars/types'
+import { BarsContainer } from 'components/bars'
+import { animated, useSpring } from '@react-spring/web'
 
-const taglines: { adverb: string, name: string }[] = [
+const taglines: Tagline[] = [
+  { adverb: 'write', name: 'Code' },
   { adverb: 'develop', name: 'Software' },
   { adverb: 'build', name: 'Web Applications' },
   { adverb: 'build', name: 'Websites' },
-  { adverb: 'create', name: 'Connected Experiences' },
   { adverb: 'build', name: 'Native Mobile Apps' },
   { adverb: 'design', name: 'REST APIs' },
+  { adverb: 'refine', name: 'Process' },
   { adverb: 'build', name: 'Automation Tools' },
   { adverb: 'break', name: 'Security Systems' },
   { adverb: 'build', name: 'IoT Devices' },
+  { adverb: 'improve', name: 'DX' },
   { adverb: 'build', name: 'Battle Roombas' },
   { adverb: 'design', name: 'Schemas' },
   { adverb: 'design', name: 'GraphQL APIs' },
@@ -22,11 +29,12 @@ const taglines: { adverb: string, name: string }[] = [
   { adverb: 'maintain', name: 'Infrastructure' },
   { adverb: 'build', name: 'Solutions' },
   { adverb: 'write', name: 'Code' },
-];
-
+]
 
 const widths: string[] = [
+  'w-7',
   'w-8',
+  'w-9',
   'w-10',
   'w-12',
   'w-16',
@@ -36,11 +44,10 @@ const widths: string[] = [
   'w-32',
   'w-36',
   'w-40',
-  'w-42',
-  'w-46',
+  'w-44',
   'w-48',
-  'w-50',
-  'w-54',
+  'w-52',
+  'w-56',
 ]
 
 const colors: string[] = [
@@ -73,8 +80,8 @@ const colors: string[] = [
   'from-red-600 to-red-700',
 ]
 
-const generateRandomBars = (count: number) => {
-  const bars = []
+const generateBars = (count: number): IBar[] => {
+  const bars: IBar[] = []
   for (let i = 0; i < count; i++) {
     const randomWidth = widths[Math.floor(Math.random() * widths.length)]
     const randomColor = colors[Math.floor(Math.random() * colors.length)]
@@ -83,96 +90,164 @@ const generateRandomBars = (count: number) => {
   return bars
 }
 
-const HeroComponent = () => {
-  const [tagline, setTagline] = useState(taglines[0])
-  const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0)
-  const [bars, setBars] = useState([])
-  const [, setRows] = useState([])
+const generateBarRows = (rowCount: number): IBar[][] => {
+  const rows: IBar[][] = []
+  for (let i = 0; i < rowCount; i++) {
+    const barsInRow = 3 + Math.floor(Math.random() * 3)
+    const bars = generateBars(barsInRow)
+    rows.push(bars)
+  }
+  return rows
+}
 
-  const itemsPerRow = 4
+const TerminalNameplate: React.FC = () => {
+  const [typedText, setTypedText] = useState('')
+  const [isCursorVisible, setIsCursorVisible] = useState(true)
+
+  const cursorStyles = useSpring({
+    opacity: isCursorVisible ? 1 : 0,
+    config: { tension: 170, friction: 26 },
+    reset: true,
+    reverse: isCursorVisible,
+  })
 
   useEffect(() => {
-    const newRows = Array.from({ length: Math.ceil((24 + 1) / 4) }).map(
-      () => 2 + Math.floor(Math.random() * 3)
-    )
-    setRows(newRows)
+    setTypedText('')
+    const cursorInterval = setInterval(() => {
+      setIsCursorVisible(visible => !visible)
+    }, 500)
 
-    setBars(generateRandomBars(28).map((bar) => ({ id: uuidv4(), ...bar })))
+    const initialDelay = 2000
+    setTimeout(() => {
+      const text = 'Hi, my name is'
+      let i = -1
 
-    const shiftInterval = setInterval(() => {
-      setBars((prevBars) => {
-        const shiftAmount = itemsPerRow
-        const shifted = prevBars.slice(0, shiftAmount)
-        return [...prevBars.slice(shiftAmount), ...shifted]
-      })
-    }, 950)
+      const typingInterval = setInterval(() => {
+        if (i < text.length) {
+          i += 1
+          setTypedText(prev => prev + text.charAt(i))
+        } else {
+          clearInterval(typingInterval)
+        }
+      }, 150)
+    }, initialDelay)
 
-    return () => clearInterval(shiftInterval)
+    return () => {
+      clearInterval(cursorInterval)
+    }
   }, [])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (currentTaglineIndex + 1 != taglines.length) setCurrentTaglineIndex(currentTaglineIndex + 1)
-      setTagline(taglines[currentTaglineIndex])
-    }, 250)
-
-    return () => clearInterval(interval)
-  }, [currentTaglineIndex])
-
-  const renderBars = (startIndex:number, endIndex:number) => (
-    <div className="mb-1 flex flex-col gap-4">
-      {Array.from({ length: Math.ceil((endIndex - startIndex + 1) / 4) }).map(
-        (_, rowIndex) => {
-          const barsInRow = 2 + Math.floor(Math.random() * 3)
-          const rowStart = startIndex + rowIndex * barsInRow
-          let rowEnd = rowStart + barsInRow
-
-          if (rowEnd > endIndex) {
-            rowEnd = endIndex
-          }
-
-          return (
-            <div key={rowIndex} className="flex flex-row gap-3">
-              {bars.slice(rowStart, rowEnd).map((section) => {
-                return (
-                  <Transition
-                    key={section.id}
-                    show={true}
-                    appear={true}
-                    enter="transition-all transform ease-in-out duration-500 opacity-0 translate-y-4"
-                    enterFrom="opacity-0 translate-y-4"
-                    enterTo="opacity-100 translate-y-0"
-                    className={`${section.width} rounded h-4 overflow-hidden`}
-                  >
-                    <div
-                      className={`bg-gradient-to-r ${section.colors} w-full h-full`}
-                    />
-                  </Transition>
-                )
-              })}
-            </div>
-          )
-        }
-      )}
+  return (
+    <div className="mb-4 mt-6 flex h-4 w-full items-center justify-center lg:mt-8 lg:justify-start">
+      <span
+        className="flex h-[45px] w-[175px] items-center rounded bg-card-background p-2 text-xs font-light
+                  uppercase tracking-widest
+                text-gray-300 shadow-2xl lg:text-lg"
+      >
+        {typedText}
+        <animated.span style={cursorStyles} className="-ml-3/4 mb-1 text-xl tracking-tighter">
+          |
+        </animated.span>
+      </span>
     </div>
   )
+}
+
+const HeroComponent: React.FC = () => {
+  const [tagline, setTagline] = useState<Tagline>(taglines[0])
+  const [currentTaglineIndex, setCurrentTaglineIndex] = useState<number>(0)
+  const [bars, setBars] = useState<IBar[][]>([])
+  const [adverbBackgroundColor, setAdverbBackgroundColor] = useState<string>(
+    'from-green-500 to-green-700'
+  )
+  const [taglineAnimationFinished, setTaglineAnimationFinished] = useState<boolean>(false)
+
+  const { animationEnabled } = useSiteSettings()
+
+  useEffect(() => {
+    if (bars.length === 0) {
+      setBars(generateBarRows(28))
+    }
+
+    if (!animationEnabled) return
+
+    if (animationEnabled) {
+      const shiftInterval = setInterval(() => {
+        setBars(prevBars => {
+          const shiftAmount = 1
+          const oldBars = prevBars.slice(shiftAmount)
+          const newBars = generateBarRows(shiftAmount)
+
+          return [...oldBars, ...newBars]
+        })
+      }, 9999999)
+
+      return () => clearInterval(shiftInterval)
+    }
+  }, [animationEnabled])
+
+  useEffect(() => {
+    if (!animationEnabled) {
+      setCurrentTaglineIndex(taglines.length - 1)
+      setTaglineAnimationFinished(true)
+      return
+    }
+
+    setAdverbBackgroundColor(
+      colors.filter(color => color !== 'opacity-0')[Math.floor(Math.random() * colors.length)]
+    )
+
+    if (currentTaglineIndex >= taglines.length - 1) {
+      setTaglineAnimationFinished(true)
+      return
+    }
+
+    const timeout = setTimeout(() => {
+      if (!animationEnabled) return
+      setCurrentTaglineIndex(prevIndex => prevIndex + 1)
+      setTagline(taglines[currentTaglineIndex])
+    }, 950)
+    return () => clearTimeout(timeout)
+  }, [currentTaglineIndex])
+
+  useEffect(() => {
+    setTagline(taglines[currentTaglineIndex])
+
+    if (!animationEnabled) return
+  }, [currentTaglineIndex])
 
   return (
-    <div className="flex flex-col h-screen lg:justify-center p-4 leading-6 tracking-widest">
-      <div className="min-h-max" style={{ minHeight: '300px' }}>
-        <div className="my-10">
-          <div className="h-24">{renderBars(0, 12)}</div>
+    <div
+      className="flex h-screen w-screen flex-col overflow-y-hidden p-4 leading-6 tracking-widest
+      sm:items-center lg:justify-center"
+    >
+      <div className="min-h-max w-full" style={{ minHeight: '300px' }}>
+        <div className="flex w-full flex-col justify-between">
+          <div className="flex flex-col gap-4 sm:items-center lg:ml-0 lg:mt-4 lg:items-start lg:pl-6">
+            <div className="mt-auto h-24 sm:h-16">
+              <BarsContainer
+                rows={4}
+                columns={5}
+                barHeight={30}
+                scrollSpeed={1000}
+                colors={colors}
+                widths={widths}
+                animationEnabled={false}
+                scrollDirection={'up'}
+              />
+            </div>
 
-          <div className="lg:ml-0 lg:pl-4 my-8 flex items-center">
-            <div className="pl-4">
-              <div className="flex h-4 gap-3">
-                <span className="-mt-1.5 text-lg font-semibold italic text-gray-300">
-                  Hi, my name is
-                </span>
-              </div>
-              <h1 className="text-6xl text-white lg:text-8xl">
+            <div className="flex w-full flex-col items-center justify-center py-6 lg:items-start lg:justify-start">
+              <TerminalNameplate />
+
+              <h1
+                className="flex whitespace-nowrap text-center text-5xl leading-[2.85rem]
+                tracking-tight text-gray-100 lg:ml-0 lg:text-left lg:text-8xl"
+              >
                 Patrick Hanford
+                <span className="hidden lg:block">.</span>
               </h1>
+
               <Transition
                 enter="transition-opacity duration-75"
                 enterFrom="opacity-0"
@@ -182,21 +257,56 @@ const HeroComponent = () => {
                 leaveTo="opacity-0"
                 show
               >
-                <h2 className="text-4xl flex gap-2 font-thin italic text-gray-300 lg:text-6xl">
-                  I
-                  <span className="font-thin">{tagline.adverb}</span>
-                  <span className="font-semibold">{tagline.name}</span>
-                  <span className="-mx-2">.</span>
+                <h2
+                  className="flex w-full flex-col items-center gap-0 py-2 text-4xl font-thin
+                      text-gray-300 lg:w-1/2 lg:flex-row lg:items-center lg:py-4 lg:text-6xl"
+                >
+                  <div className="my-4 flex w-full items-center justify-center gap-2 lg:my-0 lg:w-auto lg:items-center">
+                    <span className="justify-start self-center font-semibold">I</span>
+                    <span
+                      className={`mx-2 w-[300px] rounded-lg bg-gradient-to-r stroke-black stroke-1 p-2 text-center 
+                          font-semibold lowercase tracking-wider shadow-2xl [text-shadow:_5px_5px_0_rgb(0_0_0_/_40%)]
+                          lg:border-none ${adverbBackgroundColor} self-center`}
+                    >
+                      {tagline.adverb}
+                    </span>
+                  </div>
+                  <span
+                    className={`ml-2 h-12 self-center whitespace-nowrap text-center font-bold tracking-widest 
+                    lg:text-6xl ${tagline.name.length >= 18 ? 'text-3xl' : 'text-4xl'}`}
+                  >
+                    {tagline.name}
+                  </span>
+                  <Transition
+                    show={taglineAnimationFinished}
+                    as={'span'}
+                    enter="transition-opacity ease-linear duration-500"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                  >
+                    <span className="mt-4 hidden text-5xl font-bold lg:block">.</span>
+                  </Transition>
                 </h2>
               </Transition>
             </div>
-          </div>
+            <SocialLinks className=" flex justify-center gap-4 lg:justify-start lg:pl-6" />
 
-          <div className="h-24">{renderBars(12, 24)}</div>
+            <div className="mt-auto h-24 sm:h-16">
+              <BarsContainer
+                rows={4}
+                columns={5}
+                barHeight={30}
+                scrollSpeed={1000}
+                colors={colors}
+                widths={widths}
+                animationEnabled={false}
+                scrollDirection={'up'}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   )
 }
-
 export default HeroComponent

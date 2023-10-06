@@ -11,7 +11,7 @@ const IndexPage = () => (
 
       <a className="fixed inset-x-0 bottom-0 mt-20 flex flex-col items-center justify-center p-4">
         <ChevronDownIcon
-          className="mr-1 h-8 w-8 animate-bounce text-white group-hover:text-white hidden"
+          className="mr-1 hidden h-8 w-8 animate-bounce text-white group-hover:text-white"
           aria-hidden="true"
         />
       </a>
