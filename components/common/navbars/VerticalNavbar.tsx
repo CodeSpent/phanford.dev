@@ -53,8 +53,11 @@ export default function VerticalNavbar() {
   const toggleNav = () => setNavVisible(!isNavVisible)
 
   return (
-    <nav className="sticky z-40 flex w-screen justify-between p-4 lg:fixed lg:right-0 lg:flex-col lg:bg-transparent">
-      <div className="fixed right-4 top-4 z-40 lg:hidden">
+    <nav
+      className="sticky right-0 top-0 z-40 flex w-screen items-center justify-between p-4 lg:fixed
+    lg:bg-transparent"
+    >
+      <div className="z-50 ml-auto p-4 lg:hidden">
         <ToggleButton onClick={toggleNav} isOpen={isNavVisible} />
       </div>
       <Transition
@@ -67,7 +70,10 @@ export default function VerticalNavbar() {
         leaveTo="translate-x-full"
         show={isNavVisible}
       >
-        <div className="fixed right-0 top-0 z-40 flex h-screen w-screen flex-col bg-card-background bg-opacity-100 p-4 py-4">
+        <div
+          className="fixed right-0 top-0 z-40 ml-auto flex h-screen w-screen flex-col bg-card-background
+        bg-opacity-100 p-4 py-4"
+        >
           <div className="mt-12 flex flex-grow flex-col items-start justify-start gap-4 overflow-y-auto lg:mt-0">
             <NavLink href="/">Home</NavLink>
             <NavLink href="/resume">Resume</NavLink>
@@ -86,7 +92,7 @@ export default function VerticalNavbar() {
         </div>
       </Transition>
 
-      <div className="hidden pr-24 lg:flex lg:-rotate-90 lg:flex-row-reverse">
+      <div className="ml-auto mr-12 hidden origin-right lg:flex lg:-rotate-90 lg:flex-row-reverse">
         <NavLink href="/">Home</NavLink>
         <NavLink href="/resume">Resume</NavLink>
         <NavLink href="/tools">Tools</NavLink>
