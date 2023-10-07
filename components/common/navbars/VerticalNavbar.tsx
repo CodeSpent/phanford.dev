@@ -30,16 +30,6 @@ export const NavLink = ({ href, children }) => {
   )
 }
 
-NavLink.propTypes = {
-  href: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-  isActive: PropTypes.bool,
-}
-
-NavLink.defaultProps = {
-  isActive: false,
-}
-
 const ToggleButton = ({ onClick, isOpen }) => {
   return (
     <div className="flex h-6 w-6 cursor-pointer" onClick={onClick}>
