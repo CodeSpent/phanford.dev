@@ -1,40 +1,48 @@
-import React from 'react';
-import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
-import { faDev, faGithub, faLinkedinIn, faTwitch } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import React from 'react'
+import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+import { faDev, faGithub, faLinkedinIn, faTwitch } from '@fortawesome/free-brands-svg-icons'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+
+import { classNames } from 'utils/common'
+
+type SocialLink = {
+  name: string
+  href: string
+  icon: (props: JSX.IntrinsicAttributes & FontAwesomeIconProps) => JSX.Element
+}
+
+type SocialLinksProps = {
+  socials?: SocialLink[]
+  className?: string
+}
 
 const socials = [
   {
     name: 'GitHub',
     href: 'https://github.com/codespent/',
-    icon: (props) => <FontAwesomeIcon icon={faGithub} {...props} />,
+    icon: props => <FontAwesomeIcon icon={faGithub} {...props} />,
   },
   {
     name: 'LinkedIn',
     href: 'https://linkedin.com/in/phanford/',
-    icon: (props) => <FontAwesomeIcon icon={faLinkedinIn} {...props} />,
-  },
-  {
-    name: 'Email',
-    href: 'mailto:patrick@phanford.dev',
-    icon: (props) => <FontAwesomeIcon icon={faEnvelope} {...props} />,
+    icon: props => <FontAwesomeIcon icon={faLinkedinIn} {...props} />,
   },
   {
     name: 'Dev.To',
     href: 'https://dev.to/codespent/',
-    icon: (props) => <FontAwesomeIcon icon={faDev} {...props} />,
+    icon: props => <FontAwesomeIcon icon={faDev} {...props} />,
   },
   {
     name: 'Twitch',
     href: 'https://twitch.tv/codespent/',
-    icon: (props: JSX.IntrinsicAttributes & FontAwesomeIconProps) =>
+    icon: (props: JSX.IntrinsicAttributes & FontAwesomeIconProps) => (
       <FontAwesomeIcon icon={faTwitch} {...props} />
-
+    ),
   },
   {
     name: 'LeetCode',
     href: 'https://leetcode.com/codespent/',
-    icon: (props) => (
+    icon: props => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path
           fillRule="evenodd"
@@ -47,22 +55,17 @@ const socials = [
       </svg>
     ),
   },
+  {
+    name: 'Email',
+    href: 'mailto:patrick@phanford.dev',
+    icon: props => <FontAwesomeIcon icon={faEnvelope} {...props} />,
+  },
 ]
 
-type SocialLink = {
-  name: string;
-  href: string;
-  icon: (props: JSX.IntrinsicAttributes & FontAwesomeIconProps) => JSX.Element;
-};
-
-type SocialLinksProps = {
-  //socials: SocialLink[];
-};
-
-const SocialLinks: React.FC<SocialLinksProps> = () => {
+const SocialLinks: React.FC<SocialLinksProps> = ({ className }) => {
   return (
-    <div className="flex justify-end gap-5">
-      {socials.map((item) => (
+    <div className={classNames(className)}>
+      {socials.map(item => (
         <a
           key={item.name}
           href={item.href}
@@ -74,7 +77,7 @@ const SocialLinks: React.FC<SocialLinksProps> = () => {
         </a>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default SocialLinks;
+export default SocialLinks
