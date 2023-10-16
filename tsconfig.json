@@ -4,7 +4,7 @@
     "target": "es5",
     "lib": ["esnext"],
     "paths": {
-      "contentlayer/generated": [".contentlayer/generated"]
+      "contentlayer/generated": ["./.contentlayer/generated"]
     },
     "allowJs": true,
     "skipLibCheck": true,
