@@ -4,6 +4,7 @@ import { faDev, faGithub, faLinkedinIn, faTwitch } from '@fortawesome/free-brand
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 import { classNames } from 'utils/common'
+import Link from 'next/link'
 
 type SocialLink = {
   name: string
@@ -66,7 +67,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ className }) => {
   return (
     <div className={classNames(className)}>
       {socials.map(item => (
-        <a
+        <Link
           key={item.name}
           href={item.href}
           target="_blank"
@@ -74,7 +75,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ className }) => {
         >
           <span className="sr-only">{item.name}</span>
           <item.icon className="h-6 w-6" aria-hidden="true" />
-        </a>
+        </Link>
       ))}
     </div>
   )
