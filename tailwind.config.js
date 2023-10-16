@@ -1,19 +1,10 @@
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   mode: 'jit',
   theme: {
     extend: {
       opacity: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
-      translate: [
-        'responsive',
-        'group-hover',
-        'focus-within',
-        'hover',
-        'focus',
-      ],
+      translate: ['responsive', 'group-hover', 'focus-within', 'hover', 'focus'],
       colors: {
         accent: {
           1: 'hsl(288 95,8% 90.6%',
@@ -130,5 +121,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 }
