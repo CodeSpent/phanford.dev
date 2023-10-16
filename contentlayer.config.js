@@ -7,17 +7,17 @@ import rehypePrettyCode from 'rehype-pretty-code'
 const computedFields = {
   slug: {
     type: 'string',
-    resolve: (doc) => `/${doc._raw.flattenedPath.split('/').pop()}`,
+    resolve: doc => `/${doc._raw.flattenedPath.split('/').pop()}`,
   },
   slugAsParams: {
     type: 'string',
-    resolve: (doc) => doc._raw.flattenedPath.split('/').pop(),
+    resolve: doc => doc._raw.flattenedPath.split('/').pop(),
   },
 }
 
 export const Article = defineDocumentType(() => ({
   name: 'Article',
-  filePathPattern: `**/*.md`,
+  filePathPattern: 'articles/**/*.md',
   contentType: 'md',
   fields: {
     title: {
@@ -41,9 +41,15 @@ export const Article = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const Resume = defineDocumentType(() => ({
+  name: 'Resume',
+  filePathPattern: 'documents/resume.mdx',
+  contentType: 'mdx',
+}))
+
 export default makeSource({
-  contentDirPath: 'content/articles',
-  documentTypes: [Article],
+  contentDirPath: 'content',
+  documentTypes: [Article, Resume],
   md: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
