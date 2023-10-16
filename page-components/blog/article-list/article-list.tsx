@@ -11,18 +11,18 @@ export default function ArticleList() {
   const { articlesToDisplay } = useArticleListContext()
 
   const neonColors = [
-    '#FF5733', // Base color
-    '#5733FF', // Complementary color
-    '#33FF57', // First split complementary
-    '#3357FF', // Second split complementary
-    '#FFB48F', // Lighter base color
-    '#E63D00', // Darker base color
-    '#B48FFF', // Lighter complementary color
-    '#2900B5', // Darker complementary color
-    '#6FFF96', // Lighter split complementary 1
-    '#00B03A', // Darker split complementary 1
-    '#967FFF', // Lighter split complementary 2
-    '#0038B0', // Darker split complementary 2
+    '#FF5733',
+    '#5733FF',
+    '#33FF57',
+    '#3357FF',
+    '#FFB48F',
+    '#E63D00',
+    '#B48FFF',
+    '#2900B5',
+    '#6FFF96',
+    '#00B03A',
+    '#967FFF',
+    '#0038B0',
   ]
 
   return (
