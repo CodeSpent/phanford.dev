@@ -1,11 +1,6 @@
-import Link from 'next/link'
-import React, { useContext } from 'react'
-import {
-  useArticleListContext,
-  useArticleSearchContext,
-} from '../../../constants/article-list-context/article-list-context'
-import { ChevronDoubleRightIcon } from '@heroicons/react/solid'
-import ArticleCard from '../../../components/blog/ArticleCard'
+import React from 'react'
+import { useArticleListContext } from 'constants/article-list-context/article-list-context'
+import ArticleCard from 'components/blog/ArticleCard'
 
 export default function ArticleList() {
   const { articlesToDisplay } = useArticleListContext()
