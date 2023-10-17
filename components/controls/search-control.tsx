@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import Input from '../common/Input'
+import Input from 'components/common/Input'
 
-export default function SearchControl({
-  label,
-  placeholder,
-  value,
-  onChange,
-  hotkey,
-}) {
+export default function SearchControl({ label, placeholder, value, onChange, hotkey }) {
   const [searchValue, setSearchValue] = useState(value)
 
   useEffect(() => {
-    setSearchValue(value) // Synchronize internal state with the prop value
+    setSearchValue(value)
   }, [value])
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     const newValue = event.target.value
     setSearchValue(newValue)
 
@@ -35,7 +29,10 @@ export default function SearchControl({
         />
         {hotkey && (
           <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-            <kbd className="inline-flex items-center rounded border border-gray-200 px-2 font-sans text-sm font-medium text-gray-400">
+            <kbd
+              className="inline-flex items-center rounded border border-gray-200 px-2 font-sans text-sm
+            font-medium text-gray-400"
+            >
               {hotkey}
             </kbd>
           </div>
