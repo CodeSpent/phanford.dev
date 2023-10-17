@@ -1,10 +1,6 @@
 import DefaultLayout from '../../layouts/DefaultLayout'
 import Link from 'next/link'
-import {
-  ArticleQuery,
-  getAllArticles,
-  ListViewArticles,
-} from '../../utils/fs/api'
+import { ArticleQuery, getAllArticles, ListViewArticles } from '../../utils/fs/api'
 import ArticleSearch from '../../components/blog/ArticleSearch'
 import ArticleTagFilter from '../../components/blog/ArticleTagFilter'
 import ArticleSortFilter from '../../components/blog/ArticleSortFilter'
@@ -48,16 +44,13 @@ export default function BlogPage({
       <div className="px-4">
         <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
           <ArticleSearchContextProvider>
-            <ArticleListContextProvider
-              articles={articles}
-              pageIndex={pageNumber}
-            >
+            <ArticleListContextProvider articles={articles} pageIndex={pageNumber}>
               <div>
                 <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                   Blog
                 </h2>
 
-                <div className="sm:fl mt-3 flex flex-col gap-3 py-4 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
+                <div className="sm:fl mt-3 flex flex-col gap-3 px-4 py-8 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
                   <ArticleSearch />
                   <ArticleTagFilter tags={tags} />
                   <ArticleSortFilter />
@@ -78,10 +71,10 @@ export const getStaticProps = async () => {
   const articles = allArticles
   const tags = []
 
-  articles.forEach((article) => {
+  articles.forEach(article => {
     // FIXME: `tags` evaluates to type of `never`.
     // @ts-ignore
-    article.tags.forEach((tag) => {
+    article.tags.forEach(tag => {
       if (!tags.includes(tag)) {
         tags.push(tag)
       }

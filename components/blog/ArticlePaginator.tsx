@@ -1,19 +1,14 @@
-import {
-  ArrowNarrowLeftIcon,
-  ArrowNarrowRightIcon,
-} from '@heroicons/react/solid'
-import { useContext } from 'react'
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import {
   useArticleListContext,
   useArticleSearchContext,
 } from '../../constants/article-list-context/article-list-context'
 import ReactPaginate from 'react-paginate'
-import { ArticleSearchContext } from '../../constants/article-search-context/article-search-context'
 import { useRouter } from 'next/router'
+import Button from '../controls/button'
 
 export default function ArticlePaginator() {
-  const { numberOfPages, pageIndex, setCurrentPageIndex } =
-    useArticleListContext()
+  const { numberOfPages, pageIndex, setCurrentPageIndex } = useArticleListContext()
   const { searchValue, filterValue } = useArticleSearchContext()
 
   const router = useRouter()
@@ -34,26 +29,14 @@ export default function ArticlePaginator() {
          * */
         nextClassName="ml-auto -left-16 relative"
         nextLabel={
-          <div className="-mt-px ml-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <div className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium">
-              Next
-              <ArrowNarrowRightIcon
-                className="ml-3 h-5 w-5"
-                aria-hidden="true"
-              />
-            </div>
+          <div className="ml-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
+            <Button text="Next Page" icon={faChevronRight} iconPosition="right" />
           </div>
         }
         previousClassName="mr-auto"
         previousLabel={
-          <div className="-mt-px mr-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
-            <div className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium">
-              <ArrowNarrowLeftIcon
-                className="mr-3 h-5 w-5 text-gray-300"
-                aria-hidden="true"
-              />
-              Previous
-            </div>
+          <div className="mr-auto flex w-0 flex-1 cursor-pointer text-gray-500 hover:text-white">
+            <Button text="Previous Page" icon={faChevronLeft} />
           </div>
         }
         disabledClassName="text-gray-400"
@@ -64,7 +47,7 @@ export default function ArticlePaginator() {
         marginPagesDisplayed={0}
         forcePage={pageIndex}
         pageRangeDisplayed={7}
-        hrefBuilder={(pageIndex) => {
+        hrefBuilder={pageIndex => {
           if (pageIndex === 1) {
             return `${'/blog'}`
           }

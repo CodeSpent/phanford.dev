@@ -21,7 +21,7 @@ export default function ArticleList() {
   ]
 
   return (
-    <div className={`1fr grid grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-x-2 lg:gap-y-5`}>
+    <div className={`1fr my-4 grid grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-x-2 lg:gap-y-5`}>
       {articlesToDisplay.map((article, index) => (
         <ArticleCard
           key={index}
