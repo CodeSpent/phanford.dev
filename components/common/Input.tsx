@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
-import { classNames } from '../../utils/common'
+import { classNames } from 'utils/common'
 
 interface InputProps {
   label: string
@@ -11,22 +11,16 @@ interface InputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-const Input: React.FC<InputProps> = ({
-  label,
-  type,
-  placeholder,
-  value,
-  onChange,
-}) => {
+const Input: React.FC<InputProps> = ({ label, type, placeholder, value, onChange }) => {
   return (
-    <div className="mb-5">
+    <div className="mb-5 w-full">
       <label className="block text-sm font-medium text-gray-400">{label}</label>
       <input
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="bg-gray-900 border-none block w-full rounded-md pr-12 text-gray-600 shadow-sm
+        className="block w-full rounded-md border-none bg-gray-900 pr-12 text-gray-600 shadow-sm
         focus:border-gray-600 focus:ring-gray-500 sm:text-sm"
       />
     </div>
@@ -45,22 +39,17 @@ interface ListBoxInputProps {
   onChange: (newValue: any) => void
 }
 
-export const ListBoxInput: React.FC<ListBoxInputProps> = ({
-  label,
-  options,
-  value,
-  onChange,
-}) => {
+export const ListBoxInput: React.FC<ListBoxInputProps> = ({ label, options, value, onChange }) => {
   return (
     <div className="mb-5">
       <label className="block text-sm font-medium text-gray-400">{label}</label>
       <select
         value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="bg-gray-900 border-none block w-full rounded-md pr-12 text-gray-600 shadow-sm focus:border-gray-600
+        onChange={e => onChange(e.target.value)}
+        className="block w-full rounded-md border-none bg-gray-900 pr-12 text-gray-600 shadow-sm focus:border-gray-600
         focus:ring-gray-600 sm:text-sm"
       >
-        {options.map((option) => (
+        {options.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>
@@ -91,48 +80,35 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
   onChange,
 }) => {
   const [selectedFilters, setSelectedFilters] = useState<ComboBoxOption[]>([])
-  const [filteredOptions, setFilteredOptions] =
-    useState<ComboBoxOption[]>(options)
+  const [filteredOptions, setFilteredOptions] = useState<ComboBoxOption[]>(options)
 
-  const filterOptionsBySelectedFilters = (selectedFilters) => {
+  const filterOptionsBySelectedFilters = selectedFilters => {
     if (selectedFilters.length > 0) {
       setFilteredOptions(
-        options.filter((option) =>
-          option.value.toLowerCase().includes(option.value.toLowerCase())
-        )
+        options.filter(option => option.value.toLowerCase().includes(option.value.toLowerCase()))
       )
     } else {
       setFilteredOptions(options)
     }
   }
 
-  const getComboBoxOptionFromValue = (
-    value: string
-  ): ComboBoxOption | undefined => {
-    return options.find((option) => option.value === value)
+  const getComboBoxOptionFromValue = (value: string): ComboBoxOption | undefined => {
+    return options.find(option => option.value === value)
   }
 
   // @ts-ignore
   return (
     <div className="mb-5">
       <label className="block text-sm font-medium text-gray-400">{label}</label>
-      <Combobox
-        as="div"
-        value={value}
-        multiple={true}
-        className="relative"
-        onChange={onChange}
-      >
+      <Combobox as="div" value={value} multiple={true} className="relative" onChange={onChange}>
         <Combobox.Input
-          className="h-9 border-none w-full rounded-md text-gray-600 bg-gray-900 py-2 pl-3 pr-10 capitalize shadow-sm
+          className="h-9 w-full rounded-md border-none bg-gray-900 py-2 pl-3 pr-10 capitalize text-gray-600 shadow-sm
           focus:border-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-600 sm:text-sm"
           placeholder={placeholder}
           displayValue={() =>
-            selectedFilters.length == 0
-              ? placeholder
-              : `${selectedFilters.length} selected`
+            selectedFilters.length == 0 ? placeholder : `${selectedFilters.length} selected`
           }
-          onChange={(e) => {
+          onChange={e => {
             filterOptionsBySelectedFilters(e.target.value)
           }}
         />
@@ -143,10 +119,10 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
 
         {options.length > 0 && (
           <Combobox.Options
-            className="text-gray-600 bg-gray-900 absolute z-10 mt-1 max-h-60 w-full overflow-auto
-          rounded-md py-1 text-base capitalize shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-900
+          py-1 text-base capitalize text-gray-600 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
           >
-            {filteredOptions.map((option) => (
+            {filteredOptions.map(option => (
               <Combobox.Option
                 key={option.value}
                 value={option.value}
