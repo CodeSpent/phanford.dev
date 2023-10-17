@@ -6,13 +6,14 @@ import PropTypes from 'prop-types'
 import { faTimes, faBars } from '@fortawesome/free-solid-svg-icons'
 import { Transition } from '@headlessui/react'
 import { useRouter } from 'next/router'
+import { links } from '../../../constants/navbarLinks'
 
 export const NavLink = ({ href, children }) => {
   const router = useRouter()
   const isActive = router.pathname === href
 
   const baseStyle =
-    'transition duration-500 text-gray-500 lg:hover:border-b hover:font-md hover:text-white ' +
+    'transition duration-500 text-gray-500 hover:font-md hover:text-white ' +
     'lg:hover:rotate-90 px-4 py-2 relative'
   const activeStyle = 'font-bold tracking-wide leading-loose text-white lg:rotate-90'
 
@@ -65,10 +66,9 @@ export default function VerticalNavbar() {
         bg-opacity-100 p-4 py-4"
         >
           <div className="mt-12 flex flex-grow flex-col items-start justify-start gap-4 overflow-y-auto lg:mt-0">
-            <NavLink href="/">Home</NavLink>
-            <NavLink href="/resume">Resume</NavLink>
-            <NavLink href="/tools">Tools</NavLink>
-            <NavLink href="/blog">Blog</NavLink>
+            {links.map(link => (
+              <NavLink href={link.href}>{link.title}</NavLink>
+            ))}
           </div>
 
           <div className="w-full">
@@ -83,10 +83,9 @@ export default function VerticalNavbar() {
       </Transition>
 
       <div className="ml-auto mr-12 hidden origin-right lg:flex lg:-rotate-90 lg:flex-row-reverse">
-        <NavLink href="/">Home</NavLink>
-        <NavLink href="/resume">Resume</NavLink>
-        <NavLink href="/tools">Tools</NavLink>
-        <NavLink href="/blog">Blog</NavLink>
+        {links.map(link => (
+          <NavLink href={link.href}>{link.title}</NavLink>
+        ))}
       </div>
     </nav>
   )
