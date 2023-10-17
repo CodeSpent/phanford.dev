@@ -3,11 +3,12 @@ import { Popover, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
 import { links } from 'constants/navbarLinks'
+import MobileNavPanel from './mobile-nav-panel'
 
 export default function Navbar() {
   return (
     <Popover className="relative z-40">
-      <div className="flex items-center justify-between space-x-10 py-6 sm:px-6 md:justify-start">
+      <div className="flex items-center justify-between space-x-10 px-4 py-6 md:justify-start">
         <div className="flex justify-start">
           <Link href="/">
             <div className="flex items-center">
@@ -27,13 +28,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="-my-2 -mr-2 md:hidden">
-          <Popover.Button
-            className="inline-flex items-center justify-center rounded-md p-2 text-gray-400
-          hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-500 hover:text-white"
-          >
-            <span className="sr-only">Open menu</span>
-            <MenuIcon className="h-6 w-6" aria-hidden="true" />
-          </Popover.Button>
+          <MobileNavPanel />
         </div>
         <Popover.Group
           as="nav"
