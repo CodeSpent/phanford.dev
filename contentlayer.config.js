@@ -17,8 +17,8 @@ const computedFields = {
 
 export const Article = defineDocumentType(() => ({
   name: 'Article',
-  filePathPattern: 'articles/**/*.md',
-  contentType: 'md',
+  filePathPattern: 'articles/**/*.mdx',
+  contentType: 'mdx',
   fields: {
     title: {
       type: 'string',
@@ -50,7 +50,7 @@ export const Resume = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Article, Resume],
-  md: {
+  mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       rehypeSlug,

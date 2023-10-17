@@ -1,55 +1,40 @@
 import Link from 'next/link'
-import { useMarkdownRenderer } from '../../../utils/markdown/useMarkdownRenderer'
 import ArticleLayout from '../../../layouts/ArticleLayout'
-import {
-  getArticlesBySlug,
-  getAllArticles,
-  articlesDirectory,
-  Article,
-} from '../../../utils/fs/api'
-import markdownToHtml from '../../../utils/markdown/markdownToHtml'
-import {
-  CalendarIcon,
-  ClockIcon,
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
-} from '@heroicons/react/solid'
-import path from 'path'
+import { CalendarIcon, ClockIcon, ChevronDoubleLeftIcon } from '@heroicons/react/solid'
 import { allArticles } from 'contentlayer/generated'
-import NotFound from 'next/dist/client/components/not-found-error'
+import { useMDXComponent } from 'next-contentlayer/hooks'
+
+import Image from 'next/image'
+import { MDXComponents } from 'mdx/types'
 
 type Props = {
-  article: Partial<Article>
-  markdownHTML: string
+  article: any
   slug: string
-  articlesDirectory: string
 }
 
-const Article = ({ article, markdownHTML, slug, articlesDirectory }: Props) => {
-  const articleBody = useMarkdownRenderer({
-    markdownHTML,
-    serverPath: ['/articles', slug],
-  })
+const Article = ({ article }: Props) => {
+  const MDXContent = useMDXComponent(article.body.code)
+
+  const components: MDXComponents = {
+    img: props => {
+      return (
+        <Image
+          src={`/articles/${article.slugAsParams}/${props.src}`}
+          alt={props.alt as any}
+          width={500}
+          height={500}
+        />
+      )
+    },
+  }
 
   return (
     <ArticleLayout>
       <div className="rounded bg-gray-900 p-8">
         <div className="flex justify-between">
-          <Link
-            href="/blog"
-            className="text-decoration-white mb-8 flex items-center gap-1 group"
-          >
+          <Link href="/blog" className="text-decoration-white group mb-8 flex items-center gap-1">
             <ChevronDoubleLeftIcon className="h-4 w-4 group-hover:text-white" />
-            <p className="text-gray-400 hover:text-gray-200">
-              Back to articles
-            </p>
-          </Link>
-          <Link
-            href="/blog"
-            className="text-decoration-white mb-8 flex items-center gap-1 group"
-          >
-            <p className="text-gray-400 hover:text-white">Next Article</p>
-            <ChevronDoubleRightIcon className="h-4 w-4 group-hover:text-gray-200" />
+            <p className="text-gray-400 hover:text-gray-200">Back to articles</p>
           </Link>
         </div>
         <div className="mb-12">
@@ -60,60 +45,38 @@ const Article = ({ article, markdownHTML, slug, articlesDirectory }: Props) => {
           <div className="my-4 flex gap-7">
             <span className="flex items-center gap-1">
               <ClockIcon className="h-4 w-4" />
-              <p className="text-gray-400">
-                {article.minutesToRead} minute read
-              </p>
+              <p className="text-gray-400">{article.minutesToRead} minute read</p>
             </span>
 
             <span className="flex items-center gap-1">
               <CalendarIcon className="h-4 w-4" />
-              <p className="text-gray-400">
-                {new Date(article.published).toDateString()}
-              </p>
+              <p className="text-gray-400">{new Date(article.published).toDateString()}</p>
             </span>
           </div>
         </div>
-        <article className="article-body text-gray-400">{articleBody}</article>
+        <article className="article-body prose prose-invert text-gray-400">
+          <MDXContent components={components} />
+        </article>
       </div>
     </ArticleLayout>
   )
 }
 
 export async function getStaticProps({ params }: any) {
-  const article = getArticlesBySlug(params.slug)
-
   const isStr = (val: any): val is string => typeof val === 'string'
-  const slug = isStr(article.slug) ? article.slug : ''
+  const slug = isStr(params.slug) ? params.slug : ''
 
-  const { html: markdownHTML, headingsWithId } = await markdownToHtml(
-    article.content,
-    path.resolve(articlesDirectory, slug)
-  )
-
+  const article = allArticles.find(article => article.slugAsParams === slug)
   return {
     props: {
-      article: {
-        ...article,
-        content: '',
-        headingsWithId,
-        markdownHTML,
-      },
-      markdownHTML,
-      slug: slug,
-      articlesDirectory,
+      article,
+      slug,
     } as Props,
   }
 }
 
-async function getArticlesFromDoc(slug: string) {
-  const article = allArticles.find((article) => article.slugAsParams === slug)
-
-  if (!article) NotFound()
-
-  return article
-}
 export async function getStaticPaths() {
-  const paths = allArticles.map((article) => {
+  const paths = allArticles.map(article => {
     return {
       params: {
         slug: article.slugAsParams,

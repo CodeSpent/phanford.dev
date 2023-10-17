@@ -1,19 +1,17 @@
-import DefaultLayout from '../../layouts/DefaultLayout'
-import Link from 'next/link'
-import { ArticleQuery, getAllArticles, ListViewArticles } from '../../utils/fs/api'
-import ArticleSearch from '../../components/blog/ArticleSearch'
-import ArticleTagFilter from '../../components/blog/ArticleTagFilter'
-import ArticleSortFilter from '../../components/blog/ArticleSortFilter'
+import DefaultLayout from 'layouts/DefaultLayout'
+import { ListViewArticles } from 'utils/fs/api'
+import ArticleSearch from 'components/blog/ArticleSearch'
+import ArticleTagFilter from 'components/blog/ArticleTagFilter'
+import ArticleSortFilter from 'components/blog/ArticleSortFilter'
 import {
   ArticleListContextProvider,
   ArticleSearchContextProvider,
-} from '../../constants/article-list-context/article-list-context'
-import React, { useCallback, useContext, useMemo, useState } from 'react'
-import ArticleList from '../../page-components/blog/article-list/article-list'
-import ArticlePagesFilter from '../../components/blog/ArticlePagesFilter'
-import ArticlePaginator from '../../components/blog/ArticlePaginator'
-import ignore from 'ignore'
-import { allArticles } from '.contentlayer/generated'
+} from 'constants/article-list-context/article-list-context'
+import React from 'react'
+import ArticleList from 'page-components/blog/article-list/article-list'
+import ArticlePagesFilter from 'components/blog/ArticlePagesFilter'
+import ArticlePaginator from 'components/blog/ArticlePaginator'
+import { allArticles } from 'contentlayer/generated'
 
 type Article = {
   title: string

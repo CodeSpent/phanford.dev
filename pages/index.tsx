@@ -1,7 +1,6 @@
 import VerticalNavigationLayout from '../layouts/VerticalNavigationLayout'
 import HeroComponent from '../components/Hero'
 import { ChevronDownIcon } from '@heroicons/react/solid'
-import { getTopArticles } from '../utils/fs/api'
 import { Fragment } from 'react'
 
 const IndexPage = () => (
@@ -18,15 +17,5 @@ const IndexPage = () => (
     </Fragment>
   </VerticalNavigationLayout>
 )
-
-export async function getStaticProps() {
-  const articles = getTopArticles(3)
-
-  return {
-    props: {
-      recentArticles: articles,
-    },
-  }
-}
 
 export default IndexPage
