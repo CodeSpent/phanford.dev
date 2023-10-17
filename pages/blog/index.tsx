@@ -48,7 +48,7 @@ export default function BlogPage({
                   Blog
                 </h2>
 
-                <div className="sm:fl mt-3 flex flex-col gap-3 px-4 py-8 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
+                <div className="sm:fl mt-3 flex flex-col gap-3 py-8 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
                   <ArticleSearch />
                   <ArticleTagFilter tags={tags} />
                   <ArticleSortFilter />
