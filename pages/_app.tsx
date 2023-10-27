@@ -78,6 +78,9 @@ function AppContent({ Component, pageProps }) {
                   },
                 },
               },
+              background: {
+                color: 'hsl(240 100% 4.3%)',
+              },
               particles: {
                 color: {
                   value: '#ffffff',
