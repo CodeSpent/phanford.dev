@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { AppProps } from 'next/app'
 import Particles from 'react-tsparticles'
 import { Transition } from '@headlessui/react'
