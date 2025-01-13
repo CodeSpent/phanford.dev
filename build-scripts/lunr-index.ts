@@ -20,21 +20,28 @@ export const buildIndex = (
     resolver?: (obj: any) => string | number
   }>
 ) => {
-  if (indexCache) return indexCache
+  if (indexCache) {
+    console.log('Using cached index');
+    return indexCache;
+  }
 
+  console.log('Starting Lunr index build process...');
   const store: Record<string, any> = {}
   const storeFields = lunrFields.filter((field) => field.store === true)
 
   const index = lunr(function () {
     this.ref('id')
     lunrFields.forEach(({ name, attributes = {} }) => {
+      console.log(`Adding field to index: ${name}`);
       this.field(name, attributes)
     })
 
-    articles.forEach((article) => {
+    articles.forEach((article, i) => {
+      console.log(`Processing article ${i + 1}/${articles.length}: ${article.slug}`);
       const newArticle: Partial<Record<keyof any, any>> & { id: string } = {
         id: article.slug,
       }
+
       for (let field of lunrFields) {
         if (field.resolver) {
           newArticle[field.name] = field.resolver(article)
@@ -53,56 +60,73 @@ export const buildIndex = (
         )
       })
 
+      console.log(`Adding article to index: ${newArticle.id}`);
       this.add(newArticle)
       store[storeFilteredObj.id!] = storeFilteredObj
     })
   })
 
+  console.log('Lunr index build process completed.');
   indexCache = { index, store }
 
+  return indexCache
+}
+
 const getArticlesWithFallback = () => {
+  console.log('Fetching all articles...');
   const articles = getAllArticles() as unknown as ArticleWithSlug[];
+  console.log(`Found ${articles.length} articles.`);
 
   const results = articles.map((article) => {
+    console.log(`Processing article with slug: ${article.slug}`);
     const slug = article.slug;
 
     const contentDirectory = path.resolve(process.cwd(), 'content/articles', slug)
 
     let filePath = path.join(contentDirectory, 'index.mdx')
     if (!fs.existsSync(filePath)) {
+      console.log(`.mdx file not found for ${slug}, trying .md`);
       filePath = path.join(contentDirectory, 'index.md')
     }
 
     if (!fs.existsSync(filePath)) {
+      console.error(`Error: Article not found at ${filePath}`);
       throw new Error(`Article not found: ${filePath}`)
     }
 
+    console.log(`Reading content from file: ${filePath}`);
     const content = fs.readFileSync(filePath, 'utf8')
     return { slug, content }
   })
 
+  console.log('All articles processed successfully.');
   return results;
 }
 
-const exportedIndex = buildIndex(getArticlesWithFallback(), [
-  {
-    name: 'title',
-    store: true,
-    attributes: { boost: 20 },
-  },
-  {
-    name: 'excerpt',
-    resolver: (article) => article.description || article.excerpt,
-  },
-  {
-    name: 'slug',
-    store: true,
-  },
-  { name: 'tags' },
-  { name: 'content' },
-])
+try {
+  console.log('Building Lunr index...');
+  const exportedIndex = buildIndex(getArticlesWithFallback(), [
+    {
+      name: 'title',
+      store: true,
+      attributes: { boost: 20 },
+    },
+    {
+      name: 'excerpt',
+      resolver: (article) => article.description || article.excerpt,
+    },
+    {
+      name: 'slug',
+      store: true,
+    },
+    { name: 'tags' },
+    { name: 'content' },
+  ])
 
-fs.writeFileSync(
-  path.resolve(process.cwd(), './public/indexes/articles.json'),
-  JSON.stringify(exportedIndex)
-)}
+  const outputPath = path.resolve(process.cwd(), './public/indexes/articles.json')
+  console.log(`Writing Lunr index to: ${outputPath}`);
+  fs.writeFileSync(outputPath, JSON.stringify(exportedIndex, null, 2))
+  console.log('Lunr index written successfully.');
+} catch (error) {
+  console.error('An error occurred during the Lunr index build process:', error);
+}
