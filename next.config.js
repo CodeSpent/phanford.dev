@@ -19,7 +19,10 @@ const nextConfig = withPlugins([withImages], {
             from: path.resolve(__dirname, 'content/articles'),
             to: path.resolve(__dirname, 'public/articles'),
             globOptions: {
-              ignore: ['**/*.md'],
+              ignore: [
+                '**/*.md',
+                '**/*.mdx'
+              ],
             },
           },
         ],

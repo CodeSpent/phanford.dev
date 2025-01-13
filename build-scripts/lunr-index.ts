@@ -4,6 +4,11 @@ import { objectFilter } from 'ts-util-helpers'
 import * as fs from 'fs'
 import * as path from 'path'
 
+interface ArticleWithSlug {
+  slug: string;
+  [key: string]: any;
+}
+
 let indexCache: null | { index: lunr.Index; store: Record<string, any> } = null
 
 export const buildIndex = (
@@ -55,10 +60,31 @@ export const buildIndex = (
 
   indexCache = { index, store }
 
-  return indexCache
+const getArticlesWithFallback = () => {
+  const articles = getAllArticles() as unknown as ArticleWithSlug[];
+
+  const results = articles.map((article) => {
+    const slug = article.slug;
+
+    const contentDirectory = path.resolve(process.cwd(), 'content/articles', slug)
+
+    let filePath = path.join(contentDirectory, 'index.mdx')
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(contentDirectory, 'index.md')
+    }
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Article not found: ${filePath}`)
+    }
+
+    const content = fs.readFileSync(filePath, 'utf8')
+    return { slug, content }
+  })
+
+  return results;
 }
 
-const exportedIndex = buildIndex(getAllArticles(), [
+const exportedIndex = buildIndex(getArticlesWithFallback(), [
   {
     name: 'title',
     store: true,
@@ -79,4 +105,4 @@ const exportedIndex = buildIndex(getAllArticles(), [
 fs.writeFileSync(
   path.resolve(process.cwd(), './public/indexes/articles.json'),
   JSON.stringify(exportedIndex)
-)
+)}

@@ -130,7 +130,15 @@ export function getArticlesBySlug<ToPick extends KeysToPick>(
   fields?: ArticleQuery
 ): PickDeep<Article, ToPick, any> {
   const realSlug = slug.replace(/\.md$/, '')
-  const fullPath = join(articlesDirectory, realSlug, `index.md`)
+
+  let filePath = join(articlesDirectory, realSlug, `index.mdx`)
+
+  if (!fs.existsSync(filePath)) {
+    console.log(`MDX file not found for ${slug}, falling back to markdown`)
+    filePath = join(articlesDirectory, realSlug, `index.md`)
+  }
+
+  const fullPath = filePath
 
   const {
     frontmatterData,
