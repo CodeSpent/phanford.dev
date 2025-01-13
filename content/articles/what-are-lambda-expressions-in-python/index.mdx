@@ -1,0 +1,33 @@
+---
+{
+title: 'What are lambda expressions in Python?',
+description: 'This article goes over what lambda expressions are in Python and how you can use them to replace disposable functions making for more clean and concise code.',
+published: '2021-11-13T05:12:03.284Z',
+tags: ['python', 'beginner', 'data-structures', 'lambda'],
+}
+---
+# What are lambda expressions?
+lambda expressions in Python are best described as ***single-use anonymous functions***. What I mean by this, can be explained with a quick example.
+```python
+[1,2,3,4,5]
+```
+I have this list of numbers that I want to square (multiply by itself). I could create a function like so.
+```python
+def square(number):
+    return number*number
+```
+
+This works fine, but what if you only need to do this one time? It would be a little cumbersome to have a function dedicated to this pretty menial task. We can use a lambda express for this instead.
+
+```python
+lambda number: number*number
+```
+So you can see what's happening by referencing the above function next to our lambda expression. We declare `lambda` so the interpreter knows this is a lambda express. The first item is then the parameter which replaces the `number` argument in the `square()` function. Next is the actual result of the expression, `number*number`.
+
+Here's an example using `map()` to get the squared result of each number in our list.
+```python
+list(map(lambda number: number*number, numbers))
+> [1,4,9,16,25]
+```
+
+I hope this is a good example to help you grasp lambda expressions so you can avoid huge pages of disposable functions!
