@@ -62,7 +62,7 @@ squared_numbers = map(square, numbers)
 
 ### What we observed:
 - Using `map()` we don't need to create an empty list that we append to in a for loop.
-- We do not need to use `square()` with parenthesis as the function parameter, as `map()` will call the function for us, we just pass the function object.
+- We do not need to use `square()` with parentheses as the function parameter, as `map()` will call the function for us, we just pass the function object.
 - `map()` will run `square()` for each item in `numbers`.
 
 ## Filter
@@ -83,9 +83,7 @@ Lets take an example that applies the function `even()` to a list of integers. T
 
 ```python
 def even(number):
-    if (number  % 2) == 0:
-        return True
-    return False
+    return (number  % 2) == 0
 ```
 ```python
 numbers = [1,2,3,4,5]
@@ -124,7 +122,7 @@ even_numbers = filter(even, numbers)
 
 ## Zip
 
-> Python's zip() function combines elements of 2 lists with matching indexes into an interable of tuples.
+> Python's zip() function combines elements of 2 lists with matching indexes into an iterable of tuples.
 
 `zip()` will take an undefined number of arguments where each argument is an iterable to zip.
 
@@ -146,8 +144,8 @@ def square(number):
     return number*number
 
 numbers = [1,2,3,4,5]
-even_numbers = filter(even, numbers)
-even_numbers_squared = map(square, even_numbers)
+squared_numbers = list(map(square, numbers))
+even_numbers = list(filter(even, numbers))
 ```
 
 ### Without zip()
