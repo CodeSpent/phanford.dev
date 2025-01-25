@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Transition } from '@headlessui/react'
-import { useSiteSettings } from 'constants/site-settings-context/site-settings-context'
 import SocialLinks from './SocialLinks'
-import { Tagline } from 'components/bars/types'
 import { animated, useSpring } from '@react-spring/web'
 
 const TerminalNameplate: React.FC = () => {
@@ -77,7 +74,7 @@ const HeroComponent: React.FC = () => {
                 <span className="hidden lg:block">.</span>
               </h1>
             </div>
-            <SocialLinks className=" flex justify-center gap-4 lg:justify-start lg:pl-6" />
+            <SocialLinks className="flex justify-center gap-4 lg:justify-start" />
           </div>
         </div>
       </div>
