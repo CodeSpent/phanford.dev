@@ -9,13 +9,17 @@ type TagFilterProps = {
   onChange: (value: string[]) => void
 }
 
+const formatTagLabel = (tag: string) => {
+  return tag.split('-').join(' ')
+}
+
 const getPlaceholderText = (selectedTags: string[]) => {
   if (selectedTags.length === 0) return 'Select Tags'
 
   if (selectedTags.length > 2) {
     return `${selectedTags.length} tags selected`
   } else {
-    return selectedTags.join(', ')
+    return selectedTags.map(formatTagLabel).join(', ')
   }
 }
 
@@ -28,13 +32,13 @@ export default function TagFilterControl({
 }: TagFilterProps) {
   return (
     <ComboBoxInput
-      label={label}
+      label={formatTagLabel(label)}
       placeholder={getPlaceholderText(selectedTags)}
       value={value}
       onChange={onChange}
       options={tags.map(tag => {
         return {
-          label: tag,
+          label: tag.split('-').join(' '),
           value: tag,
         }
       })}
