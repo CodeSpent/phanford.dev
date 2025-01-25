@@ -1,9 +1,10 @@
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
-import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import { XIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
 import { links } from 'constants/navbarLinks'
 import MobileNavPanel from './mobile-nav-panel'
+import brandConfig from 'brand.config'
 
 export default function Navbar() {
   return (
@@ -13,15 +14,17 @@ export default function Navbar() {
           <Link href="/">
             <div className="flex items-center">
               <img
-                className="h-10 w-auto rounded-full sm:h-10"
-                src="https://github.com/codespent.png"
-                alt="Patrick Hanford profile photo."
+                className={`h-10 w-auto rounded-full sm:h-10`}
+                src={brandConfig.profileImage}
+                alt={brandConfig.profileAltText}
               />
-              <div className={'mx-2 flex flex-col'}>
-                <h1 className="text-2xl text-white">Patrick Hanford</h1>
-                <p className={'text-xs italic text-white'}>
-                  <span className="font-semibold">Software Engineer</span> building tools for the
-                  web.
+              <div className={`mx-2 flex flex-col`}>
+                <h1 className={`text-2xl ${brandConfig.primaryTextClass}`}>
+                  {brandConfig.profileName}
+                </h1>
+                <p className={`text-xs ${brandConfig.secondaryTextClass}`}>
+                  <span className="font-semibold">{brandConfig.jobTitle}</span>{' '}
+                  {brandConfig.profileDescription}
                 </p>
               </div>
             </div>
@@ -36,7 +39,11 @@ export default function Navbar() {
           style={{ marginLeft: 'auto' }}
         >
           {links.map(link => (
-            <Link href={link.href} className="text-base font-medium text-white hover:text-gray-700">
+            <Link
+              key={link.title}
+              href={link.href}
+              className={`text-base font-medium ${brandConfig.navLinkClass}`}
+            >
               {link.title}
             </Link>
           ))}
@@ -54,24 +61,25 @@ export default function Navbar() {
       >
         <Popover.Panel
           focus
-          className="fixed inset-x-0 top-0 h-screen origin-top-right transform bg-midnight-blue p-2
-          transition md:hidden"
+          className={`fixed inset-x-0 top-0 h-screen origin-top-right transform ${brandConfig.panelBackgroundClass} p-2 transition md:hidden`}
         >
-          <div className="divide-y-2 divide-gray-50 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+          <div className={`divide-y-2 ${brandConfig.dividerColorClass} rounded-lg shadow-lg ring-1 ${brandConfig.panelRingClass}`}>
             <div className="px-5 pb-6 pt-5">
               <div className="flex items-center justify-between">
                 <div className="flex justify-start">
                   <a className="flex items-center" href="#">
                     <img
-                      className="h-10 w-auto rounded-full sm:h-10"
-                      src="https://github.com/codespent.png"
-                      alt="Patrick Hanford profile photo."
+                      className={`h-10 w-auto rounded-full sm:h-10`}
+                      src={brandConfig.profileImage}
+                      alt={brandConfig.profileAltText}
                     />
-                    <div className={'mx-2 flex flex-col'}>
-                      <h1 className="text-2xl text-white">Patrick Hanford</h1>
-                      <p className={'text-xs italic text-white'}>
-                        <span className="font-semibold">Software Engineer</span> building tools for
-                        the web.
+                    <div className={`mx-2 flex flex-col`}>
+                      <h1 className={`text-2xl ${brandConfig.primaryTextClass}`}>
+                        {brandConfig.profileName}
+                      </h1>
+                      <p className={`text-xs ${brandConfig.secondaryTextClass}`}>
+                        <span className="font-thin">{brandConfig.jobTitle}</span>{' '}
+                        {brandConfig.profileDescription}
                       </p>
                     </div>
                   </a>
@@ -79,8 +87,7 @@ export default function Navbar() {
 
                 <div className="-mr-2">
                   <Popover.Button
-                    className="inline-flex items-center justify-center rounded-md p-2 text-white
-                  hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-500 hover:text-white"
+                    className={`inline-flex items-center justify-center rounded-md p-2 ${brandConfig.closeButtonClass}`}
                   >
                     <span className="sr-only">Close menu</span>
                     <XIcon className="h-6 w-6" aria-hidden="true" />
@@ -93,8 +100,9 @@ export default function Navbar() {
                     <div className="grid grid-cols-3 gap-4 text-center">
                       {links.map(link => (
                         <Link
+                          key={link.title}
                           href={link.href}
-                          className="text-base font-medium text-white hover:text-gray-700"
+                          className={`text-base font-medium ${brandConfig.navLinkClass}`}
                         >
                           {link.title}
                         </Link>
