@@ -5,21 +5,6 @@ import ArticleCard from 'components/blog/ArticleCard'
 export default function ArticleList() {
   const { articlesToDisplay } = useArticleListContext()
 
-  const neonColors = [
-    '#FF5733',
-    '#5733FF',
-    '#33FF57',
-    '#3357FF',
-    '#FFB48F',
-    '#E63D00',
-    '#B48FFF',
-    '#2900B5',
-    '#6FFF96',
-    '#00B03A',
-    '#967FFF',
-    '#0038B0',
-  ]
-
   return (
     <div className={`1fr my-4 grid grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-x-2 lg:gap-y-5`}>
       {articlesToDisplay.map((article, index) => (
