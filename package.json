@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next",
     "start": "next start",
-    "build": "contentlayer build && next build",
+    "build": "contentlayer build && npm run build:lunr && next build",
     "build:blog": "npm run build:content && npm run build:lunr",
     "build:lunr": "npx tsx build-scripts/lunr-index.ts",
     "build:content": "contentlayer build",

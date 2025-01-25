@@ -1,10 +1,8 @@
-import {
-  ArticleSortOption,
-  ArticleSortOptionValue,
-} from '../../constants/article-list-context/article-list-context'
+
 import { Article, ListViewArticles } from '../fs/api'
 import { ArticleInfo } from '../../types/ArticleInfo'
 import { useMemo } from 'react'
+import { ArticleSortOption, ArticleSortOptionValue } from '../../constants/blog'
 
 export const getSortedListViewArticles = (
   articlesToSort: ListViewArticles,
@@ -99,17 +97,23 @@ export const getInitialListViewPageArticles = (
   originalPageIndex: number,
   articlesPerPage: number
 ): ListViewArticles =>
-  articles.slice(originalPageIndex * articlesPerPage, articlesPerPage)
+  articles.slice(
+    originalPageIndex * articlesPerPage,
+    (originalPageIndex + 1) * articlesPerPage
+  );
 
 export const getCurrentListViewPageArticles = (
   articles: ListViewArticles,
-  originalPageIndex: number,
+  pageIndex: number,
   articlesPerPage: number
 ): ListViewArticles =>
-  articles.slice(originalPageIndex * articlesPerPage, articlesPerPage)
+  articles.slice(
+    pageIndex * articlesPerPage,
+    (pageIndex + 1) * articlesPerPage
+  );
 
 export const useArticleTagsFromNodes = <T extends { tags: Article['tags'] }>(
-  articles: T[]
+  articles: Article[],
 ) => {
   const articleTags = useMemo(() => {
     return Array.from(

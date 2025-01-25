@@ -1,11 +1,10 @@
 import { Fragment, useContext } from 'react'
 import {
-  paginationOptions,
   useArticleListContext,
 } from '../../constants/article-list-context/article-list-context'
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
+import { paginationOptions } from '../../constants/blog'
 import { ListBoxInput } from '../common/Input'
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
