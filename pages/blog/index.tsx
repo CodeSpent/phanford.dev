@@ -11,6 +11,7 @@ import React from 'react'
 import ArticleList from 'page-components/blog/article-list/article-list'
 import ArticlePagesFilter from 'components/blog/ArticlePagesFilter'
 import ArticlePaginator from 'components/blog/ArticlePaginator'
+
 import { allArticles } from 'contentlayer/generated'
 
 type Article = {
@@ -26,7 +27,7 @@ type Props = {
   articles: ListViewArticles
   tags: string[]
   numberOfPages: number
-  pageNumber: number
+  pageIndex: number
   articlesPerPage: number
 }
 
@@ -34,15 +35,15 @@ export default function BlogPage({
   articles,
   tags,
   numberOfPages,
-  pageNumber,
+  pageIndex,
   articlesPerPage,
 }: Props) {
   return (
     <DefaultLayout title="Blog | Patrick Hanford">
       <div className="px-4">
         <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
-          <ArticleSearchContextProvider>
-            <ArticleListContextProvider articles={articles} pageIndex={pageNumber}>
+          <ArticleSearchContextProvider articles={articles}>
+            <ArticleListContextProvider articles={articles} pageIndex={pageIndex}>
               <div>
                 <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
                   Blog
@@ -79,11 +80,9 @@ export const getStaticProps = async () => {
     })
   })
 
-  const pageIndex = 1
-
   return {
     props: {
-      pageIndex,
+      pageIndex: 0,
       path: `/`,
       articles,
       tags,

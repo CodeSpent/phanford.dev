@@ -24,6 +24,9 @@ export interface Article {
   tags: string[]
 }
 
+export type DeepPickedArticle = Partial<Pick<Article, 'title' | 'slug' | 'description'>>;
+
+
 export interface ArticleQuery {
   /*
    * The purpose of an ArticleQuery is to
@@ -134,7 +137,7 @@ export function getArticlesBySlug<ToPick extends KeysToPick>(
   let filePath = join(articlesDirectory, realSlug, `index.mdx`)
 
   if (!fs.existsSync(filePath)) {
-    console.log(`MDX file not found for ${slug}, falling back to markdown`)
+    console.error(`MDX file not found for ${slug}, falling back to markdown`)
     filePath = join(articlesDirectory, realSlug, `index.md`)
   }
 
@@ -164,10 +167,17 @@ let allArticlesCache = new WeakMap<object, Article[]>()
 export function getAllArticles<ToPick extends KeysToPick>(
   fields?: ArticleQuery,
   cacheString: object | null = null
-): Array<PickDeep<Article, ToPick, any>> {
+): DeepPickedArticle[] {
   if (cacheString) {
     const cacheData = allArticlesCache.get(cacheString)
     if (cacheData) return cacheData as any
+  }
+
+  if (!fields) {
+    fields = {
+      slug: true,
+      tags: true,
+    }
   }
 
   const slugs = getArticleSlugs()

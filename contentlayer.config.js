@@ -28,9 +28,21 @@ export const Article = defineDocumentType(() => ({
       type: 'string',
       required: true,
     },
+    excerpt: {
+      type: 'string',
+      required: false,
+    },
+    datetime: {
+      type: 'date',
+      required: false,
+    },
+    date: {
+      type: 'date',
+      required: false,
+    },
     published: {
       type: 'date',
-      required: true,
+      required: false,
     },
     tags: {
       type: 'list',
@@ -40,6 +52,7 @@ export const Article = defineDocumentType(() => ({
   },
   computedFields,
 }))
+
 
 export const Resume = defineDocumentType(() => ({
   name: 'Resume',
