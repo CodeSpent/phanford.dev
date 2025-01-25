@@ -22,13 +22,6 @@ export default function ArticleCard({
   tags,
   color,
 }: Props) {
-  const codeSnippet = `
-# Example of a Python list comprehension
-numbers = [1, 2, 3, 4, 5]
-squared_numbers = [num ** 2 for num in numbers]
-print(squared_numbers)
-# Output: [1, 4, 9, 16, 25]
-`
   return (
     <Link href={['blog', slug].join('')}>
       <div
@@ -50,14 +43,6 @@ print(squared_numbers)
             >
               {title}
             </p>
-
-            {codeSnippet && tags.includes('python') && (
-              <div className="py-2 drop-shadow-2xl">
-                <SyntaxHighlighter language="python" style={vscDarkPlus}>
-                  {codeSnippet}
-                </SyntaxHighlighter>
-              </div>
-            )}
 
             <p className="mt-2 text-base text-gray-400 group-hover:text-gray-400">
               {description}
