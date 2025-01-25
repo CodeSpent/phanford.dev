@@ -26,7 +26,6 @@ export default function RecentPosts({ articles }) {
               publishedDate={article.date}
               publishedDateTime={article.datetime}
               tags={article.tags}
-              color={'#000'}
             />
           ))}
         </div>
