@@ -31,7 +31,6 @@ export default function ArticleList() {
           title={article.title}
           description={article.description}
           tags={article.tags}
-          color={neonColors[index % neonColors.length]}
         />
       ))}
     </div>
