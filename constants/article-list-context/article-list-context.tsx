@@ -13,9 +13,8 @@ import {
   getSortedListViewArticles,
   useArticleTagsFromNodes,
 } from '../../utils/blog'
-import { ComboBoxOption } from '../../components/common/Input'
 import { DeepPickedArticle, ListViewArticles } from '../../utils/fs/api'
-import { ArticleSortOption, sortOptions } from '../blog'
+import { ArticleSortOptionValue, sortOptions } from '../blog'
 
 // --------------------------------------------
 // Helper: Filter articles by searchValue & tags
@@ -132,10 +131,10 @@ interface ArticleListContextValue {
   articlesToDisplay: Partial<Article>[] // Allow partial articles if necessary
   pageCount: number
   pageIndex: number
-  setCurrentPageIndex: (val: number) => void
+  setCurrentPageIndex: (value: number) => void
   articleTags: string[]
-  sortValue: ArticleSortOption
-  setSortValue: (value: ArticleSortOption) => void
+  sortValue: ArticleSortOptionValue
+  setSortValue: (value: ArticleSortOptionValue) => void
   articlesPerPage: number
   setArticlesPerPage: (value: number) => void
   numberOfPages: number
@@ -163,7 +162,7 @@ export const ArticleListContextProvider: FC<ArticleListContextProps> =
   const searchCtx = useArticleSearchContext()
   const { searchValue, filterValue, resultSlugs } = searchCtx;
 
-  const [sortValue, setSortValue] = useState<ArticleSortOption>(sortOptions[2])
+  const [sortValue, setSortValue] = useState<ArticleSortOptionValue>(sortOptions[0].value)
   const [currentPageIndex, setCurrentPageIndex] =
     useState<number>(pageIndex)
   const [articlesPerPage, setArticlesPerPage] = useState<number>(9)
@@ -217,8 +216,8 @@ export const ArticleListContextProvider: FC<ArticleListContextProps> =
     pageIndex: number;
     setCurrentPageIndex: (value: (((prevState: number) => number) | number)) => void;
     articleTags: string[];
-    sortValue: ArticleSortOption;
-    setSortValue: (value: (((prevState: ArticleSortOption) => ArticleSortOption) | ArticleSortOption)) => void;
+    sortValue: ArticleSortOptionValue;
+    setSortValue: (value: (((prevState: ArticleSortOptionValue) => ArticleSortOptionValue) | ArticleSortOptionValue)) => void;
     articlesPerPage: number;
     setArticlesPerPage: (value: (((prevState: number) => number) | number)) => void;
     numberOfPages: number;
@@ -237,7 +236,7 @@ export const ArticleListContextProvider: FC<ArticleListContextProps> =
       numberOfPages,
       searchResultsContextValue: searchCtx,
     }),
-    [currentPageIndex, sortValue, articlesPerPage, numberOfPages, searchCtx, filteredArticles.length]
+    [currentPageIndex, sortValue, articlesPerPage, numberOfPages, searchCtx, filteredArticles.length, articlesToDisplay]
   )
 
   return (

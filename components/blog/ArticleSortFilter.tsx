@@ -1,7 +1,4 @@
-import { Fragment } from 'react'
 import {
-  ArticleListContextProvider,
-  ArticleSearchContextProvider,
   useArticleListContext,
 } from '../../constants/article-list-context/article-list-context'
 import { ListBoxInput } from '../common/Input'
@@ -19,7 +16,7 @@ export default function ArticleSortFilter() {
       <ListBoxInput
         label="Sort"
         options={sortOptions}
-        value={sortValue.value}
+        value={sortValue}
         onChange={setSortValue}
       />
     </>

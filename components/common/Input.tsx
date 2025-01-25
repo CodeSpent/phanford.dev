@@ -7,7 +7,7 @@ interface InputProps {
   label: string
   type: string
   placeholder: string
-  value: string
+  value: any
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -35,7 +35,7 @@ export interface ListBoxOption {
 interface ListBoxInputProps {
   label: string
   options: ListBoxOption[]
-  value: string
+  value: any
   onChange: (newValue: any) => void
 }
 

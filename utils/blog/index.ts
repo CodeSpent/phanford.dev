@@ -6,10 +6,10 @@ import { ArticleSortOption, ArticleSortOptionValue } from '../../constants/blog'
 
 export const getSortedListViewArticles = (
   articlesToSort: ListViewArticles,
-  sortValue: ArticleSortOption,
+  sortValue: ArticleSortOptionValue,
   searchResults: string[] | undefined
 ): ListViewArticles => {
-  switch (sortValue.value) {
+  switch (sortValue) {
     case ArticleSortOptionValue.RELEVANCE:
       /* Relevance
        *
