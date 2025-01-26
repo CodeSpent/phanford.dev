@@ -1,0 +1,139 @@
+---
+{
+title: 'Building Discord Bots: A Complete Guide for Beginners',
+description: 'A comprehensive guide to building a Discord bot using Node.js and discord.js library, including installation, setup, and creating advanced features.',
+published: '2025-01-28T00:00:00.000Z',
+tags: ['discord', 'bots', 'node.js', 'discord.js', 'programming'],
+}
+---
+
+# Building Discord Bots: A Complete Guide for Beginners
+
+Discord bots are awesome tools to automate tasks in Discord servers, provide utility functions, or even just entertain your server members with games and trivia. With the **discord.js** library, creating a bot in Node.js is easier than ever.
+
+In this guide, we'll walk through building a Discord bot step-by-step, from setup to advanced features.
+
+---
+
+## What Will We Cover in This Guide?
+
+1. **Setting Up a Discord Bot**
+2. Installing Node.js and Required Packages
+3. Writing Your First Bot (Hello World Example)
+4. Adding Commands to the Bot
+5. Advanced Bot Features
+6. Hosting the Bot Online
+
+---
+
+## Prerequisites
+
+Before starting, make sure you have these ready:
+
+1. **Node.js Installed**: Download [Node.js](https://nodejs.org/).
+2. A **Discord Account** with permissions to create a bot.
+3. **Basic Knowledge** of JavaScript or willingness to learn along the way.
+
+---
+
+## 1. **Creating a Discord Bot**
+
+1. **Navigate to Discord Developer Portal**:
+Go to [Discord Developer Portal](https://discord.com/developers/applications).
+
+2. **Create an Application**:
+- Click **"New Application"**.
+- Name your bot (e.g., `MyFirstBot`) and click **Create**.
+
+3. **Generate a Bot Token**:
+- Go to the **Bot** section in the left menu.
+- Click **Add Bot** → Confirm with "Yes, do it!".
+- Under **Token**, click "Reset Token" → Copy the token.
+
+**Important:** _Keep your token secret! It allows access to your bot._
+
+4. **Invite Your Bot to a Server**:
+- Go to the **OAuth2** > **URL Generator**.
+- Under **Scopes**, select `bot`.
+- Under **Bot Permissions**, select the permissions you need (e.g., `Administrator` or `Manage Messages`).
+- Copy the generated URL.
+- Paste the URL in your browser, select a server where you have admin rights, and authorise the bot.
+
+---
+
+## 2. **Set Up Your Node.js Project**
+
+### Step 1: Create a Project Folder
+
+```bash
+mkdir my-first-discord-bot
+cd my-first-discord-bot
+npm init -y
+```
+
+This creates a Node.js project with a `package.json` file.
+
+### Step 2: Install the `discord.js` Library
+
+Install the version 14 or higher of `discord.js` and a package to use `.env` for environment variables.
+
+```bash
+npm install discord.js dotenv
+```
+
+### Step 3: Create a `.env` File
+
+In the project root, create a `.env` file for storing sensitive information like your bot token:
+
+```env
+DISCORD_TOKEN=your_bot_token_here
+```
+
+---
+
+## 3. **Writing Your First Discord Bot**
+
+Create a file named `index.js` in your project directory:
+
+```bash
+touch index.js
+```
+
+Now write your first bot script:
+
+```javascript
+const { Client, GatewayIntentBits } = require('discord.js');
+require('dotenv').config(); // Load .env variables
+
+// Create a new Discord client with intents
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+});
+
+// Log when the bot is ready
+client.once('ready', () => {
+  console.log(`🤖 Logged in as ${client.user.tag}!`);
+});
+
+// Reply to messages
+client.on('messageCreate', (message) => {
+  if (message.content.toLowerCase() === 'hello bot') {
+    message.reply('Hello there! 👋');
+  }
+});
+
+// Login to Discord with your bot's token
+client.login(process.env.DISCORD_TOKEN);
+```
+
+---
+
+### Run the Bot
+
+Launch the bot with Node.js:
+
+```bash
+node index.js
+```
+
+You should see:

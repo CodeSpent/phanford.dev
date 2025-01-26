@@ -1,0 +1,114 @@
+---
+{
+title: 'Building OBS Plugins with JavaScript: A Step-by-Step Tutorial',
+description: 'Learn how to build plugins for OBS Studio using JavaScript, enhancing its functionality and integrating your own features.',
+published: '2025-01-25T00:00:00.000Z',
+tags: ['obs', 'javascript', 'plugins', 'obs-studio', 'plugin development'],
+}
+---
+
+# Building OBS Plugins with JavaScript
+
+[OBS Studio](https://obsproject.com/) (Open Broadcaster Software) is a popular, open-source software for streaming and recording video. While it already offers a wide range of features out of the box, creating custom plugins allows developers to extend and customize it to better suit their needs. OBS plugins can provide functionality like new video filters, automated scene switching, or external service integrations.
+
+Typically, OBS plugins are written in **C++**, but it is possible to leverage **JavaScript** to build plugins for OBS when integrated with scripting frameworks like **obs-websocket** or **Python (via Web Interfaces)**.
+
+By the end of this tutorial, you'll know how to create an OBS plugin using JavaScript that interacts via `obs-websocket`.
+
+---
+
+## Prerequisites
+
+Before starting, ensure you have:
+
+1. **OBS Studio** installed on your system: [Download here](https://obsproject.com/).
+2. **Node.js** (installed on your system): [Download Node.js](https://nodejs.org/).
+3. The **obs-websocket plugin** to enable WebSocket communication with OBS:
+[Download obs-websocket](https://github.com/obsproject/obs-websocket/releases).
+
+---
+
+## 1. **Installing obs-websocket**
+
+OBS-websocket is an official plugin for OBS Studio that allows bi-directional communication between your JavaScript application and OBS.
+
+1. Download and install the appropriate version of **OBS-websocket** from its [releases page](https://github.com/obsproject/obs-websocket/releases).
+2. Once installed, restart OBS Studio.
+3. Verify the WebSocket plugin is working by navigating to:
+**Tools > WebSocket Server Settings**
+Here, you can configure details like the port number and authentication password.
+
+By default:
+- Port = `4455`
+- Authentication Password = empty (you can set one for better security)
+
+---
+
+## 2. **Setting Up Your JavaScript Project**
+
+Let’s set up a basic Node.js project to communicate with OBS.
+
+### Step 1: Initialize the Project
+
+Run these commands to set up the project:
+
+```bash
+mkdir obs-js-plugin
+cd obs-js-plugin
+npm init -y
+```
+
+### Step 2: Install Dependencies
+
+The main package we’ll use is [`obs-websocket-js`](https://github.com/obs-websocket-community/obs-websocket-js), a JavaScript wrapper to communicate with obs-websocket.
+
+Install it along with any additional tools like environment variables:
+
+```bash
+npm install obs-websocket-js dotenv
+```
+
+---
+
+## 3. **Connecting JavaScript to OBS**
+
+We’ll start with a simple script to connect to OBS and retrieve some data.
+
+### Create a `index.js` File
+
+```javascript
+const { OBSWebSocket } = require('obs-websocket-js');
+require('dotenv').config();
+
+const obs = new OBSWebSocket();
+
+// Configuration (from .env file or hardcoded)
+const OBS_HOST = process.env.OBS_HOST || 'ws://localhost:4455';
+const OBS_PASSWORD = process.env.OBS_PASSWORD || '';
+
+async function connectToOBS() {
+  try {
+    // Connect to OBS with WebSocket
+    await obs.connect(OBS_HOST, OBS_PASSWORD);
+    console.log('✅ Connected to OBS Studio');
+
+    // Fetch basic OBS information
+    const version = await obs.call('GetVersion');
+    console.log('OBS Version:', version);
+
+    // Fetch the list of scenes
+    const scenes = await obs.call('GetSceneList');
+    console.log('Scenes:', scenes.scenes);
+  } catch (error) {
+    console.error('❌ Failed to connect:', error);
+  }
+}
+
+// Run the function
+connectToOBS();
+```
+
+### Step 3: Create a `.env` File
+
+We will use environment variables for sensitive information like the WebSocket password.
+In the root directory, create a `.env` file:
