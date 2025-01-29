@@ -114,20 +114,20 @@ const getArticlesWithFallback = () => {
 
 const exportedIndex = buildIndex(getArticlesWithFallback(), [
   {
-    title: 'title',
+    name: 'title',
     store: true,
     attributes: { boost: 20 },
   },
   {
-    title: 'excerpt',
+    name: 'excerpt',
     resolver: (article) => article.description || article.excerpt,
   },
   {
-    title: 'slug',
+    name: 'slug',
     store: true,
   },
-  { title: 'tags' },
-  { title: 'content' },
+  { name: 'tags' },
+  { name: 'content' },
 ])
 
 fs.writeFileSync(
