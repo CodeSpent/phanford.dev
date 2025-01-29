@@ -1,5 +1,5 @@
 import VerticalNavigationLayout from '../layouts/VerticalNavigationLayout'
-import HeroComponent from '../components/Hero'
+import HeroComponent from '../components/hero/Hero'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { Fragment } from 'react'
 
