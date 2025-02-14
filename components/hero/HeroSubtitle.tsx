@@ -8,7 +8,7 @@ const Subtitle: ({ index }) => React.JSX.Element = ({index} ) => {
       'Competitive Gamer',
       'Metalcore Musician',
       'Non-Profit Organizer',
-      'Founder',
+      'Consulting',
     ],
     []
   );
