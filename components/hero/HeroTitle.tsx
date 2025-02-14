@@ -8,7 +8,7 @@ const NameComponent: ({index }) => React.JSX.Element = ({index}) => {
       'Competitive Gamer': 'CodeSpent',
       'Metalcore Musician': 'Divisionary',
       'Non-Profit Organizer': 'C.W. Tech',
-      'Founder': 'ForthWall',
+      'Consulting': 'ForthWall',
     }),
     []
   );
