@@ -1,5 +1,5 @@
 import DocumentLayout from '../../layouts/DocumentLayout'
-import { allResumes } from 'contentlayer/generated'
+import { allDocs } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
@@ -34,7 +34,7 @@ export default function ResumePage({ resumeDoc }) {
 }
 
 export async function getStaticProps() {
-  const resumeDoc = allResumes[0]
+  const resumeDoc = allDocs.find(doc => doc.slugAsParams === 'resume' || doc.category === 'resume')
 
   return { props: { resumeDoc } }
 }

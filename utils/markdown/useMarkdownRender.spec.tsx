@@ -107,3 +107,5 @@
 //   expect(screen.getByText("Goodbye")).toBeInTheDocument();
 //   expect(screen.getByText("Goodbye2")).toBeInTheDocument();
 // });
+
+export {};

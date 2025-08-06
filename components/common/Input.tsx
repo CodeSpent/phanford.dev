@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useState, useRef, useCallback, useEffect } from 'react'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import { classNames } from 'utils/common'
@@ -70,6 +70,9 @@ export interface ComboBoxInputProps {
   placeholder: string
   value: any
   onChange: (value: any[]) => void
+  showFilterMode?: boolean
+  filterMode?: 'OR' | 'AND'
+  onFilterModeChange?: (mode: 'OR' | 'AND') => void
 }
 
 export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
@@ -78,38 +81,84 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
   placeholder,
   value,
   onChange,
+  showFilterMode = false,
+  filterMode = 'OR',
+  onFilterModeChange,
 }) => {
-  const [selectedFilters, setSelectedFilters] = useState<ComboBoxOption[]>([])
+  const [searchTerm, setSearchTerm] = useState<string>('')
   const [filteredOptions, setFilteredOptions] = useState<ComboBoxOption[]>(options)
+  const [isFocused, setIsFocused] = useState<boolean>(false)
+  const comboboxRef = useRef<HTMLDivElement>(null)
 
-  const filterOptionsBySelectedFilters = selectedFilters => {
-    if (selectedFilters.length > 0) {
-      setFilteredOptions(
-        options.filter(option => option.value.toLowerCase().includes(option.value.toLowerCase()))
-      )
-    } else {
+  // Get selected options from value prop
+  const selectedOptions = options.filter(option => value.includes(option.value))
+
+  const filterOptionsBySearchTerm = (term: string) => {
+    if (!term.trim()) {
       setFilteredOptions(options)
+    } else {
+      const lowerTerm = term.toLowerCase()
+      setFilteredOptions(
+        options.filter(option => 
+          option.value.toLowerCase().includes(lowerTerm) ||
+          option.label.toLowerCase().includes(lowerTerm)
+        )
+      )
     }
   }
 
-  const getComboBoxOptionFromValue = (value: string): ComboBoxOption | undefined => {
-    return options.find(option => option.value === value)
-  }
+  // Sync filteredOptions when options prop changes
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredOptions(options)
+    } else {
+      filterOptionsBySearchTerm(searchTerm)
+    }
+  }, [options])
+
+  // Memoize the filter mode change handler to prevent unnecessary re-renders
+  const handleFilterModeChange = useCallback((mode: 'OR' | 'AND') => {
+    // Call the parent handler without causing dropdown to close
+    onFilterModeChange?.(mode)
+  }, [onFilterModeChange])
 
   // @ts-ignore
   return (
     <div className="mb-5">
       <label className="block text-sm font-medium text-gray-400">{label}</label>
-      <Combobox as="div" value={value} multiple={true} className="relative" onChange={onChange}>
+      <Combobox 
+        as="div" 
+        value={value} 
+        multiple={true} 
+        className="relative" 
+        onChange={(newValue) => {
+          onChange(newValue)
+          // Clear search term after selection to allow new search
+          setSearchTerm('')
+          filterOptionsBySearchTerm('')
+        }}
+        ref={comboboxRef}
+      >
         <Combobox.Input
           className="h-9 w-full rounded-md border-none bg-gray-900 py-2 pl-3 pr-10 capitalize text-gray-600 shadow-sm
           focus:border-gray-600 focus:outline-none focus:ring-1 focus:ring-gray-600 sm:text-sm"
           placeholder={placeholder}
-          displayValue={() =>
-            selectedFilters.length == 0 ? placeholder : `${selectedFilters.length} selected`
-          }
+          value={isFocused ? searchTerm : (selectedOptions.length === 0 ? '' : 
+            selectedOptions.length > 2 ? `${selectedOptions.length} tags selected` : 
+            selectedOptions.map(opt => opt.label).join(', '))}
           onChange={e => {
-            filterOptionsBySelectedFilters(e.target.value)
+            const newSearchTerm = e.target.value
+            setSearchTerm(newSearchTerm)
+            filterOptionsBySearchTerm(newSearchTerm)
+          }}
+          onFocus={() => {
+            setIsFocused(true)
+            setSearchTerm('')
+            filterOptionsBySearchTerm('')
+          }}
+          onBlur={() => {
+            setIsFocused(false)
+            setSearchTerm('')
           }}
         />
 
@@ -119,45 +168,82 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
 
         {options.length > 0 && (
           <Combobox.Options
-            className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-gray-900
-          py-1 text-base capitalize text-gray-600 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            className="absolute z-10 mt-1 w-full rounded-md bg-gray-900 shadow-lg ring-1 ring-black ring-opacity-5 max-h-60 overflow-auto text-base capitalize text-gray-600 focus:outline-none sm:text-sm"
           >
-            {filteredOptions.map(option => (
-              <Combobox.Option
-                key={option.value}
-                value={option.value}
-                className={({ active }) =>
-                  classNames(
-                    'relative cursor-default select-none py-2 pl-3 pr-9 capitalize',
-                    active ? 'bg-gray-900 text-gray-600' : 'text-gray-200'
-                  )
-                }
-              >
-                {({ active, selected }) => (
-                  <>
-                    <span
-                      className={classNames(
-                        'block truncate capitalize',
-                        selected && 'font-semibold'
-                      )}
-                    >
-                      {option.label}
-                    </span>
-
-                    {selected && (
+            <div className="py-1">
+              {filteredOptions.map(option => (
+                <Combobox.Option
+                  key={option.value}
+                  value={option.value}
+                  className={({ active }) =>
+                    classNames(
+                      'relative cursor-default select-none py-2 pl-3 pr-9 capitalize',
+                      active ? 'bg-gray-900 text-gray-600' : 'text-gray-200'
+                    )
+                  }
+                >
+                  {({ active, selected }) => (
+                    <>
                       <span
                         className={classNames(
-                          'absolute inset-y-0 right-0 flex items-center pr-4',
-                          active ? 'text-white' : 'text-gray-600'
+                          'block truncate capitalize',
+                          selected && 'font-semibold'
                         )}
                       >
-                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                        {option.label}
                       </span>
-                    )}
-                  </>
-                )}
-              </Combobox.Option>
-            ))}
+
+                      {selected && (
+                        <span
+                          className={classNames(
+                            'absolute inset-y-0 right-0 flex items-center pr-4',
+                            active ? 'text-white' : 'text-gray-600'
+                          )}
+                        >
+                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                      )}
+                    </>
+                  )}
+                </Combobox.Option>
+              ))}
+            </div>
+            {showFilterMode && (
+              <div className="sticky bottom-0 border-t border-gray-700 bg-gray-900 py-1">
+                <div className="px-1 flex justify-center">
+                  <div className="flex rounded border border-gray-600 overflow-hidden">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        handleFilterModeChange('OR')
+                      }}
+                      className={`px-1.5 py-0.5 text-xs transition-colors ${
+                        filterMode === 'OR'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      }`}
+                    >
+                      OR
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        handleFilterModeChange('AND')
+                      }}
+                      className={`px-1.5 py-0.5 text-xs transition-colors ${
+                        filterMode === 'AND'
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      }`}
+                    >
+                      AND
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </Combobox.Options>
         )}
       </Combobox>

@@ -5,7 +5,7 @@ import {
 } from 'constants/article-list-context/article-list-context'
 import ReactPaginate from 'react-paginate'
 import { useRouter } from 'next/router'
-import Button from 'components/controls/button'
+import Button from 'components/common/Button'
 
 export default function ArticlePaginator() {
   const { numberOfPages, pageIndex, setCurrentPageIndex } = useArticleListContext()
@@ -24,12 +24,15 @@ export default function ArticlePaginator() {
     <div className="flex items-center justify-between px-4 py-6 lg:max-w-7xl mx-auto">
       {pageIndex > 0 ? (
         <Button
-          text="Previous Page"
+          variant="secondary"
+          size="md"
           icon={faChevronLeft}
           iconPosition="left"
-          className="px-4 py-2 text-gray-500 hover:text-gray-700 whitespace-nowrap"
+          className="whitespace-nowrap"
           onClick={() => handlePageChange({ selected: pageIndex - 1 })}
-        />
+        >
+          Previous Page
+        </Button>
       ) : (
         <div className="w-auto" />
       )}
@@ -51,12 +54,15 @@ export default function ArticlePaginator() {
 
       {pageIndex < numberOfPages - 1 ? (
         <Button
-          text="Next Page"
+          variant="secondary"
+          size="md"
           icon={faChevronRight}
           iconPosition="right"
-          className="px-4 py-2 text-gray-500 hover:text-gray-700 whitespace-nowrap"
+          className="whitespace-nowrap"
           onClick={() => handlePageChange({ selected: pageIndex + 1 })}
-        />
+        >
+          Next Page
+        </Button>
       ) : (
         <div className="w-auto" />
       )}

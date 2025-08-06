@@ -1,5 +1,6 @@
 import React from 'react'
 import { ComboBoxInput } from 'components/common/Input'
+import { formatTag } from '../../utils/formatTag'
 
 type TagFilterProps = {
   label: string
@@ -7,10 +8,9 @@ type TagFilterProps = {
   value: string[]
   selectedTags: string[]
   onChange: (value: string[]) => void
-}
-
-const formatTagLabel = (tag: string) => {
-  return tag.split('-').join(' ')
+  showFilterMode?: boolean
+  filterMode?: 'OR' | 'AND'
+  onFilterModeChange?: (mode: 'OR' | 'AND') => void
 }
 
 const getPlaceholderText = (selectedTags: string[]) => {
@@ -19,7 +19,7 @@ const getPlaceholderText = (selectedTags: string[]) => {
   if (selectedTags.length > 2) {
     return `${selectedTags.length} tags selected`
   } else {
-    return selectedTags.map(formatTagLabel).join(', ')
+    return selectedTags.map(formatTag).join(', ')
   }
 }
 
@@ -29,16 +29,22 @@ export default function TagFilterControl({
   value,
   onChange,
   selectedTags,
+  showFilterMode = false,
+  filterMode = 'OR',
+  onFilterModeChange,
 }: TagFilterProps) {
   return (
     <ComboBoxInput
-      label={formatTagLabel(label)}
+      label={formatTag(label)}
       placeholder={getPlaceholderText(selectedTags)}
       value={value}
       onChange={onChange}
+      showFilterMode={showFilterMode}
+      filterMode={filterMode}
+      onFilterModeChange={onFilterModeChange}
       options={tags.map(tag => {
         return {
-          label: tag.split('-').join(' '),
+          label: formatTag(tag),
           value: tag,
         }
       })}

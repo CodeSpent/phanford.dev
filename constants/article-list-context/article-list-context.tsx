@@ -15,27 +15,65 @@ import {
 } from '../../utils/blog'
 import { DeepPickedArticle, ListViewArticles } from '../../utils/fs/api'
 import { ArticleSortOptionValue, sortOptions } from '../blog'
+import { DataSourceType, getDataSource } from '../data-sources'
+
+// --------------------------------------------
+// Types for advanced tag filtering
+// --------------------------------------------
+export type FilterMode = 'OR' | 'AND'
+
+export interface TagGroup {
+  tags: string[]
+  mode: FilterMode
+}
 
 // --------------------------------------------
 // Helper: Filter articles by searchValue & tags
 // --------------------------------------------
 function filterArticles(
-  articles: Article[],
+  articles: any[],
   searchValue: string,
-  filterValue: string[]
+  filterValue: string[],
+  filterMode: FilterMode = 'OR',
+  tagGroups: TagGroup[] = [],
+  dataSourceType: DataSourceType = 'blog'
 ): string[] {
-
+  const dataSource = getDataSource(dataSourceType)
   let filtered = articles
 
   // --------------------------------------------
   // 1. Filter by tags if we have any
   // --------------------------------------------
-  // Return any objects with matching tags.
-  // --------------------------------------------
   if (filterValue && filterValue.length > 0) {
-    filtered = filtered.filter((article) =>
-      filterValue.some((tag) => article.tags.includes(tag))
-    )
+    filtered = filtered.filter((article) => {
+      const itemTags = dataSource.getItemTags(article)
+
+      if (filterMode === 'OR') {
+        // OR mode: article matches if it has ANY of the selected tags
+        return filterValue.some((tag) => itemTags.includes(tag))
+      } else {
+        // AND mode: article matches if it has ALL of the selected tags
+        return filterValue.every((tag) => itemTags.includes(tag))
+      }
+    })
+  }
+
+  // --------------------------------------------
+  // 2. Filter by tag groups (for mixed OR/AND combinations)
+  // --------------------------------------------
+  if (tagGroups && tagGroups.length > 0) {
+    filtered = filtered.filter((article) => {
+      const itemTags = dataSource.getItemTags(article)
+
+      // Each group is connected by OR, but within each group tags are connected by the group's mode
+      return tagGroups.some((group) => {
+        if (group.mode === 'OR') {
+          return group.tags.some((tag) => itemTags.includes(tag))
+        } else {
+          return group.tags.every((tag) => itemTags.includes(tag))
+        }
+      })
+    })
   }
   // --------------------------------------------
   // 2. Filter by searchValue (title or excerpt)
@@ -46,8 +84,10 @@ function filterArticles(
   if (searchValue) {
     const lowerSearch = searchValue.toLowerCase()
     filtered = filtered.filter((article) => {
-      const titleMatch = article.title.toLowerCase().includes(lowerSearch)
-      const excerptMatch = article.description.toLowerCase().includes(lowerSearch)
+      const title = dataSource.getItemTitle(article).toLowerCase()
+      const description = dataSource.getItemDescription(article).toLowerCase()
+      const titleMatch = title.includes(lowerSearch)
+      const excerptMatch = description.includes(lowerSearch)
       return titleMatch || excerptMatch
     })
   }
@@ -68,6 +108,10 @@ interface ArticleSearchContextValue {
   setSearchValue: (value: string) => void
   filterValue: string[]
   setFilterValue: (value: string[]) => void
+  filterMode: FilterMode
+  setFilterMode: (mode: FilterMode) => void
+  tagGroups: TagGroup[]
+  setTagGroups: (groups: TagGroup[]) => void
   resultSlugs: string[]
 }
 
@@ -87,19 +131,23 @@ export const useArticleSearchContext = () => {
 
 interface ArticleSearchContextProviderProps {
   articles: any[]
+  dataSourceType?: DataSourceType
 }
 
 export const ArticleSearchContextProvider: FC<ArticleSearchContextProviderProps> =
   ({
      children,
      articles,
+     dataSourceType = 'blog',
    }) => {
   const [searchValue, setSearchValue] = useState('')
   const [filterValue, setFilterValue] = useState<string[]>([])
+  const [filterMode, setFilterMode] = useState<FilterMode>('OR')
+  const [tagGroups, setTagGroups] = useState<TagGroup[]>([])
 
   const resultSlugs = useMemo(() => {
-    return filterArticles(articles, searchValue, filterValue)
-  }, [articles, searchValue, filterValue])
+    return filterArticles(articles, searchValue, filterValue, filterMode, tagGroups, dataSourceType)
+  }, [articles, searchValue, filterValue, filterMode, tagGroups, dataSourceType])
 
   const articleSearchContextValue: ArticleSearchContextValue = useMemo(
     () => ({
@@ -107,9 +155,13 @@ export const ArticleSearchContextProvider: FC<ArticleSearchContextProviderProps>
       setSearchValue,
       filterValue,
       setFilterValue,
+      filterMode,
+      setFilterMode,
+      tagGroups,
+      setTagGroups,
       resultSlugs,
     }),
-    [searchValue, filterValue, resultSlugs]
+    [searchValue, filterValue, filterMode, tagGroups, resultSlugs]
   )
 
   return (
@@ -125,6 +177,7 @@ export const ArticleSearchContextProvider: FC<ArticleSearchContextProviderProps>
 interface ArticleListContextProps {
   pageIndex: number
   articles: any[]
+  dataSourceType?: DataSourceType
 }
 
 interface ArticleListContextValue {
@@ -158,6 +211,7 @@ export const ArticleListContextProvider: FC<ArticleListContextProps> =
   ({ children,
      pageIndex,
      articles,
+     dataSourceType = 'blog',
    }) => {
   const searchCtx = useArticleSearchContext()
   const { searchValue, filterValue, resultSlugs } = searchCtx;
@@ -169,8 +223,8 @@ export const ArticleListContextProvider: FC<ArticleListContextProps> =
 
   // sortedArticles is the full unfiltered article list
   const sortedArticles = useMemo(() => {
-    return getSortedListViewArticles(articles, sortValue, resultSlugs)
-  }, [articles, sortValue, resultSlugs])
+    return getSortedListViewArticles(articles, sortValue, resultSlugs, dataSourceType)
+  }, [articles, sortValue, resultSlugs, dataSourceType])
 
   // Filter articles to only those that match the slugs from ArticleSearchContext
   const filteredArticles = useMemo(() => {
@@ -249,15 +303,20 @@ export const ArticleListContextProvider: FC<ArticleListContextProps> =
 // --------------------------------------------
 // Composed Provider (ArticleContextProvider)
 // --------------------------------------------
-export const ArticleContextProvider: FC<ArticleListContextProps> =
+interface ArticleContextProviderProps extends ArticleListContextProps {
+  dataSourceType?: DataSourceType
+}
+
+export const ArticleContextProvider: FC<ArticleContextProviderProps> =
   ({
      children,
      pageIndex,
      articles,
+     dataSourceType = 'blog',
    }) => {
   return (
-    <ArticleSearchContextProvider articles={articles}>
-      <ArticleListContextProvider pageIndex={pageIndex} articles={articles}>
+    <ArticleSearchContextProvider articles={articles} dataSourceType={dataSourceType}>
+      <ArticleListContextProvider pageIndex={pageIndex} articles={articles} dataSourceType={dataSourceType}>
         {children}
       </ArticleListContextProvider>
     </ArticleSearchContextProvider>
