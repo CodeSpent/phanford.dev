@@ -69,7 +69,7 @@ const Resume = ({ resume, dataSource = 'documents' }: Props) => {
               </div>
               
               {/* Share Buttons */}
-              <div className="flex flex-col items-end gap-2">
+              <div className="flex flex-col items-start gap-2">
                 <span className="text-xs text-gray-400 font-medium">Share</span>
                 <div className="flex items-center gap-2">
                   <Button
