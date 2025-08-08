@@ -47,9 +47,6 @@ html {
   @apply rounded;
 }
 
-/* TODO: This should be more tailwind-y and reusable.
- * Navbar height is 96px;
- */
 .h-screen--nav-aware {
   height: calc(100vh - 96px);
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useArticleListContext } from 'constants/article-list-context/article-list-context'
 import ArticleCard from 'components/blog/ArticleCard'
 import PhotoCard from 'components/blog/PhotoCard'
+import DocumentCard from 'components/blog/DocumentCard'
 import { DataSourceType } from 'constants/data-sources'
 
 type Props = {
@@ -163,15 +164,28 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
         const mosaicClasses = getMosaicClasses(index)
         return (
           <div key={index} className={`${mosaicClasses} md:${mosaicClasses}`}>
-            <ArticleCard
-              slug={article.slug}
-              publishedDateTime={article.datetime}
-              publishedDate={article.date}
-              title={article.title}
-              description={article.description}
-              tags={article.tags}
-              readingTime={(article as any).readingTime}
-            />
+            {dataSource === 'documents' ? (
+              <DocumentCard
+                slug={article.slug}
+                title={article.title}
+                description={article.description}
+                date={article.date}
+                tags={article.tags}
+                category={(article as any).category}
+                fileType={(article as any).fileType}
+                pageCount={(article as any).pageCount || Math.max(1, Math.ceil(((article as any).readingTime || 5) / 2.5))}
+              />
+            ) : (
+              <ArticleCard
+                slug={article.slug}
+                publishedDateTime={article.datetime}
+                publishedDate={article.date}
+                title={article.title}
+                description={article.description}
+                tags={article.tags}
+                readingTime={(article as any).readingTime}
+              />
+            )}
           </div>
         )
       })}
