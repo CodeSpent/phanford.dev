@@ -43,7 +43,7 @@ const TerminalNameplate: React.FC = () => {
       <animated.div style={terminalStyles}>
         <div
           className="flex h-[45px] w-auto items-center rounded bg-card-background px-2 py-2 text-xs font-light
-          lowercase tracking-widest text-gray-300 shadow-2xl lg:text-lg"
+          lowercase tracking-widest text-gray-300 shadow-md hover:shadow-lg hover:shadow-gray-900/20 transition-shadow duration-200 lg:text-lg"
         >
           <span className="text-terminal-header text-green-400 mr-2">~ </span>
           <span className="italic">{typedText}</span>
