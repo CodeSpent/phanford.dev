@@ -115,6 +115,14 @@ export const Photo = defineDocumentType(() => ({
       type: 'string',
       required: false,
     },
+    naturalWidth: {
+      type: 'number',
+      required: false,
+    },
+    naturalHeight: {
+      type: 'number',
+      required: false,
+    },
   },
   computedFields: {
     slug: {
@@ -195,6 +203,10 @@ export const Doc = defineDocumentType(() => ({
     },
     fileType: {
       type: 'string',
+      required: false,
+    },
+    pageCount: {
+      type: 'number',
       required: false,
     },
   },

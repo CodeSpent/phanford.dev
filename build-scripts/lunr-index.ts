@@ -89,7 +89,13 @@ export const buildIndex = (
 }
 
 const getArticlesWithFallback = () => {
-  const articles = getAllArticles() as unknown as ArticleWithSlug[];
+  const articles = getAllArticles({
+    slug: true,
+    title: true,
+    description: true,
+    excerpt: true,
+    tags: true,
+  }) as unknown as ArticleWithSlug[];
 
   const results = articles.map((article) => {
     const slug = article.slug;
@@ -106,7 +112,7 @@ const getArticlesWithFallback = () => {
     }
 
     const content = fs.readFileSync(filePath, 'utf8')
-    return { slug, content }
+    return { ...article, content }
   })
 
   return results;

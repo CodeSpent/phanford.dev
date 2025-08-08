@@ -11,6 +11,7 @@ type Props = {
   description: string
   tags: string[]
   imageUrl: string
+  location?: string
   camera?: string
   lens?: string
   settings?: string
@@ -29,6 +30,7 @@ export default function PhotoCard({
   description,
   tags,
   imageUrl,
+  location,
   camera,
   lens,
   settings,
@@ -89,10 +91,16 @@ export default function PhotoCard({
         </div>
       </div>
 
-      {(lens || settings || camera) && (
+      {(location || lens || settings || camera) && (
         <div className="absolute bottom-16 left-4 right-4 z-20 hidden group-hover:block">
           <div className="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-2 text-xs text-gray-400">
             <div className="flex flex-wrap gap-x-4 gap-y-1">
+              {location && (
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-500">Location:</span>
+                  <span>{location}</span>
+                </div>
+              )}
               {camera && (
                 <div className="flex items-center gap-1">
                   <span className="text-gray-500">Camera:</span>
