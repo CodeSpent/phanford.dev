@@ -1,28 +1,28 @@
-import Head from 'next/head'
 import Navbar from '../components/common/navbars/Navbar'
 import Footer from '../components/common/navbars/Footer'
+import MetaTags from '../components/seo/MetaTags'
 
-const DocumentLayout = ({ children, title }) => {
+const DocumentLayout = ({ children, title, description }) => {
   return (
-    <div className="relative mx-auto max-w-lg lg:max-w-7xl">
-      <Head>
-        <title>
-          {title || 'Patrick Hanford | Document'}
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        </title>
-      </Head>
+    <>
+      <MetaTags
+        contentType="page"
+        title={title || 'Document'}
+        description={description || 'Document by Patrick Hanford'}
+        url={typeof window !== 'undefined' ? window.location.href : 'https://phanford.dev'}
+      />
+      <div className="relative mx-auto max-w-lg lg:max-w-7xl">
+        <header>
+          <Navbar />
+        </header>
 
-      <header>
-        <Navbar />
-      </header>
+        <div className="p-4">{children}</div>
 
-      <div className="p-4">{children}</div>
-
-      <footer>
-        <Footer />
-      </footer>
-    </div>
+        <footer>
+          <Footer />
+        </footer>
+      </div>
+    </>
   )
 }
 
