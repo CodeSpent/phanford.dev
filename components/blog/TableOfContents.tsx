@@ -203,13 +203,17 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
 
   return (
     <nav className={`${className}`}>
-      <div className="bg-gray-900/95 backdrop-blur-sm border border-gray-800/50 rounded-lg p-3" style={{ boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
-        <h3 className="text-xs font-medium text-gray-300 mb-3 uppercase tracking-wide">
-          On This Page
-        </h3>
-        <ul className="space-y-1 text-sm">
-          {headings.map(heading => renderHeading(heading))}
-        </ul>
+      <div className="relative bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-lg p-3 overflow-hidden" style={{ boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
+        {/* Gradient overlay for opacity effect from top to bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 pointer-events-none rounded-lg"></div>
+        <div className="relative z-10">
+          <h3 className="text-xs font-medium text-gray-300 mb-3 uppercase tracking-wide">
+            On This Page
+          </h3>
+          <ul className="space-y-1 text-sm">
+            {headings.map(heading => renderHeading(heading))}
+          </ul>
+        </div>
       </div>
     </nav>
   )

@@ -7,7 +7,10 @@ import Link from 'next/link'
 export default function ResumePage({ resumeDoc }) {
   const MDXContent = useMDXComponent(resumeDoc.body.code)
   return (
-    <DocumentLayout title="Patrick Hanford | Resume">
+    <DocumentLayout 
+      title="Patrick Hanford | Resume"
+      description="Fullstack Software Engineering Resume. Always kept up to date for easy reference, and available to export in preferred format."
+    >
       <div className="rounded bg-gray-900 p-8">
         <h1 className="flex items-center gap-3 text-gray-300">
           <span className="text-4xl font-thin">Software Engineering Resume</span>

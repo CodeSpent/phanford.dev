@@ -41,7 +41,7 @@ const ContentItem = ({ photo, dataSource = 'photos' }: Props) => {
         content={photo}
         title={photo.title}
         description={photo.description || `Photography by Patrick Hanford${photo.location ? ` taken in ${photo.location}` : ''}`}
-        url={typeof window !== 'undefined' ? window.location.href : `https://phanford.dev/photos/${photo.slugAsParams}`}
+        url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'}/photos/${photo.slugAsParams}`}
       />
       <ArticleLayout dataSource={dataSource}>
         <div className="rounded bg-gray-900 p-8">

@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
+import Button from '../common/Button'
 
 interface ComingSoonModalProps {
   isOpen: boolean
@@ -21,7 +22,7 @@ export default function ComingSoonModal({ isOpen, onClose, title }: ComingSoonMo
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black bg-opacity-75" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -35,17 +36,17 @@ export default function ComingSoonModal({ isOpen, onClose, title }: ComingSoonMo
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl bg-card-background backdrop-blur-sm border border-gray-800/50 p-6 text-left align-middle shadow-xl transition-all" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
                 <div className="flex items-center justify-between mb-4">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-white"
                   >
                     {title}
                   </Dialog.Title>
                   <button
                     type="button"
-                    className="rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="rounded-md text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     onClick={onClose}
                   >
                     <span className="sr-only">Close</span>
@@ -54,19 +55,19 @@ export default function ComingSoonModal({ isOpen, onClose, title }: ComingSoonMo
                 </div>
                 
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-400">
                     This feature is coming soon! Stay tuned for updates.
                   </p>
                 </div>
 
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                <div className="mt-4 flex justify-end">
+                  <Button
+                    variant="secondary"
+                    size="md"
                     onClick={onClose}
                   >
                     Got it, thanks!
-                  </button>
+                  </Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

@@ -142,7 +142,7 @@ export default function MetaTags({
 
   // Generate structured data for articles and photos
   const generateStructuredData = () => {
-    const baseStructuredData = {
+    const baseStructuredData: any = {
       '@context': 'https://schema.org',
       '@type': contentType === 'article' ? 'Article' : contentType === 'photo' ? 'Photograph' : 'WebPage',
       headline: meta.title,
@@ -207,7 +207,7 @@ export default function MetaTags({
       )}
 
       {/* Open Graph Meta Tags */}
-      <meta property="og:title" content={meta.title} />
+      <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:type" content={meta.type} />
       <meta property="og:url" content={fullUrl} />
@@ -239,7 +239,7 @@ export default function MetaTags({
       <meta name="twitter:card" content={meta.image ? "summary_large_image" : "summary"} />
       <meta name="twitter:site" content={twitterHandle} />
       <meta name="twitter:creator" content={twitterHandle} />
-      <meta name="twitter:title" content={meta.title} />
+      <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={meta.description} />
       
       {meta.image && (
