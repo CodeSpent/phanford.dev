@@ -13,7 +13,7 @@ import ArticlePagesFilter from 'components/blog/ArticlePagesFilter'
 import ArticlePaginator from 'components/blog/ArticlePaginator'
 import DataSourceSelector from 'components/blog/DataSourceSelector'
 import { DataSourceType, getDataSource } from 'constants/data-sources'
-import PhotoModal from 'components/common/PhotoModal'
+import { useRouter } from 'next/router'
 
 type Props = {
   photos: Photo[]
@@ -30,27 +30,16 @@ export default function PhotosPage({
   pageIndex,
   articlesPerPage,
 }: Props) {
-  const dataSource: DataSourceType = 'photos'
+  const dataSource: DataSourceType = 'photography'
   const [photos, setPhotos] = useState(initialPhotos)
   const [tags, setTags] = useState(initialTags)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
+  const router = useRouter()
 
   const dataSourceConfig = getDataSource(dataSource)
   const pageTitle = `${dataSourceConfig.name} | Patrick Hanford`
 
   const handlePhotoClick = (photo: Photo) => {
-    setSelectedPhoto(photo)
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedPhoto(null)
-  }
-
-  const handleNavigatePhoto = (photo: Photo) => {
-    setSelectedPhoto(photo)
+    router.push(`/photography/${photo.slugAsParams}`)
   }
 
   return (
@@ -77,15 +66,6 @@ export default function PhotosPage({
           </ArticleSearchContextProvider>
         </div>
       </div>
-      
-      {/* Photo Modal */}
-      <PhotoModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        photo={selectedPhoto}
-        photos={photos}
-        onNavigate={handleNavigatePhoto}
-      />
     </DefaultLayout>
   )
 }
@@ -100,7 +80,7 @@ export const getStaticProps = async () => {
   return {
     props: {
       pageIndex: 0,
-      path: `/photos`,
+      path: `/photography`,
       photos,
       tags: uniqueTags,
     },

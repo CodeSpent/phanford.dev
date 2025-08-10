@@ -1,6 +1,6 @@
 import { Article, Doc, Photo, allArticles, allDocs, allPhotos } from 'contentlayer/generated'
 
-export type DataSourceType = 'blog' | 'photos' | 'documents'
+export type DataSourceType = 'blog' | 'photography' | 'documents'
 
 export interface DataSource {
   id: DataSourceType
@@ -77,8 +77,8 @@ export const dataSources: Record<DataSourceType, DataSource> = {
       'guide', 'manual', 'reference', 'template', 'contract', 'legal'
     ],
   },
-  photos: {
-    id: 'photos',
+  photography: {
+    id: 'photography',
     name: 'Photos',
     description: 'Photographs I\'ve taken.',
     itemName: 'Photograph',
@@ -92,7 +92,7 @@ export const dataSources: Record<DataSourceType, DataSource> = {
         return []
       }
     },
-    getItemUrl: (item: Photo) => `/photos${item.slug}`,
+    getItemUrl: (item: Photo) => `/photography${item.slug}`,
     getItemTitle: (item: Photo) => item.title,
     getItemDescription: (item: Photo) => item.description,
     getItemDate: (item: Photo) => item.date,

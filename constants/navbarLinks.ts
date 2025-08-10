@@ -7,7 +7,7 @@ export interface INavbarLink {
 export const links: INavbarLink[] = [
   { title: 'Home', href: '/' },
   { title: 'Articles', href: '/blog' },
-  { title: 'Photography', href: '/photos' },
+  { title: 'Photography', href: '/photography' },
   { title: 'Documents', href: '/documents' },
   { title: 'Music', href: '#', isModal: true },
   { title: 'Resume', href: '/documents/resume' },

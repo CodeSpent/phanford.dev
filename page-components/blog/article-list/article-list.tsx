@@ -20,7 +20,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
     // Only run on client side
     if (typeof window === 'undefined') return
 
-    if (dataSource === 'photos' && masonryRef.current && articlesToDisplay.length > 0) {
+    if (dataSource === 'photography' && masonryRef.current && articlesToDisplay.length > 0) {
       // Dynamically import Masonry to avoid SSR issues
       import('masonry-layout').then((MasonryModule) => {
         const Masonry = MasonryModule.default
@@ -125,7 +125,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
   }
 
   // For photos, use Masonry layout
-  if (dataSource === 'photos') {
+  if (dataSource === 'photography') {
     return (
       <div ref={masonryRef} className="my-4">
         {Array.isArray(articlesToDisplay) && articlesToDisplay.map((article, index) => {
