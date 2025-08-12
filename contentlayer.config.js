@@ -25,6 +25,36 @@ const computedFields = {
       return readingTimeMinutes
     },
   },
+  date: {
+    type: 'string',
+    resolve: doc => {
+      // Use published field if available, otherwise use date field, or fallback to current date
+      const publishedDate = doc.published || doc.date
+      if (publishedDate) {
+        return new Date(publishedDate).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      }
+      return new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    },
+  },
+  datetime: {
+    type: 'string',
+    resolve: doc => {
+      // Use published field if available, otherwise use datetime field, or fallback to current date
+      const publishedDate = doc.published || doc.datetime
+      if (publishedDate) {
+        return new Date(publishedDate).toISOString()
+      }
+      return new Date().toISOString()
+    },
+  },
 }
 
 export const Article = defineDocumentType(() => ({

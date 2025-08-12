@@ -69,17 +69,17 @@ export default function ArticleCard({
             {truncatedDescription}
           </p>
 
-          {/* Footer with date and reading time */}
+          {/* Footer with reading time and date */}
           <div className="flex items-center gap-2 text-xs text-gray-400 font-medium mt-3">
+            {readingTime && (
+              <>
+                <span>{readingTime} min read</span>
+                <span className="text-gray-600">•</span>
+              </>
+            )}
             <time dateTime={publishedDate}>
               {publishedDate}
             </time>
-            {readingTime && (
-              <>
-                <span className="text-gray-600">•</span>
-                <span>{readingTime} min read</span>
-              </>
-            )}
           </div>
         </div>
       </div>
