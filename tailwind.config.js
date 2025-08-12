@@ -11,7 +11,7 @@ module.exports = {
           2: 'hsl(168, 83.5% 78.2%',
         },
         background: 'hsl(240 100% 4.3%)',
-        'card-background': 'hsl(221 39% 11%)',
+        'card-background': 'hsl(225 45% 8%)',
         'midnight-blue': 'hsl(240 100% 4.3%)',
         charcoal: 'rgba(4, 4, 4, 0.25)',
         colors: {

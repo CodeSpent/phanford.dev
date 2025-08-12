@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import { formatTag } from '../../utils/formatTag'
 
 type Props = {
   slug: string
@@ -8,54 +9,77 @@ type Props = {
   title: string
   description: string
   tags: string[]
+  readingTime?: number
 }
 
-export default function ArticleCard(
-  {
-    slug,
-    publishedDateTime,
-    publishedDate,
-    title,
-    description,
-    tags,
-  }: Props) {
-  return (
-    <Link href={['blog', slug].join('')}>
-      <div
-        className={`flex flex-col h-full bg-card-background group mt-4 rounded-lg shadow-md 
-        transition duration-300 hover:z-50 hover:scale-105 hover:shadow-lg`}
-      >
-        <div
-          className="p-4 rounded-lg h-full flex flex-col"
-        >
-          <div className="flex flex-col h-full">
-            <p className="text-sm text-gray-200">
-              <time dateTime={publishedDate}>{publishedDate}</time>
-            </p>
-            <p
-              className="my-4 self-start align-baseline justify-self-start text-xl font-semibold
-              text-gray-300 text-center group-hover:text-white"
-            >
-              {title}
-            </p>
+export default function ArticleCard({
+  slug,
+  publishedDateTime,
+  publishedDate,
+  title,
+  description,
+  tags,
+  readingTime,
+}: Props) {
+  const url = slug && slug.startsWith('/') ? `/blog${slug}` : `/blog/${(slug || '')}`
+  
+  // Truncate description for more compact cards
+  const truncatedDescription = description.length > 120 
+    ? description.substring(0, 120) + '...' 
+    : description
 
-            <p className="mt-2 text-base text-gray-400 group-hover:text-gray-400">
-              {description}
-            </p>
+  return (
+    <Link href={url}>
+      <div
+        className={`h-full bg-card-background group rounded-xl border border-gray-800/50 
+        transition-all duration-200 hover:border-gray-700 hover:shadow-lg hover:shadow-gray-900/20 flex flex-col cursor-pointer`}
+      >
+        <div className="p-5 flex flex-col h-full">
+          {/* Header with tags only */}
+          <div className="flex justify-end mb-3">
+            {Array.isArray(tags) && tags.length > 0 && (
+              <div className="flex gap-1">
+                {tags.slice(0, 2).map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60 
+                    text-gray-300 group-hover:bg-gray-700/60"
+                  >
+                    {formatTag(tag)}
+                  </span>
+                ))}
+                {tags.length > 2 && (
+                  <span className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60 
+                  text-gray-400">
+                    +{tags.length - 2}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-col">
-            <div className="self-start align-end pb-4 pt-6 flex flex-wrap gap-2 items-center">
-              {tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className={`inline-block px-2 py-1 text-xs font-semibold rounded-md bg-gray-700 
-                  text-gray-300  group-hover:bg-gray-600 group-hover:text-white`}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+          {/* Title */}
+          <h3 className="text-lg font-semibold text-gray-300 group-hover:text-white 
+          mb-2 line-clamp-2 leading-tight">
+            {title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-sm text-gray-400 group-hover:text-gray-300 line-clamp-3 leading-relaxed flex-grow">
+            {truncatedDescription}
+          </p>
+
+          {/* Footer with reading time and date */}
+          <div className="flex items-center gap-2 text-xs text-gray-400 font-medium mt-3">
+            {readingTime && (
+              <>
+                <span>{readingTime} min read</span>
+                <span className="text-gray-600">•</span>
+              </>
+            )}
+            <time dateTime={publishedDate}>
+              {publishedDate}
+            </time>
           </div>
         </div>
       </div>

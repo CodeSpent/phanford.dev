@@ -202,7 +202,7 @@ export function getArticleTags() {
   const slugs = getArticleSlugs()
 
   const articles = slugs.map((slug) => getArticlesBySlug(slug))
-  const tags = articles.map((article) => article.tags)
+  const tags = articles.map((article) => Array.isArray(article.tags) ? article.tags : [])
 
   return tags as any[]
 }

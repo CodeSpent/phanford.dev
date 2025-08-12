@@ -7,7 +7,7 @@ type Props = {
 }
 
 export default function ArticleTagFilter({ tags }: Props) {
-  const { filterValue, setFilterValue } = useArticleSearchContext()
+  const { filterValue, setFilterValue, filterMode, setFilterMode } = useArticleSearchContext()
   const [filteredTags] = useState(tags)
 
   return (
@@ -17,6 +17,9 @@ export default function ArticleTagFilter({ tags }: Props) {
       value={filterValue}
       selectedTags={filterValue}
       onChange={setFilterValue}
+      showFilterMode={true}
+      filterMode={filterMode}
+      onFilterModeChange={setFilterMode}
     />
   )
 }

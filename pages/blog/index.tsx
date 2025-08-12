@@ -7,12 +7,12 @@ import {
   ArticleListContextProvider,
   ArticleSearchContextProvider,
 } from 'constants/article-list-context/article-list-context'
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import ArticleList from 'page-components/blog/article-list/article-list'
 import ArticlePagesFilter from 'components/blog/ArticlePagesFilter'
 import ArticlePaginator from 'components/blog/ArticlePaginator'
-
-import { allArticles } from 'contentlayer/generated'
+import DataSourceSelector from 'components/blog/DataSourceSelector'
+import { DataSourceType, getDataSource } from 'constants/data-sources'
 
 type Article = {
   title: string
@@ -32,31 +32,38 @@ type Props = {
 }
 
 export default function BlogPage({
-  articles,
-  tags,
+  articles: initialArticles,
+  tags: initialTags,
   numberOfPages,
   pageIndex,
   articlesPerPage,
 }: Props) {
+  const dataSource: DataSourceType = 'blog'
+  const [articles, setArticles] = useState(initialArticles)
+  const [tags, setTags] = useState(initialTags)
+
+  const dataSourceConfig = getDataSource(dataSource)
+  const pageTitle = `${dataSourceConfig.name} | Patrick Hanford`
+
   return (
-    <DefaultLayout title="Blog | Patrick Hanford">
+    <DefaultLayout title={pageTitle}>
       <div className="px-4">
         <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
-          <ArticleSearchContextProvider articles={articles}>
-            <ArticleListContextProvider articles={articles} pageIndex={pageIndex}>
+          <ArticleSearchContextProvider articles={articles} dataSourceType={dataSource}>
+            <ArticleListContextProvider articles={articles} pageIndex={pageIndex} dataSourceType={dataSource}>
               <div>
-                <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                  Blog
-                </h2>
+                <div className="flex items-center">
+                  <DataSourceSelector selectedDataSource={dataSource} />
+                </div>
 
-                <div className="sm:fl mt-3 flex flex-col gap-3 py-8 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
-                  <ArticleSearch />
+                <div className="sm:fl mt-3 flex flex-col gap-3 pt-4 pb-2 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
+                  <ArticleSearch searchLabel={dataSourceConfig.searchLabel} />
                   <ArticleTagFilter tags={tags} />
                   <ArticleSortFilter />
-                  <ArticlePagesFilter />
+                  <ArticlePagesFilter itemNamePlural={dataSourceConfig.itemNamePlural} />
                 </div>
               </div>
-              <ArticleList />
+              <ArticleList dataSource={dataSource} />
               <ArticlePaginator />
             </ArticleListContextProvider>
           </ArticleSearchContextProvider>
@@ -67,23 +74,14 @@ export default function BlogPage({
 }
 
 export const getStaticProps = async () => {
-  const articles = allArticles
-  const tags = []
-
-  articles.forEach(article => {
-    // FIXME: `tags` evaluates to type of `never`.
-    // @ts-ignore
-    article.tags.forEach(tag => {
-      if (!tags.includes(tag)) {
-        tags.push(tag)
-      }
-    })
-  })
+  const dataSource = getDataSource('blog')
+  const articles = dataSource.getItems() || []
+  const tags = dataSource.getAvailableTags()
 
   return {
     props: {
       pageIndex: 0,
-      path: `/`,
+      path: `/blog`,
       articles,
       tags,
     },

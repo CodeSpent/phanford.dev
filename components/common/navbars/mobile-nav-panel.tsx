@@ -38,7 +38,9 @@ const MobileNavPanel = () => {
         >
           <div className="mt-12 flex flex-grow flex-col items-start justify-start gap-4 overflow-y-auto lg:mt-0">
             {links.map(link => (
-              <NavLink href={link.href}>{link.title}</NavLink>
+              <NavLink key={link.title} href={link.href}>
+                {link.title}
+              </NavLink>
             ))}
           </div>
 

@@ -42,7 +42,7 @@ export default function VerticalNavbar() {
 
       <div className="ml-auto mr-12 hidden origin-right lg:flex lg:-rotate-90 lg:flex-row-reverse">
         {links.map(link => (
-          <NavLink href={link.href}>{link.title}</NavLink>
+          <NavLink key={link.title} href={link.href}>{link.title}</NavLink>
         ))}
       </div>
     </nav>

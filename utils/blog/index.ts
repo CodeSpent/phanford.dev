@@ -3,12 +3,15 @@ import { Article, ListViewArticles } from '../fs/api'
 import { ArticleInfo } from '../../types/ArticleInfo'
 import { useMemo } from 'react'
 import { ArticleSortOption, ArticleSortOptionValue } from '../../constants/blog'
+import { DataSourceType, getDataSource } from '../../constants/data-sources'
 
 export const getSortedListViewArticles = (
   articlesToSort: ListViewArticles,
   sortValue: ArticleSortOptionValue,
-  searchResults: string[] | undefined
+  searchResults: string[] | undefined,
+  dataSourceType: DataSourceType = 'blog'
 ): ListViewArticles => {
+  const dataSource = getDataSource(dataSourceType)
   switch (sortValue) {
     case ArticleSortOptionValue.RELEVANCE:
       /* Relevance
@@ -47,40 +50,50 @@ export const getSortedListViewArticles = (
       /* Date Descending
        *
        * Date Descending sort needs to sort articlesToSort based on
-       * the `published: string` date in descending order.
+       * the date in descending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return new Date(b.published).valueOf() - new Date(a.published).valueOf()
+        const dateA = dataSource.getItemDate(a)
+        const dateB = dataSource.getItemDate(b)
+        if (!dateA || !dateB) return 0
+        return new Date(dateB).valueOf() - new Date(dateA).valueOf()
       })
 
     case ArticleSortOptionValue.DATE_ASCENDING:
       /* Date Ascending
        *
-       * Date Descending sort needs to sort articlesToSort based on
-       * the `published: string` date in ascending order.
+       * Date Ascending sort needs to sort articlesToSort based on
+       * the date in ascending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return new Date(a.published).valueOf() - new Date(b.published).valueOf()
+        const dateA = dataSource.getItemDate(a)
+        const dateB = dataSource.getItemDate(b)
+        if (!dateA || !dateB) return 0
+        return new Date(dateA).valueOf() - new Date(dateB).valueOf()
       })
 
     case ArticleSortOptionValue.TIME_DESCENDING:
       /* Time Descending
        *
        * Time Descending sort needs to sort articlesToSort based on
-       * the `minutesToRead: number` in descending order.
+       * the reading time in descending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return b.minutesToRead - a.minutesToRead
+        const timeA = dataSource.getItemReadingTime(a)
+        const timeB = dataSource.getItemReadingTime(b)
+        return timeB - timeA
       })
 
     case ArticleSortOptionValue.TIME_ASCENDING:
       /* Time Ascending
        *
        * Time Ascending sort needs to sort articlesToSort based on
-       * the `minutesToRead: number` in ascending order.
+       * the reading time in ascending order.
        * */
       return articlesToSort.sort((a: any, b: any): number => {
-        return a.minutesToRead - b.minutesToRead
+        const timeA = dataSource.getItemReadingTime(a)
+        const timeB = dataSource.getItemReadingTime(b)
+        return timeA - timeB
       })
 
     default:
@@ -118,7 +131,9 @@ export const useArticleTagsFromNodes = <T extends { tags: Article['tags'] }>(
   const articleTags = useMemo(() => {
     return Array.from(
       articles.reduce((previousValue, article) => {
-        article.tags.forEach((tag) => previousValue.add(tag))
+        if (article.tags && Array.isArray(article.tags)) {
+          article.tags.forEach((tag) => previousValue.add(tag))
+        }
         return previousValue
       }, new Set())
     )

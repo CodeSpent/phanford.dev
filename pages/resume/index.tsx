@@ -1,5 +1,5 @@
 import DocumentLayout from '../../layouts/DocumentLayout'
-import { allResumes } from 'contentlayer/generated'
+import { allDocs } from 'contentlayer/generated'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
@@ -7,7 +7,10 @@ import Link from 'next/link'
 export default function ResumePage({ resumeDoc }) {
   const MDXContent = useMDXComponent(resumeDoc.body.code)
   return (
-    <DocumentLayout title="Patrick Hanford | Resume">
+    <DocumentLayout 
+      title="Patrick Hanford | Resume"
+      description="Fullstack Software Engineering Resume. Always kept up to date for easy reference, and available to export in preferred format."
+    >
       <div className="rounded bg-gray-900 p-8">
         <h1 className="flex items-center gap-3 text-gray-300">
           <span className="text-4xl font-thin">Software Engineering Resume</span>
@@ -34,7 +37,7 @@ export default function ResumePage({ resumeDoc }) {
 }
 
 export async function getStaticProps() {
-  const resumeDoc = allResumes[0]
+  const resumeDoc = allDocs.find(doc => doc.slugAsParams === 'resume' || doc.category === 'resume')
 
   return { props: { resumeDoc } }
 }

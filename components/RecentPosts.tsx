@@ -9,7 +9,7 @@ export default function RecentPosts({ articles }) {
     <div className="px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
       <div className="relative mx-auto max-w-lg lg:max-w-7xl">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-gray-200 sm:text-4xl">
             Recent posts
           </h2>
           <p className="mt-3 text-xl text-gray-500 sm:mt-4">
@@ -18,14 +18,16 @@ export default function RecentPosts({ articles }) {
           </p>
         </div>
         <div className="grid gap-16 pt-12 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">
-          {articles.map((article) => (
+          {Array.isArray(articles) && articles.map((article, index) => (
             <ArticleCard
+              key={article.slug || index}
               slug={article.slug}
               title={article.title}
               description={article.description}
               publishedDate={article.date}
               publishedDateTime={article.datetime}
               tags={article.tags}
+              readingTime={article.readingTime}
             />
           ))}
         </div>

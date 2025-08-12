@@ -1,10 +1,14 @@
 export interface INavbarLink {
   title: string
   href: string
+  isModal?: boolean
 }
 
 export const links: INavbarLink[] = [
   { title: 'Home', href: '/' },
-  { title: 'Blog', href: '/blog' },
-  { title: 'Resume', href: '/resume' },
+  { title: 'Articles', href: '/blog' },
+  { title: 'Photography', href: '/photography' },
+  { title: 'Documents', href: '/documents' },
+  { title: 'Music', href: '#', isModal: true },
+  { title: 'Resume', href: '/documents/resume' },
 ]
