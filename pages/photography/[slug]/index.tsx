@@ -28,6 +28,8 @@ const ContentItem = ({ photo, dataSource = 'photography' }: Props) => {
         title={photo.title}
         description={photo.description || `Photography by Patrick Hanford${photo.location ? ` taken in ${photo.location}` : ''}`}
         url={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'}/photography/${photo.slugAsParams}`}
+        image={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'}${photo.imageUrl}`}
+        imageAlt={photo.title}
       />
       <Head>
         <title>{`${photo.title} | Patrick Hanford`}</title>

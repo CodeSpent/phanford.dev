@@ -140,7 +140,6 @@ export default function MetaTags({
   const fullUrl = url || (typeof window !== 'undefined' ? window.location.href : BASE_URL)
   const fullTitle = `${meta.title} | ${siteName}`
 
-  // Generate structured data for articles and photos
   const generateStructuredData = () => {
     const baseStructuredData: any = {
       '@context': 'https://schema.org',
@@ -213,13 +212,13 @@ export default function MetaTags({
       <meta property="og:url" content={fullUrl} />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content={locale} />
-      
+
       {meta.image && (
         <>
           <meta property="og:image" content={meta.image} />
           <meta property="og:image:alt" content={meta.imageAlt || meta.title} />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="630" />
+          <meta property="og:image:width" content={contentType === 'photo' && content?.naturalWidth ? content.naturalWidth.toString() : "1200"} />
+          <meta property="og:image:height" content={contentType === 'photo' && content?.naturalHeight ? content.naturalHeight.toString() : "630"} />
         </>
       )}
 
