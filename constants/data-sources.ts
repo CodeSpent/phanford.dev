@@ -1,6 +1,6 @@
-import { Article, Doc, Photo, allArticles, allDocs, allPhotos } from 'contentlayer/generated'
+import { Article, Doc, Photo, Project, allArticles, allDocs, allPhotos, allProjects } from 'contentlayer/generated'
 
-export type DataSourceType = 'blog' | 'photography' | 'documents'
+export type DataSourceType = 'blog' | 'photography' | 'documents' | 'projects'
 
 export interface DataSource {
   id: DataSourceType
@@ -105,6 +105,49 @@ export const dataSources: Record<DataSourceType, DataSource> = {
       'canon', 'nikon', 'sony', 'fuji', 'leica', 'film', 'digital', 'drone', 'aerial',
       'wedding', 'event', 'family', 'children', 'pets', 'sports', 'action', 'abstract',
       'minimalist', 'vintage', 'artistic', 'documentary', 'photojournalism'
+    ],
+  },
+  projects: {
+    id: 'projects',
+    name: 'Projects',
+    description: 'Projects I\'ve built.',
+    itemName: 'Project',
+    itemNamePlural: 'Projects',
+    searchLabel: 'Search Projects',
+    getItems: () => {
+      try {
+        return Array.isArray(allProjects) ? allProjects : []
+      } catch (error) {
+        console.error('Error loading projects:', error)
+        return []
+      }
+    },
+    getItemUrl: (item: Project) => `/projects${item.slug}`,
+    getItemTitle: (item: Project) => item.title,
+    getItemDescription: (item: Project) => item.shortDescription || item.description,
+    getItemDate: (item: Project) => item.lastUpdated || item.startDate || item.date,
+    getItemTags: (item: Project) => {
+      // Combine technologies and languages for tags
+      const technologies = Array.isArray(item.technologies) ? item.technologies : []
+      const languages = Array.isArray(item.languages) ? item.languages : []
+      return [...technologies, ...languages]
+    },
+    getItemReadingTime: (item: Project) => item.readingTime || 5,
+    getAvailableTags: () => [
+      // Categories
+      'Webapps/SaaS', 'Mobile Apps', 'Discord Bots', 'Open Source', 'Software', 'CLI Tools',
+      // Frontend
+      'React', 'Next.js', 'Vue', 'Angular', 'Svelte', 'Tailwind CSS', 'TypeScript', 'JavaScript',
+      // Backend
+      'Node.js', 'Python', 'Django', 'Flask', 'FastAPI', 'Express', 'NestJS', 'Go', 'Rust',
+      // Databases
+      'PostgreSQL', 'MongoDB', 'MySQL', 'Redis', 'SQLite', 'Prisma', 'Supabase',
+      // Cloud/DevOps
+      'AWS', 'Vercel', 'Docker', 'Kubernetes', 'GitHub Actions', 'CI/CD',
+      // Mobile
+      'React Native', 'Flutter', 'Swift', 'Kotlin',
+      // Other
+      'Discord.js', 'APIs', 'Microservices', 'Real-time', 'AI/ML', 'E-commerce', 'Analytics'
     ],
   },
 }

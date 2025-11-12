@@ -3,6 +3,7 @@ import { useArticleListContext } from 'constants/article-list-context/article-li
 import ArticleCard from 'components/blog/ArticleCard'
 import PhotoCard from 'components/blog/PhotoCard'
 import DocumentCard from 'components/blog/DocumentCard'
+import ProjectCard from 'components/blog/ProjectCard'
 import { DataSourceType } from 'constants/data-sources'
 
 type Props = {
@@ -174,6 +175,17 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
                 category={(article as any).category}
                 fileType={(article as any).fileType}
                 pageCount={(article as any).pageCount || Math.max(1, Math.ceil(((article as any).readingTime || 5) / 2.5))}
+              />
+            ) : dataSource === 'projects' ? (
+              <ProjectCard
+                slug={article.slug}
+                title={article.title}
+                shortDescription={(article as any).shortDescription || article.description}
+                category={(article as any).category || 'Software'}
+                status={(article as any).status || 'active'}
+                technologies={(article as any).technologies || []}
+                languages={(article as any).languages || []}
+                icon={(article as any).icon}
               />
             ) : (
               <ArticleCard

@@ -2,7 +2,7 @@ const brandConfig = {
   profileImage: 'https://github.com/codespent.png',
   profileAltText: 'Patrick Hanford profile photo.',
   profileName: 'Patrick Hanford',
-  jobTitle: '',
+  jobTitle: 'Full Stack Software Engineer',
   profileDescription: '',
   primaryTextClass: 'text-gray-200',
   secondaryTextClass: 'italic text-gray-300',

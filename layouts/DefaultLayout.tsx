@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import Footer from '../components/common/navbars/Footer'
-import Navbar from '../components/common/navbars/Navbar'
+import NavbarWrapper from '../components/common/navbars/NavbarWrapper'
 import MetaTags from '../components/seo/MetaTags'
 
 type Props = {
@@ -22,9 +22,7 @@ const DefaultLayout = ({
       url={typeof window !== 'undefined' ? window.location.href : 'https://phanford.dev'}
     />
     <div className="relative mx-auto max-w-lg lg:max-w-7xl">
-      <header>
-        <Navbar />
-      </header>
+      <NavbarWrapper />
       {children}
       <Footer />
     </div>

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SocialLinks from '../../SocialLinks'
@@ -5,13 +7,13 @@ import Link from 'next/link'
 import PropTypes from 'prop-types'
 import { faTimes, faBars } from '@fortawesome/free-solid-svg-icons'
 import { Transition } from '@headlessui/react'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import { links } from '../../../constants/navbarLinks'
 import MobileNavPanel from './mobile-nav-panel'
 
 export const NavLink = ({ href, children }) => {
-  const router = useRouter()
-  const isActive = router.pathname === href
+  const pathname = usePathname()
+  const isActive = pathname === href
 
   const baseStyle =
     'transition duration-500 text-gray-500 hover:font-md hover:text-white ' +

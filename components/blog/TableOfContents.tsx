@@ -144,9 +144,14 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
   const scrollToHeading = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      // Calculate offset for two-row sticky navbar (192px height + 16px spacing)
+      const navbarHeight = 208
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      const offsetPosition = elementPosition - navbarHeight
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
       })
     }
   }

@@ -130,6 +130,7 @@ export const useArticleSearchContext = () => {
 }
 
 interface ArticleSearchContextProviderProps {
+  children: React.ReactNode
   articles: any[]
   dataSourceType?: DataSourceType
 }
@@ -175,6 +176,7 @@ export const ArticleSearchContextProvider: FC<ArticleSearchContextProviderProps>
 // ArticleListContext
 // --------------------------------------------
 interface ArticleListContextProps {
+  children: React.ReactNode
   pageIndex: number
   articles: any[]
   dataSourceType?: DataSourceType

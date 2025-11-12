@@ -2,16 +2,18 @@ import { Fragment, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import { links } from 'constants/navbarLinks'
 import MobileNavPanel from './mobile-nav-panel'
 import brandConfig from 'brand.config'
 import ComingSoonModal from 'components/modals/ComingSoonModal'
+import { useDomainBrandName } from '@/lib/domain-utils'
 
 export default function Navbar() {
-  const router = useRouter()
+  const pathname = usePathname()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
+  const brandName = useDomainBrandName()
 
   const handleModalLink = (title: string) => {
     setModalTitle(title)
@@ -19,7 +21,7 @@ export default function Navbar() {
   }
 
   const getLinkClassName = (href: string) => {
-    const isActive = router.pathname === href
+    const isActive = pathname === href
     const baseClasses = 'text-base hover:text-gray-700'
 
     if (isActive) {
@@ -48,7 +50,7 @@ export default function Navbar() {
                 />
                 <div className={`mx-2 flex flex-col`}>
                   <h1 className={`text-2xl ${brandConfig.primaryTextClass}`}>
-                    {brandConfig.profileName}
+                    {brandName}
                   </h1>
                   <p className={`text-xs ${brandConfig.secondaryTextClass}`}>
                     <span className="font-semibold">{brandConfig.jobTitle}</span>{' '}
@@ -113,7 +115,7 @@ export default function Navbar() {
                       />
                       <div className={`mx-2 flex flex-col`}>
                         <h1 className={`text-2xl ${brandConfig.primaryTextClass}`}>
-                          {brandConfig.profileName}
+                          {brandName}
                         </h1>
                         <p className={`text-xs ${brandConfig.secondaryTextClass}`}>
                           <span className="font-thin">{brandConfig.jobTitle}</span>{' '}

@@ -9,16 +9,14 @@ export default function ArticleSearch({ searchLabel = "Search" }: Props) {
   const { searchValue, setSearchValue } = useArticleSearchContext()
 
   return (
-    <div>
-      <SearchControl
-        label={searchLabel}
-        placeholder="Search"
-        value={searchValue}
-        onChange={(value) => {
-          setSearchValue(value)
-        }}
-        hotkey="⌘K"
-      />
-    </div>
+    <SearchControl
+      label={searchLabel}
+      placeholder="Search"
+      value={searchValue}
+      onChange={(value) => {
+        setSearchValue(value)
+      }}
+      hotkey="⌘K"
+    />
   )
 }

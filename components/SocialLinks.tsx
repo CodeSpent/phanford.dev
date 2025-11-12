@@ -36,9 +36,10 @@ const socials = [
   {
     name: 'Twitch',
     href: 'https://twitch.tv/codespent/',
-    icon: (props: JSX.IntrinsicAttributes & FontAwesomeIconProps) => (
-      <FontAwesomeIcon icon={faTwitch} {...props} />
-    ),
+    icon: (props: JSX.IntrinsicAttributes & FontAwesomeIconProps) => {
+      const { icon: _, ...restProps } = props as any
+      return <FontAwesomeIcon icon={faTwitch} {...restProps} />
+    },
   },
   {
     name: 'LeetCode',
@@ -65,7 +66,7 @@ const socials = [
 
 const SocialLinks: React.FC<SocialLinksProps> = ({ className }) => {
   return (
-    <div className={classNames(className)}>
+    <div className={classNames(className || '')}>
       {socials.map(item => (
         <Link
           key={item.name}

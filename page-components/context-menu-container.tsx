@@ -1,7 +1,7 @@
 import { useSiteSettings } from 'constants/site-settings-context/site-settings-context'
 import ContextMenu from 'components/context-menu/context-menu'
 
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
 import { copyCurrentURLToClipboard } from '../utils/common'
 import { IContextMenuSection } from 'components/context-menu/types'
@@ -18,7 +18,7 @@ const ContextMenuContainer = props => {
       toggleDarkModeTheme,
     } = useSiteSettings()
 
-    const router = useRouter()
+    const pathname = usePathname()
 
     const { toggleContextMenuIsDisabled, menuDisabled } = useContextMenuState()
 
@@ -34,7 +34,7 @@ const ContextMenuContainer = props => {
                   label: 'Copy Current URL',
                   description: 'Copy the current URL to your clipboard.',
                   action: async () => {
-                    await copyCurrentURLToClipboard(router.asPath)
+                    await copyCurrentURLToClipboard(pathname)
                   },
                 },
               ],

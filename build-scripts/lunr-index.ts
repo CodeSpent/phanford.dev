@@ -1,25 +1,35 @@
 import lunr from 'lunr'
-import { getAllArticles } from '../utils/fs/api'
+import { allArticles, allProjects, allPhotos, allDocs } from '../.contentlayer/generated/index.mjs'
 import { objectFilter } from 'ts-util-helpers'
 import * as fs from 'fs'
 import * as path from 'path'
-import * as console from 'console' // To ensure compatibility with Vercel logging
+import * as console from 'console'
 
-interface ArticleWithSlug {
-  slug: string;
-  [key: string]: any;
+type ContentType = 'article' | 'project' | 'photo' | 'document'
+
+interface SearchableItem {
+  id: string
+  type: ContentType
+  title: string
+  description: string
+  url: string
+  tags?: string[]
+  content?: string
+  [key: string]: any
+}
+
+interface LunrField {
+  name: string
+  store?: boolean
+  attributes?: object
+  resolver?: (obj: SearchableItem) => string | number
 }
 
 let indexCache: null | { index: lunr.Index; store: Record<string, any> } = null
 
 export const buildIndex = (
-  articles: ArticleWithSlug[],
-  lunrFields: Array<{
-    name: string
-    store?: boolean
-    attributes?: object
-    resolver?: (obj: ArticleWithSlug) => string | number
-  }>
+  items: SearchableItem[],
+  lunrFields: LunrField[]
 ) => {
   if (indexCache) return indexCache
 
@@ -33,110 +43,210 @@ export const buildIndex = (
       this.field(name, attributes)
     })
 
-    console.log('Building Lunr Index...')
+    console.log('Building Global Search Index...')
     console.log('--------------------------------------------')
-
     console.table([
-      { Field: 'id', Details: 'Slug of the article' },
+      { Field: 'id', Details: 'Unique identifier' },
       ...lunrFields
-        .filter((field) => field.name !== 'content') // Exclude content from logging
+        .filter((field) => field.name !== 'content')
         .map((field) => ({
           Field: field.name,
-          Details: `Indexed: ${field.store ? 'Yes' : 'No'}`
+          Details: `Store: ${field.store ? 'Yes' : 'No'}, Boost: ${
+            (field.attributes as any)?.boost || 1
+          }`
         }))
     ])
 
-    articles.forEach((article, index) => {
-      const newArticle: Partial<Record<keyof any, any>> & { id: string } = {
-        id: article.slug,
+    items.forEach((item, index) => {
+      const newItem: Partial<Record<string, any>> & { id: string } = {
+        id: item.id,
       }
 
-      console.log(`\nIndexing Article #${index + 1}: ${article.slug}`)
+      console.log(`\nIndexing ${item.type} #${index + 1}: ${item.id}`)
 
       lunrFields.forEach((field) => {
         if (field.resolver) {
-          newArticle[field.name] = field.resolver(article)
+          newItem[field.name] = field.resolver(item)
         } else {
-          const postFieldVal = article[field.name]
-          newArticle[field.name] = Array.isArray(postFieldVal)
-            ? postFieldVal.join(' ')
-            : postFieldVal
+          const fieldVal = item[field.name]
+          newItem[field.name] = Array.isArray(fieldVal)
+            ? fieldVal.join(' ')
+            : fieldVal
         }
 
-        // Log all fields except content
         if (field.name !== 'content') {
-          console.log(` - ${field.name}:`, newArticle[field.name])
+          console.log(` - ${field.name}:`, newItem[field.name])
         }
       })
 
-      const storeFilteredObj = objectFilter(newArticle, (_, key) => {
+      const storeFilteredObj = objectFilter(newItem, (_, key) => {
         return (
           key === 'id' ||
           !!storeFields.find((storeField) => storeField.name === key)
         )
       })
 
-      this.add(newArticle)
+      this.add(newItem)
       store[storeFilteredObj.id!] = storeFilteredObj
     })
 
     console.log('--------------------------------------------')
-    console.log('Indexing Complete.')
+    console.log(`Indexing Complete. Total items: ${items.length}`)
   })
 
   indexCache = { index, store }
   return indexCache
 }
 
-const getArticlesWithFallback = () => {
-  const articles = getAllArticles({
-    slug: true,
-    title: true,
-    description: true,
-    excerpt: true,
-    tags: true,
-  }) as unknown as ArticleWithSlug[];
-
-  const results = articles.map((article) => {
-    const slug = article.slug;
-
-    const contentDirectory = path.resolve(process.cwd(), 'content/articles', slug)
-
-    let filePath = path.join(contentDirectory, 'index.mdx')
-    if (!fs.existsSync(filePath)) {
-      filePath = path.join(contentDirectory, 'index.md')
-    }
-
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`Article not found: ${filePath}`)
-    }
-
-    const content = fs.readFileSync(filePath, 'utf8')
-    return { ...article, content }
-  })
-
-  return results;
+// Transform articles to searchable items
+const getArticleItems = (): SearchableItem[] => {
+  return allArticles.map((article) => ({
+    id: `article-${article.slug}`,
+    type: 'article' as ContentType,
+    title: article.title,
+    description: article.description || article.excerpt || '',
+    url: `/blog/${article.slugAsParams}`,
+    tags: article.tags || [],
+    content: article.body.raw,
+    readingTime: article.readingTime,
+    date: article.date,
+  }))
 }
 
-const exportedIndex = buildIndex(getArticlesWithFallback(), [
+// Transform projects to searchable items
+const getProjectItems = (): SearchableItem[] => {
+  return allProjects.map((project) => ({
+    id: `project-${project.slug}`,
+    type: 'project' as ContentType,
+    title: project.title,
+    description: project.shortDescription || project.description || '',
+    url: `/projects/${project.slug}`,
+    tags: project.tags || [],
+    content: project.body.raw,
+    category: project.category,
+    status: project.status,
+    technologies: project.technologies?.join(' ') || '',
+    languages: project.languages?.join(' ') || '',
+    icon: project.icon,
+  }))
+}
+
+// Transform photos to searchable items
+const getPhotoItems = (): SearchableItem[] => {
+  return allPhotos.map((photo) => ({
+    id: `photo-${photo.slug}`,
+    type: 'photo' as ContentType,
+    title: photo.title,
+    description: photo.description || '',
+    url: `/photography/${photo.slug}`,
+    tags: photo.tags || [],
+    location: photo.location || '',
+    camera: photo.camera || '',
+    imageUrl: photo.imageUrl,
+  }))
+}
+
+// Transform documents to searchable items
+const getDocItems = (): SearchableItem[] => {
+  return allDocs.map((doc) => ({
+    id: `doc-${doc.slug}`,
+    type: 'document' as ContentType,
+    title: doc.title,
+    description: doc.description || '',
+    url: `/documents/${doc.slug}`,
+    tags: doc.tags || [],
+    content: doc.body.raw,
+    category: doc.category,
+    fileType: doc.fileType,
+  }))
+}
+
+// Combine all items
+const getAllSearchableItems = (): SearchableItem[] => {
+  const articles = getArticleItems()
+  const projects = getProjectItems()
+  const photos = getPhotoItems()
+  const docs = getDocItems()
+
+  console.log('\nContent Summary:')
+  console.table([
+    { Type: 'Articles', Count: articles.length },
+    { Type: 'Projects', Count: projects.length },
+    { Type: 'Photos', Count: photos.length },
+    { Type: 'Documents', Count: docs.length },
+    { Type: 'Total', Count: articles.length + projects.length + photos.length + docs.length }
+  ])
+
+  return [...articles, ...projects, ...photos, ...docs]
+}
+
+// Build the index with all content types
+const exportedIndex = buildIndex(getAllSearchableItems(), [
+  {
+    name: 'type',
+    store: true,
+  },
   {
     name: 'title',
     store: true,
     attributes: { boost: 20 },
   },
   {
-    name: 'excerpt',
-    resolver: (article) => article.description || article.excerpt,
+    name: 'description',
+    store: true,
+    attributes: { boost: 5 },
   },
   {
-    name: 'slug',
+    name: 'url',
     store: true,
   },
-  { name: 'tags' },
-  { name: 'content' },
+  {
+    name: 'tags',
+    store: true,
+    attributes: { boost: 10 },
+  },
+  {
+    name: 'technologies',
+    attributes: { boost: 8 },
+  },
+  {
+    name: 'languages',
+    attributes: { boost: 6 },
+  },
+  {
+    name: 'location',
+  },
+  {
+    name: 'category',
+    store: true,
+  },
+  {
+    name: 'status',
+    store: true,
+  },
+  {
+    name: 'readingTime',
+    store: true,
+  },
+  {
+    name: 'date',
+    store: true,
+  },
+  {
+    name: 'icon',
+    store: true,
+  },
+  {
+    name: 'imageUrl',
+    store: true,
+  },
+  {
+    name: 'content',
+    attributes: { boost: 1 },
+  },
 ])
 
-fs.writeFileSync(
-  path.resolve(process.cwd(), './public/indexes/articles.json'),
-  JSON.stringify(exportedIndex)
-)
+// Write to global search index
+const outputPath = path.resolve(process.cwd(), './public/indexes/global-search.json')
+fs.writeFileSync(outputPath, JSON.stringify(exportedIndex))
+console.log(`\n✓ Global search index written to: ${outputPath}`)

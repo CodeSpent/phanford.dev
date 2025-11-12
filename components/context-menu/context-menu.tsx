@@ -9,7 +9,7 @@ const ContextMenu: FC<IContextMenuProps> = ({
   menuOptions,
   collapsedSectionIndexes,
 }) => {
-  const contextMenuRef = useRef(null)
+  const contextMenuRef = useRef<HTMLDivElement>(null)
 
   const { isOpen, coords, menuDisabled, toggleContextMenu } = useContextMenuState()
 

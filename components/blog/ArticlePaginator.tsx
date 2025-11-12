@@ -1,10 +1,12 @@
+'use client'
+
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import {
   useArticleListContext,
   useArticleSearchContext
 } from 'constants/article-list-context/article-list-context'
 import ReactPaginate from 'react-paginate'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Button from 'components/common/Button'
 
 export default function ArticlePaginator() {
@@ -21,10 +23,10 @@ export default function ArticlePaginator() {
   }
 
   return (
-    <div className="flex items-center justify-between px-4 py-6 lg:max-w-7xl mx-auto">
+    <div className="flex items-center justify-between py-6 lg:max-w-7xl mx-auto">
       {pageIndex > 0 ? (
         <Button
-          variant="secondary"
+          variant="solid-secondary"
           size="md"
           icon={faChevronLeft}
           iconPosition="left"
@@ -54,7 +56,7 @@ export default function ArticlePaginator() {
 
       {pageIndex < numberOfPages - 1 ? (
         <Button
-          variant="secondary"
+          variant="solid-secondary"
           size="md"
           icon={faChevronRight}
           iconPosition="right"

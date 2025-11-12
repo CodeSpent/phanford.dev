@@ -2,7 +2,7 @@ import React from 'react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { DataSourceType, getAllDataSources } from 'constants/data-sources'
 
 type Props = {

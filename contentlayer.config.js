@@ -1,11 +1,11 @@
 import rehypeSlug from 'rehype-slug'
-import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+import { defineDocumentType, makeSource } from 'contentlayer2/source-files'
 import remarkGfm from 'remark-gfm'
 import rehypePrettyCode from 'rehype-pretty-code'
 import fs from 'fs'
 import path from 'path'
 
-/** @type {import('contentlayer/source-files').ComputedFields} */
+/** @type {import('contentlayer2/source-files').ComputedFields} */
 const computedFields = {
   slug: {
     type: 'string',
@@ -89,6 +89,14 @@ export const Article = defineDocumentType(() => ({
     tags: {
       type: 'list',
       of: { type: 'string' },
+      required: false,
+    },
+    headerImage: {
+      type: 'string',
+      required: false,
+    },
+    imagePosition: {
+      type: 'string',
       required: false,
     },
   },
@@ -243,9 +251,166 @@ export const Doc = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const Project = defineDocumentType(() => ({
+  name: 'Project',
+  filePathPattern: 'projects/**/*.{md,mdx}',
+  contentType: 'mdx',
+  fields: {
+    title: {
+      type: 'string',
+      required: true,
+    },
+    shortDescription: {
+      type: 'string',
+      required: true,
+    },
+    description: {
+      type: 'string',
+      required: true,
+    },
+    category: {
+      type: 'string',
+      required: true,
+    },
+    status: {
+      type: 'string',
+      required: true,
+    },
+    version: {
+      type: 'string',
+      required: false,
+    },
+    hasDetailPage: {
+      type: 'boolean',
+      required: false,
+    },
+    featured: {
+      type: 'boolean',
+      required: false,
+    },
+    technologies: {
+      type: 'list',
+      of: { type: 'string' },
+      required: false,
+    },
+    languages: {
+      type: 'list',
+      of: { type: 'string' },
+      required: false,
+    },
+    links: {
+      type: 'json',
+      required: false,
+    },
+    startDate: {
+      type: 'date',
+      required: false,
+    },
+    endDate: {
+      type: 'date',
+      required: false,
+    },
+    lastUpdated: {
+      type: 'date',
+      required: false,
+    },
+    headerImage: {
+      type: 'string',
+      required: false,
+    },
+    icon: {
+      type: 'string',
+      required: false,
+    },
+    layoutType: {
+      type: 'string',
+      required: false,
+    },
+    screenshots: {
+      type: 'list',
+      of: { type: 'string' },
+      required: false,
+    },
+    githubRepo: {
+      type: 'string',
+      required: false,
+    },
+    demoUrl: {
+      type: 'string',
+      required: false,
+    },
+    videoUrl: {
+      type: 'string',
+      required: false,
+    },
+    highlightedFeatures: {
+      type: 'list',
+      of: { type: 'string' },
+      required: false,
+    },
+    stats: {
+      type: 'json',
+      required: false,
+    },
+    statsLastUpdated: {
+      type: 'date',
+      required: false,
+    },
+    tags: {
+      type: 'list',
+      of: { type: 'string' },
+      required: false,
+    },
+    imagePosition: {
+      type: 'string',
+      required: false,
+    },
+    screenshotLink: {
+      type: 'json',
+      required: false,
+    },
+    websiteUrl: {
+      type: 'string',
+      required: false,
+    },
+    ctaButtonConfig: {
+      type: 'json',
+      required: false,
+    },
+  },
+  computedFields: {
+    ...computedFields,
+    icon: {
+      type: 'string',
+      resolve: doc => {
+        // Auto-detect icon file in the same folder
+        const pathParts = doc._raw.sourceFilePath.split('/')
+        const folderPath = pathParts.slice(0, -1).join('/') // Remove file name
+        const contentFolderPath = path.join(process.cwd(), 'content', folderPath)
+
+        try {
+          const files = fs.readdirSync(contentFolderPath)
+          const iconFile = files.find(file =>
+            /^icon\.(png|svg|jpg|jpeg)$/i.test(file)
+          )
+
+          if (iconFile) {
+            const folderName = pathParts[pathParts.length - 2]
+            return `/images/projects/${folderName}/${iconFile}`
+          }
+        } catch (error) {
+          console.warn(`Could not read directory ${contentFolderPath}:`, error.message)
+        }
+
+        return null // No icon
+      },
+    },
+  },
+}))
+
 export default makeSource({
   contentDirPath: 'content',
-  documentTypes: [Article, Photo, Doc],
+  documentTypes: [Article, Photo, Doc, Project],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
@@ -254,19 +419,7 @@ export default makeSource({
         rehypePrettyCode,
         {
           theme: 'github-dark',
-          onVisitLine(node) {
-            // Prevent collapsing in `grid` mode and allow
-            // copy/paste of empty lines.
-            if (node.children.length === 0) {
-              node.children = [{ type: 'text', value: ' ' }]
-            }
-          },
-          onVisitHighlightedLine(node) {
-            node.properties.className.push('line-highlighted')
-          },
-          onVisitHighlightedWords(node) {
-            node.properties.className.push('word-highlighted')
-          },
+          keepBackground: true,
         },
       ],
     ],

@@ -50,18 +50,9 @@ pre {
   /* Important to allow the code to move horizontally; */
   overflow-x: auto;
   position: relative;
-}
 
-pre:not(:last-child) {
-  margin-bottom: 3rem;
-}
-
-pre:first-child {
-  margin-top: 0;
-}
-
-pre:last-child {
-  margin-top: 0;
+  /* Default vertical and horizontal margins */
+  margin: 2rem 1rem;
 }
 
 pre .code-container {

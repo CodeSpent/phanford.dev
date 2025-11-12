@@ -1,4 +1,4 @@
-import Navbar from '../components/common/navbars/Navbar'
+import NavbarWrapper from '../components/common/navbars/NavbarWrapper'
 import Footer from '../components/common/navbars/Footer'
 import MetaTags from '../components/seo/MetaTags'
 
@@ -12,9 +12,7 @@ const DocumentLayout = ({ children, title, description }) => {
         url={typeof window !== 'undefined' ? window.location.href : 'https://phanford.dev'}
       />
       <div className="relative mx-auto max-w-lg lg:max-w-7xl">
-        <header>
-          <Navbar />
-        </header>
+        <NavbarWrapper />
 
         <div className="p-4">{children}</div>
 

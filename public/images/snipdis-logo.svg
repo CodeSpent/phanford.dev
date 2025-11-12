@@ -1,0 +1,18 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" rx="20" fill="#1a1a2e"/>
+
+  <!-- Code brackets -->
+  <path d="M60 70L40 100L60 130" stroke="#6366f1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M140 70L160 100L140 130" stroke="#6366f1" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Discord-style dots in center -->
+  <circle cx="85" cy="90" r="6" fill="#818cf8"/>
+  <circle cx="100" cy="100" r="6" fill="#818cf8"/>
+  <circle cx="115" cy="90" r="6" fill="#818cf8"/>
+  <circle cx="85" cy="110" r="6" fill="#818cf8"/>
+  <circle cx="115" cy="110" r="6" fill="#818cf8"/>
+
+  <!-- Text -->
+  <text x="100" y="170" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#fff" text-anchor="middle">SnipDis</text>
+</svg>

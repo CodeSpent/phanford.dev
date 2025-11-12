@@ -1,3 +1,5 @@
+'use client'
+
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
 import { IContextMenuSection } from 'components/context-menu/types'
 import { sluggify } from '../../utils/common'
@@ -22,7 +24,11 @@ interface ContextMenuContextProps {
 
 const ContextMenuContext = createContext<ContextMenuContextProps | undefined>(undefined)
 
-const ContextMenuProvider: React.FC = ({ children }) => {
+interface ContextMenuProviderProps {
+  children: React.ReactNode
+}
+
+const ContextMenuProvider: React.FC<ContextMenuProviderProps> = ({ children }) => {
   const [initialized, setInitialized] = useState(false)
   const [menuOptions, setMenuOptions] = useState<IContextMenuSection[]>([])
   const [collapsedSectionLabels, setCollapsedSectionLabels] = useState<string[]>([])
@@ -52,9 +58,9 @@ const ContextMenuProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     setCollapsedSectionLabels(
-      JSON.parse(localStorage.getItem('contextMenuCollapsedSectionLabels')) ?? []
+      JSON.parse(localStorage.getItem('contextMenuCollapsedSectionLabels') || '[]')
     )
-    setContextMenuIsDisabled(JSON.parse(localStorage.getItem('contextMenuDisabled')) ?? false)
+    setContextMenuIsDisabled(JSON.parse(localStorage.getItem('contextMenuDisabled') || 'false'))
     setInitialized(true)
   }, [])
 

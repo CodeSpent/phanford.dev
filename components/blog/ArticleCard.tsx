@@ -35,23 +35,23 @@ export default function ArticleCard({
         transition-all duration-200 hover:border-gray-700 hover:shadow-lg hover:shadow-gray-900/20 flex flex-col cursor-pointer`}
       >
         <div className="p-5 flex flex-col h-full">
-          {/* Header with tags only */}
-          <div className="flex justify-end mb-3">
+          {/* Header with tags - full width, no wrapping */}
+          <div className="mb-3">
             {Array.isArray(tags) && tags.length > 0 && (
-              <div className="flex gap-1">
-                {tags.slice(0, 2).map((tag, index) => (
+              <div className="flex gap-1.5 overflow-hidden">
+                {tags.slice(0, 4).map((tag, index) => (
                   <span
                     key={index}
-                    className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60 
-                    text-gray-300 group-hover:bg-gray-700/60"
+                    className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60
+                    text-gray-300 group-hover:bg-gray-700/60 whitespace-nowrap flex-shrink-0"
                   >
                     {formatTag(tag)}
                   </span>
                 ))}
-                {tags.length > 2 && (
-                  <span className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60 
-                  text-gray-400">
-                    +{tags.length - 2}
+                {tags.length > 4 && (
+                  <span className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60
+                  text-gray-400 whitespace-nowrap flex-shrink-0">
+                    +{tags.length - 4}
                   </span>
                 )}
               </div>

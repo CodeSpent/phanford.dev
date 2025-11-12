@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useMemo, useState } from 'react'
 import SocialLinks from '../SocialLinks';
 import { animated, useSpring } from '@react-spring/web';

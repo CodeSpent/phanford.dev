@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import Head from 'next/head'
-import Navbar from '../components/common/navbars/Navbar'
+import NavbarWrapper from '../components/common/navbars/NavbarWrapper'
 import Footer from '../components/common/navbars/Footer'
 import { DataSourceType, getDataSource } from '../constants/data-sources'
 
@@ -21,9 +21,7 @@ const ArticleLayout = ({ children, title, dataSource = 'blog' }: Props) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <header>
-        <Navbar />
-      </header>
+      <NavbarWrapper />
 
       <div className="px-4 pb-4">{children}</div>
 

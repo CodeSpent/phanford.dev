@@ -9,20 +9,28 @@ interface InputProps {
   placeholder: string
   value: any
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
+  rightAddon?: React.ReactNode
 }
 
-const Input: React.FC<InputProps> = ({ label, type, placeholder, value, onChange }) => {
+const Input: React.FC<InputProps> = ({ label, type, placeholder, value, onChange, rightAddon }) => {
   return (
-    <div className="mb-5 w-full">
+    <div className="mb-5">
       <label className="block text-sm font-medium text-gray-400">{label}</label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        className="block w-full rounded-md border-none bg-gray-900 pr-12 text-gray-600 shadow-sm
-        focus:border-gray-600 focus:ring-gray-500 sm:text-sm"
-      />
+      <div className="relative">
+        <input
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          className="block w-full rounded-md border-none bg-gray-900 pr-12 text-gray-600 shadow-sm
+          focus:border-gray-600 focus:ring-gray-500 sm:text-sm"
+        />
+        {rightAddon && (
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            {rightAddon}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -187,7 +195,7 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
                       <span
                         className={classNames(
                           'block truncate capitalize',
-                          selected && 'font-semibold'
+                          selected ? 'font-semibold' : ''
                         )}
                       >
                         {option.label}
