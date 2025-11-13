@@ -115,7 +115,7 @@ const getArticleItems = (): SearchableItem[] => {
 
 // Transform projects to searchable items
 const getProjectItems = (): SearchableItem[] => {
-  return allProjects.map((project) => ({
+  return (allProjects as any[]).map((project) => ({
     id: `project-${project.slug}`,
     type: 'project' as ContentType,
     title: project.title,
