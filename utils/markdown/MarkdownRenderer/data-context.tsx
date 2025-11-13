@@ -32,7 +32,7 @@ export const MarkdownDataContext = createContext<{
   dispatch: () => {},
 })
 
-export const MarkdownDataProvider: FC = ({ children }) => {
+export const MarkdownDataProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   // Alternative to `useEffect`

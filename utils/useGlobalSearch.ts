@@ -55,7 +55,7 @@ function getClientSideResults(query: string, typeFilter: ContentType = 'all'): S
         description: article.description || article.excerpt || '',
         url: `/blog/${article.slugAsParams}`,
         tags: article.tags,
-        readingTime: article.readingTime,
+        readingTime: article.readingTime ? `${article.readingTime} min read` : undefined,
         date: article.date,
       }))
     allContent.push(...articleResults)
@@ -141,8 +141,8 @@ function loadLunrIndex() {
     window.__GLOBAL_SEARCH__ = window.__GLOBAL_SEARCH__ || {}
     if (!window.__GLOBAL_SEARCH__?.__loaded) {
       window.__GLOBAL_SEARCH__.__loaded =
-        typeof fetch !== 'undefined' &&
-        fetch(`/indexes/global-search.json`, {
+        typeof fetch !== 'undefined'
+        ? fetch(`/indexes/global-search.json`, {
           credentials: 'same-origin',
         })
           .then(response => {
@@ -153,7 +153,7 @@ function loadLunrIndex() {
             window.__GLOBAL_SEARCH__ = {
               index: lunr.Index.load(fullIndex.index),
               store: fullIndex.store,
-              __loaded: window.__GLOBAL_SEARCH__.__loaded,
+              __loaded: window.__GLOBAL_SEARCH__?.__loaded,
             }
             return true
           })
@@ -161,6 +161,7 @@ function loadLunrIndex() {
             console.warn('Failed to load search index, falling back to client-side search:', error)
             return false
           })
+        : undefined
     }
   }
 }

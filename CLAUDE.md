@@ -348,7 +348,7 @@ Provides file system operations for content:
 
 **Output**: `.next/` directory with static HTML + React hydration
 
-**Environment**: Next.js 15+ requires Node.js 18.17 or later
+**Environment**: Next.js 15+ requires Node.js 20.11 or later
 
 **Static Assets**:
 - `/public/` served at root

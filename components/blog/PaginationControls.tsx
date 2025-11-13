@@ -38,7 +38,7 @@ export default function PaginationControls() {
   }
 
   const renderPageNumbers = () => {
-    const pages = []
+    const pages: React.ReactNode[] = []
     const maxPagesToShow = 7 // Show 7 page numbers max
     const halfRange = Math.floor(maxPagesToShow / 2)
 

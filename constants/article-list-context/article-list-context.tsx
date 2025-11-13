@@ -235,7 +235,7 @@ export const ArticleListContextProvider: FC<ArticleListContextProps> =
     }
 
     return sortedArticles.filter(({ slug }) => {
-      return resultSlugs.includes(slug)
+      return slug && resultSlugs.includes(slug)
     })
   }, [sortedArticles, resultSlugs])
 

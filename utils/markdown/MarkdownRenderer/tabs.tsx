@@ -14,7 +14,7 @@ import { MarkdownDataContext } from '../MarkdownRenderer/data-context'
 /**
  * @see https://github.com/reactjs/react-tabs for layout of "HTML" nodes
  */
-const Tabs: React.FC = ({ children }) => {
+const Tabs: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const tabsHeadingText = React.useMemo(() => {
     const childrenArr = React.Children.toArray(children)
     const tabList = childrenArr.filter(

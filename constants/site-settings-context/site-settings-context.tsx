@@ -33,8 +33,8 @@ export const SiteSettingsProvider = ({ children }) => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setAnimationEnabled(JSON.parse(localStorage.getItem('animationEnabled')) ?? true)
-      setParticlesHidden(JSON.parse(localStorage.getItem('particlesHidden')) ?? false)
+      setAnimationEnabled(JSON.parse(localStorage.getItem('animationEnabled') || 'true'))
+      setParticlesHidden(JSON.parse(localStorage.getItem('particlesHidden') || 'false'))
       setInitialized(true)
     }
   }, [])

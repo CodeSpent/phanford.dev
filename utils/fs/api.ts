@@ -148,7 +148,7 @@ export function getArticlesBySlug<ToPick extends KeysToPick>(
     data,
     content,
   }: { frontmatterData: Record<string, any>; data: any; content: string } =
-    readMarkdownFile(fullPath, fields)
+    readMarkdownFile(fullPath, fields || {})
 
   data.slug = realSlug
 

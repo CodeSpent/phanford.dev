@@ -46,7 +46,7 @@ export const EnhancedProjectLayout: React.FC<EnhancedProjectLayoutProps> = ({
     img: (props) => {
       const isHeaderImage = project.headerImage
         ? props.src === project.headerImage
-        : project.body?.raw && project.body.raw.indexOf(props.src || '') < 200
+        : !!(project.body?.raw && project.body.raw.indexOf(props.src || '') < 200)
 
       return (
         <ArticleImage
@@ -98,9 +98,9 @@ export const EnhancedProjectLayout: React.FC<EnhancedProjectLayoutProps> = ({
               latestRelease={
                 githubData?.releases && githubData.releases.length > 0
                   ? {
-                      version: githubData.releases[0].tag_name,
-                      date: githubData.releases[0].published_at,
-                      url: githubData.releases[0].html_url,
+                      version: githubData.releases[0].tagName,
+                      date: githubData.releases[0].publishedAt,
+                      url: githubData.releases[0].htmlUrl,
                     }
                   : undefined
               }
@@ -108,11 +108,11 @@ export const EnhancedProjectLayout: React.FC<EnhancedProjectLayoutProps> = ({
               lastCommit={
                 githubData?.latestCommit
                   ? {
-                      date: githubData.latestCommit.commit.author.date,
-                      message: githubData.latestCommit.commit.message,
+                      date: githubData.latestCommit.date,
+                      message: githubData.latestCommit.message,
                       sha: githubData.latestCommit.sha,
-                      url: githubData.latestCommit.html_url,
-                      author: githubData.latestCommit.commit.author.name,
+                      url: githubData.latestCommit.url,
+                      author: githubData.latestCommit.author.name,
                     }
                   : undefined
               }
@@ -259,7 +259,7 @@ export const EnhancedProjectLayout: React.FC<EnhancedProjectLayoutProps> = ({
           description={project.description}
           tags={project.tags || []}
           date={project.startDate}
-          status={project.status}
+          status={project.status as 'active' | 'archived' | 'in-development' | 'planning'}
           version={project.version}
           category={project.category}
           websiteUrl={project.websiteUrl}

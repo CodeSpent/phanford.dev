@@ -16,7 +16,7 @@ import { MarkdownDataProvider } from '../markdown/MarkdownRenderer/data-context'
 
 type ComponentMap = ComponentsWithNodeOptions['components']
 
-const TabHeader: React.FC = ({ children }) => {
+const TabHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <>{children}</>
 }
 

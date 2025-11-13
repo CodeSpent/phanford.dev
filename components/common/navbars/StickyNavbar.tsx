@@ -144,13 +144,14 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
                         {/* Badge code kept but hidden with false condition */}
                         {false && (() => {
                           const badgeInfo = getBadgeInfo(link.title)
-                          return badgeInfo?.show ? (
+                          if (!badgeInfo || !badgeInfo!.show) return null
+                          return (
                             <NavBadge
-                              count={badgeInfo.count}
-                              variant={badgeInfo.variant}
+                              count={badgeInfo!.count}
+                              variant={badgeInfo!.variant}
                               animate={true}
                             />
-                          ) : null
+                          )
                         })()}
                       </Link>
                     )}

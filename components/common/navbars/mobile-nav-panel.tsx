@@ -17,7 +17,7 @@ interface BadgeInfo {
 }
 
 interface MobileNavPanelProps {
-  badgeData: BadgeData
+  badgeData?: BadgeData
 }
 
 const ToggleButton = ({ onClick, isOpen }) => {

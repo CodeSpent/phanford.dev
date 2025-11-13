@@ -17,7 +17,7 @@ export const getMedia = ({ serverPath }: useMarkdownRendererProps) => {
 
       const ZoomComp = shouldZoom
         ? Zoom
-        : ((({ children }) => <>{children}</>) as React.FC)
+        : ((({ children }: { children: React.ReactNode }) => <>{children}</>) as React.FC<{ children: React.ReactNode }>)
 
       // only "fill" is supported when height and width are not specified
       const beResponsive = !!(props2.height && props2.width)

@@ -32,6 +32,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
         }
 
         // Initialize new Masonry instance
+        if (!masonryRef.current) return
         masonryInstance.current = new Masonry(masonryRef.current, {
           itemSelector: '.masonry-item',
           columnWidth: 400,
@@ -130,16 +131,16 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
     return (
       <div ref={masonryRef} className="my-4">
         {Array.isArray(articlesToDisplay) && articlesToDisplay.map((article, index) => {
-          const naturalSize = getNaturalImageSize(article.slug, (article as any).orientation, index)
+          const naturalSize = getNaturalImageSize(article.slug || '', (article as any).orientation, index)
           return (
             <div key={index} className="masonry-item">
               <PhotoCard
-                slug={article.slug}
-                publishedDateTime={article.datetime}
-                publishedDate={article.date}
-                title={article.title}
-                description={article.description}
-                tags={article.tags}
+                slug={article.slug || ''}
+                publishedDateTime={article.datetime || ''}
+                publishedDate={article.date || ''}
+                title={article.title || ''}
+                description={article.description || ''}
+                tags={article.tags || []}
                 imageUrl={(article as any).imageUrl}
                 location={(article as any).location}
                 camera={(article as any).camera}
@@ -167,20 +168,20 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
           <div key={index} className={`${mosaicClasses} md:${mosaicClasses}`}>
             {dataSource === 'documents' ? (
               <DocumentCard
-                slug={article.slug}
-                title={article.title}
-                description={article.description}
-                date={article.date}
-                tags={article.tags}
+                slug={article.slug || ''}
+                title={article.title || ''}
+                description={article.description || ''}
+                date={article.date || ''}
+                tags={article.tags || []}
                 category={(article as any).category}
                 fileType={(article as any).fileType}
                 pageCount={(article as any).pageCount || Math.max(1, Math.ceil(((article as any).readingTime || 5) / 2.5))}
               />
             ) : dataSource === 'projects' ? (
               <ProjectCard
-                slug={article.slug}
-                title={article.title}
-                shortDescription={(article as any).shortDescription || article.description}
+                slug={article.slug || ''}
+                title={article.title || ''}
+                shortDescription={(article as any).shortDescription || article.description || ''}
                 category={(article as any).category || 'Software'}
                 status={(article as any).status || 'active'}
                 technologies={(article as any).technologies || []}
@@ -189,12 +190,12 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
               />
             ) : (
               <ArticleCard
-                slug={article.slug}
-                publishedDateTime={article.datetime}
-                publishedDate={article.date}
-                title={article.title}
-                description={article.description}
-                tags={article.tags}
+                slug={article.slug || ''}
+                publishedDateTime={article.datetime || ''}
+                publishedDate={article.date || ''}
+                title={article.title || ''}
+                description={article.description || ''}
+                tags={article.tags || []}
                 readingTime={(article as any).readingTime}
               />
             )}

@@ -1,5 +1,9 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=20.11.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next",
     "start": "next start",
@@ -33,7 +37,6 @@
     "@storybook/cli": "^7.4.5",
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@types/marked": "^6.0.0",
     "@types/masonry-layout": "^4.2.8",
     "axios": "^1.6.0",
     "contentlayer2": "^0.5.8",
@@ -59,6 +62,7 @@
     "react-paginate": "^8.3.0",
     "react-spring": "^9.7.3",
     "react-syntax-highlighter": "^15.5.0",
+    "react-tabs": "^6.1.0",
     "react-tsparticles": "^1.41.4",
     "react-use": "^17.3.2",
     "react-vertical-timeline-component": "^3.5.2",
@@ -100,9 +104,10 @@
     "@storybook/testing-library": "^0.2.1",
     "@testing-library/react": "^16.0.1",
     "@types/jest": "^29.5.4",
-    "@types/node": "^18.19.0",
+    "@types/node": "^20.11.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/react-tabs": "^5.0.5",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "esbuild-node-loader": "^0.8.0",
     "eslint-config-prettier": "^9.0.0",

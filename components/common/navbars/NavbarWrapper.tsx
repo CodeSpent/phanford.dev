@@ -29,7 +29,7 @@ export default function NavbarWrapper() {
   const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
 
   const recentArticles = allArticles.filter(
-    article => new Date(article.date) > thirtyDaysAgo
+    article => article.date && new Date(article.date) > thirtyDaysAgo
   ).length
 
   const activeProjects = allProjects.filter(

@@ -38,10 +38,10 @@ export const getSortedListViewArticles = (
         return articlesToSort
       }
 
-      const sortedArticles = []
+      const sortedArticles: typeof articlesToSort = []
 
       articlesToSort.forEach((article) => {
-        sortedArticles.splice(searchResults.indexOf(article.slug), 0, article)
+        sortedArticles.splice(searchResults.indexOf(article.slug || ''), 0, article)
       })
 
       return sortedArticles
