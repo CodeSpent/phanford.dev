@@ -11,6 +11,7 @@ import ContextMenuContainer from '../page-components/context-menu-container'
 import {
   useContextMenuState,
 } from '../components/context-menu/context-menu-context'
+import DevelopmentBanner from '../components/common/DevelopmentBanner'
 
 export default function ClientLayout({
   children,
@@ -140,6 +141,8 @@ export default function ClientLayout({
         {isOpen && <ContextMenuContainer onOptionSelected={toggleContextMenu} />}
 
         {children}
+
+        <DevelopmentBanner />
       </div>
     </>
   )
