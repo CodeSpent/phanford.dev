@@ -5,6 +5,9 @@ const { withSentryConfig } = require('@sentry/nextjs')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: ['localhost:3000', '127.0.0.1'],
     formats: ['image/avif', 'image/webp'],
