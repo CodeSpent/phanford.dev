@@ -161,9 +161,11 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
             </div>
 
             {/* Bottom Row: Full-width Search */}
-            <div className="w-full">
-              <GlobalSearchDropdown className="w-full" />
-            </div>
+            {process.env.NEXT_PUBLIC_ENABLE_GLOBAL_SEARCH && (
+              <div className="w-full">
+                <GlobalSearchDropdown className="w-full" />
+              </div>
+            )}
           </div>
 
           {/* Mobile Layout: Single row */}
@@ -187,7 +189,7 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
       </div>
 
       {/* Spacer to prevent content jump - increased for two-row navbar */}
-      <div className="h-40 md:h-48" />
+      <div className={process.env.NEXT_PUBLIC_ENABLE_GLOBAL_SEARCH ? "h-28 md:h-32" : "h-20 md:h-24"} />
     </>
   )
 }

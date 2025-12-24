@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { animated, useSpring, useSpringRef } from '@react-spring/web';
-import { useChain } from 'react-spring';
+import { animated, useSpring, useSpringRef, useChain } from '@react-spring/web';
 
 const TerminalNameplate: React.FC = () => {
   const [typedText, setTypedText] = useState('');

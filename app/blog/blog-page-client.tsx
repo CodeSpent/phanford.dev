@@ -37,7 +37,7 @@ export default function BlogPageClient({
   return (
     <DefaultLayout title={pageTitle}>
       <div className="px-4">
-        <div className="relative mx-auto max-w-lg py-6 lg:max-w-7xl">
+        <div className="relative mx-auto max-w-lg py-2 lg:max-w-7xl">
           <ArticleSearchContextProvider articles={articles} dataSourceType={dataSource}>
             <ArticleListContextProvider articles={articles} pageIndex={pageIndex} dataSourceType={dataSource}>
               <div>

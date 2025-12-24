@@ -183,10 +183,11 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
                 title={article.title || ''}
                 shortDescription={(article as any).shortDescription || article.description || ''}
                 category={(article as any).category || 'Software'}
-                status={(article as any).status || 'active'}
                 technologies={(article as any).technologies || []}
                 languages={(article as any).languages || []}
                 icon={(article as any).icon}
+                version={(article as any).version}
+                lastUpdated={(article as any).lastUpdated}
               />
             ) : (
               <ArticleCard

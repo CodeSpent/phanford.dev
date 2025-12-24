@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
-import { formatTag } from '../../utils/formatTag'
+import { UnifiedTagList } from '../common/UnifiedTag'
 import { formatDate, formatDateTimeAttribute } from '../../utils/formatDate'
 
 type Props = {
@@ -125,25 +125,7 @@ export default function DocumentCard({
               {getDocumentIcon(fileType)}
               <span className="text-xs font-medium">{getFileTypeLabel(fileType)}</span>
             </div>
-            {Array.isArray(tags) && tags.length > 0 && (
-              <div className="flex gap-1">
-                {tags.slice(0, 2).map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60 
-                    text-gray-300 group-hover:bg-gray-700/60"
-                  >
-                    {formatTag(tag)}
-                  </span>
-                ))}
-                {tags.length > 2 && (
-                  <span className="px-2 py-1 text-xs font-medium rounded-md bg-gray-800/60 
-                  text-gray-400">
-                    +{tags.length - 2}
-                  </span>
-                )}
-              </div>
-            )}
+            <UnifiedTagList tags={tags || []} variant="compact" maxVisible={2} />
           </div>
 
           {/* Title with enhanced typography */}

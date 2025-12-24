@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { XIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
-import { formatTag } from '../../utils/formatTag'
+import { UnifiedTagList } from './UnifiedTag'
 import { formatPhotoDate, formatDateTimeAttribute } from '../../utils/formatDate'
 import { Photo } from 'contentlayer/generated'
 
@@ -188,16 +188,7 @@ export default function PhotoModal({ isOpen, onClose, photo, photos, onNavigate 
           {photo.tags && photo.tags.length > 0 && (
             <div>
               <h3 className="text-lg font-semibold mb-3 text-gray-200">Tags</h3>
-              <div className="flex flex-wrap gap-2">
-                {photo.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-gray-700 text-gray-300"
-                  >
-                    {formatTag(tag)}
-                  </span>
-                ))}
-              </div>
+              <UnifiedTagList tags={photo.tags} variant="compact" />
             </div>
           )}
         </div>

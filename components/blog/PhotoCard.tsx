@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import { formatTag } from '../../utils/formatTag'
+import { UnifiedTagList } from '../common/UnifiedTag'
 import { formatPhotoDate, formatDateTimeAttribute } from '../../utils/formatDate'
 
 type Props = {
@@ -78,17 +78,7 @@ export default function PhotoCard({
       </div>
 
       <div className="absolute bottom-4 left-4 right-4 z-10">
-        <div className="flex gap-2 items-center overflow-hidden">
-          {Array.isArray(tags) && tags.map((tag, index) => (
-            <span
-              key={index}
-              className={`inline-block px-3 py-1.5 text-xs font-medium rounded-lg bg-black bg-opacity-60 
-              text-gray-300 group-hover:bg-opacity-80 group-hover:text-white transition-all duration-200 flex-shrink-0`}
-            >
-              {formatTag(tag)}
-            </span>
-          ))}
-        </div>
+        <UnifiedTagList tags={tags} variant="compact" className="overflow-hidden" />
       </div>
 
       {(location || lens || settings || camera) && (

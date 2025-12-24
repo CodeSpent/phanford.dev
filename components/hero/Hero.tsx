@@ -2,9 +2,8 @@
 
 import React, { useEffect, useMemo, useState } from 'react'
 import SocialLinks from '../SocialLinks';
-import { animated, useSpring } from '@react-spring/web';
+import { animated, useSpring, useTransition } from '@react-spring/web';
 import { NameComponent, SubtitleComponent, TerminalNameplate } from 'components/hero'
-import { useTransition } from 'react-spring'
 
 const ANIMATION_CONFIG = {
   interval: 2500,

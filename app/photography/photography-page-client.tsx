@@ -43,7 +43,7 @@ export default function PhotographyPageClient({
   return (
     <DefaultLayout title={pageTitle}>
       <div className="px-4">
-        <div className="relative mx-auto max-w-lg py-10 lg:max-w-7xl">
+        <div className="relative mx-auto max-w-lg py-2 lg:max-w-7xl">
           <ArticleSearchContextProvider articles={photos} dataSourceType={dataSource}>
             <ArticleListContextProvider articles={photos} pageIndex={pageIndex} dataSourceType={dataSource}>
               <div>
