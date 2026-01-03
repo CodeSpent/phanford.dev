@@ -9,6 +9,8 @@ const SiteSettingsContext = createContext({
   toggleParticlesHidden: () => {},
   darkModeEnabled: true,
   toggleDarkModeTheme: () => {},
+  devBannerVisible: true,
+  hideDevBanner: () => {},
 })
 
 export const useSiteSettings = () => {
@@ -20,6 +22,7 @@ export const SiteSettingsProvider = ({ children }) => {
   const [animationEnabled, setAnimationEnabled] = useState(true)
   const [particlesHidden, setParticlesHidden] = useState(false)
   const [darkModeEnabled, setDarkModeEnabled] = useState(true)
+  const [devBannerVisible, setDevBannerVisible] = useState(true)
 
   const toggleDarkModeTheme = () => {
     setDarkModeEnabled(prevState => !prevState)
@@ -30,11 +33,15 @@ export const SiteSettingsProvider = ({ children }) => {
   const toggleParticlesHidden = () => {
     setParticlesHidden(prevState => !prevState)
   }
+  const hideDevBanner = () => {
+    setDevBannerVisible(false)
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setAnimationEnabled(JSON.parse(localStorage.getItem('animationEnabled') || 'true'))
       setParticlesHidden(JSON.parse(localStorage.getItem('particlesHidden') || 'false'))
+      setDevBannerVisible(JSON.parse(localStorage.getItem('devBannerVisible') || 'true'))
       setInitialized(true)
     }
   }, [])
@@ -47,6 +54,10 @@ export const SiteSettingsProvider = ({ children }) => {
     if (initialized) localStorage.setItem('particlesHidden', JSON.stringify(particlesHidden))
   }, [particlesHidden, initialized])
 
+  useEffect(() => {
+    if (initialized) localStorage.setItem('devBannerVisible', JSON.stringify(devBannerVisible))
+  }, [devBannerVisible, initialized])
+
   if (!initialized) return null
 
   return (
@@ -58,6 +69,8 @@ export const SiteSettingsProvider = ({ children }) => {
         toggleParticlesHidden,
         darkModeEnabled,
         toggleDarkModeTheme,
+        devBannerVisible,
+        hideDevBanner,
       }}
     >
       {children}

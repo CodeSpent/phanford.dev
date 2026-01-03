@@ -15,9 +15,6 @@ import NavBadge, { BadgeVariant } from '@/components/common/NavBadge'
 import { BadgeData } from './NavbarWrapper'
 import { GlobalSearchDropdown } from '../GlobalSearchDropdown'
 
-// Define link priority for visual hierarchy
-const PRIMARY_LINKS = ['Articles', 'Projects', 'Photography']
-const SECONDARY_LINKS = ['Home', 'Documents', 'Resume']
 
 interface BadgeInfo {
   count?: number
@@ -50,32 +47,17 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
     setIsModalOpen(true)
   }
 
-  const isPrimaryLink = (title: string) => PRIMARY_LINKS.includes(title)
-  const isSecondaryLink = (title: string) => SECONDARY_LINKS.includes(title)
-
   const getLinkClassName = (link: INavbarLink) => {
     const isActive = pathname === link.href
-    const isPrimary = isPrimaryLink(link.title)
 
     // Base classes with transitions - consistent sizing
     let classes = 'transition-all duration-200 relative text-sm px-3 py-2'
 
-    if (isPrimary) {
-      classes += ' font-medium'
-    } else {
-      classes += ' font-light'
-    }
-
-    // Color and hover states
+    // All links have same weight, only active is bold
     if (isActive) {
-      classes += ' text-white'
-      if (isPrimary) {
-        classes += ' border-b-2 border-blue-400'
-      }
+      classes += ' font-medium text-white'
     } else {
-      classes += isPrimary
-        ? ' text-gray-200 hover:text-white'
-        : ' text-gray-400 hover:text-gray-200'
+      classes += ' font-light text-gray-300 hover:text-white'
     }
 
     return classes

@@ -292,8 +292,6 @@ export const EnhancedProjectLayout: React.FC<EnhancedProjectLayoutProps> = ({
               <article
                 className="article-body prose prose-invert max-w-none
                 prose-headings:text-white prose-headings:font-semibold
-                prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4
-                prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3
                 prose-p:text-gray-400 prose-p:leading-relaxed
                 prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
                 prose-strong:text-gray-300 prose-strong:font-semibold
