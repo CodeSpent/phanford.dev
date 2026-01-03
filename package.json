@@ -47,6 +47,8 @@
     "framer-motion": "^12.23.24",
     "gray-matter": "^4.0.3",
     "gsap": "^3.12.7",
+    "html-docx-js": "^0.3.1",
+    "html2pdf.js": "^0.12.1",
     "lunr": "^2.3.9",
     "marked": "^17.0.0",
     "masonry-layout": "^4.2.2",

@@ -129,7 +129,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
   // For photos, use Masonry layout
   if (dataSource === 'photography') {
     return (
-      <div ref={masonryRef} className="my-4">
+      <div ref={masonryRef} className="my-4 min-h-[600px]">
         {Array.isArray(articlesToDisplay) && articlesToDisplay.map((article, index) => {
           const naturalSize = getNaturalImageSize(article.slug || '', (article as any).orientation, index)
           return (
@@ -161,7 +161,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
 
   // For non-photo content, keep the grid layout
   return (
-    <div className="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 auto-rows-fr">
+    <div className="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 auto-rows-auto min-h-[600px]">
       {Array.isArray(articlesToDisplay) && articlesToDisplay.map((article, index) => {
         const mosaicClasses = getMosaicClasses(index)
         return (

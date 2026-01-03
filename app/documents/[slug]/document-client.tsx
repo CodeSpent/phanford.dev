@@ -16,6 +16,8 @@ import { ContentDetailLayout } from '../../../components/content/ContentDetailLa
 import { TableOfContentsModule } from '../../../components/content/TableOfContentsModule'
 import { MetaInfoModule } from '../../../components/content/MetaInfoModule'
 import { SidebarModule } from '../../../components/content/SidebarModule'
+import { DocumentExportModule } from '../../../components/content/DocumentExportModule'
+import { SocialShareModule } from '../../../components/content/SocialShareModule'
 
 type Props = {
   document: any
@@ -72,6 +74,18 @@ export default function DocumentClient({ document, dataSource = 'documents', pre
         }
         sidebar={
           <>
+            {/* Export Options */}
+            <DocumentExportModule
+              title={document.title}
+              rawMarkdown={document.body?.raw || ''}
+            />
+
+            {/* Share Options */}
+            <SocialShareModule
+              title={document.title}
+              variant="sidebar"
+            />
+
             {/* Meta Information */}
             <MetaInfoModule
               date={document.date}

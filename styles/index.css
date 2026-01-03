@@ -47,6 +47,20 @@ html {
   @apply rounded;
 }
 
+.prose blockquote {
+  background: rgb(255 255 255 / 0.03) !important;
+  font-style: normal !important;
+}
+
+.prose blockquote::before,
+.prose blockquote::after {
+  content: none !important;
+}
+
+.prose blockquote p {
+  padding: 0 !important;
+}
+
 .h-screen--nav-aware {
   height: calc(100vh - 96px);
 }
