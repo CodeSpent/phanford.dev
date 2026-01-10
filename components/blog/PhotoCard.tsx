@@ -11,6 +11,7 @@ type Props = {
   description: string
   tags: string[]
   imageUrl: string
+  blurDataUrl?: string
   location?: string
   camera?: string
   lens?: string
@@ -30,6 +31,7 @@ export default function PhotoCard({
   description,
   tags,
   imageUrl,
+  blurDataUrl,
   location,
   camera,
   lens,
@@ -63,6 +65,8 @@ export default function PhotoCard({
         width={naturalWidth}
         height={naturalHeight}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        placeholder={blurDataUrl ? 'blur' : 'empty'}
+        blurDataURL={blurDataUrl}
         style={{
           objectFit: 'cover',
           width: '100%',

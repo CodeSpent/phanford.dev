@@ -73,7 +73,7 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
 
       <div
         className={`
-          fixed top-0 left-0 right-0 z-40
+          fixed top-0 left-0 right-0 z-[60]
           transition-all duration-300 ease-in-out
           ${isScrolled
             ? 'bg-card-background/95 backdrop-blur-md border-b border-gray-800/80'

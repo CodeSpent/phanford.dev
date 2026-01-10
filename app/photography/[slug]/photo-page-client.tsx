@@ -56,6 +56,8 @@ export default function PhotoPageClient({ photo, dataSource = 'photography' }: P
             src={photo.imageUrl}
             alt={photo.title}
             fill
+            placeholder={photo.blurDataUrl ? 'blur' : 'empty'}
+            blurDataURL={photo.blurDataUrl}
             style={{ objectFit: 'contain' }}
             priority
             sizes="100vw"

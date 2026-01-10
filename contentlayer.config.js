@@ -161,6 +161,10 @@ export const Photo = defineDocumentType(() => ({
       type: 'number',
       required: false,
     },
+    blurDataUrl: {
+      type: 'string',
+      required: false,
+    },
   },
   computedFields: {
     slug: {

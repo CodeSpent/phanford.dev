@@ -142,6 +142,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
                 description={article.description || ''}
                 tags={article.tags || []}
                 imageUrl={(article as any).imageUrl}
+                blurDataUrl={(article as any).blurDataUrl}
                 location={(article as any).location}
                 camera={(article as any).camera}
                 lens={(article as any).lens}

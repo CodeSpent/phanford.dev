@@ -120,8 +120,10 @@ export default function PhotoModal({ isOpen, onClose, photo, photos, onNavigate 
               alt={photo.title}
               width={1200}
               height={800}
-              style={{ 
-                maxWidth: '100%', 
+              placeholder={photo.blurDataUrl ? 'blur' : 'empty'}
+              blurDataURL={photo.blurDataUrl}
+              style={{
+                maxWidth: '100%',
                 maxHeight: '90vh',
                 width: 'auto',
                 height: 'auto',
