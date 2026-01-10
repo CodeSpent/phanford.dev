@@ -4,7 +4,7 @@ import { ComboBoxOption } from '../components/common/Input'
 // --------------------------------------------
 // Sort options & types
 // --------------------------------------------
-export enum ArticleSortOptionValue {
+export enum DataItemSortOptionValue {
   TIME_ASCENDING = 'time_asc',
   TIME_DESCENDING = 'time_desc',
   DATE_ASCENDING = 'date_asc',
@@ -12,17 +12,17 @@ export enum ArticleSortOptionValue {
   RELEVANCE = 'relevance',
 }
 
-export type ArticleSortOption = {
+export type DataItemSortOption = {
   label: string
-  value: ArticleSortOptionValue
+  value: DataItemSortOptionValue
 }
 
-export const sortOptions: ArticleSortOption[] = [
-  { label: 'Relevance', value: ArticleSortOptionValue.RELEVANCE },
-  { label: 'Date ↑', value: ArticleSortOptionValue.DATE_ASCENDING },
-  { label: 'Date ↓', value: ArticleSortOptionValue.DATE_DESCENDING },
-  { label: 'Time to Read ↑', value: ArticleSortOptionValue.TIME_ASCENDING },
-  { label: 'Time to Read ↓', value: ArticleSortOptionValue.TIME_DESCENDING },
+export const sortOptions: DataItemSortOption[] = [
+  { label: 'Relevance', value: DataItemSortOptionValue.RELEVANCE },
+  { label: 'Date ↑', value: DataItemSortOptionValue.DATE_ASCENDING },
+  { label: 'Date ↓', value: DataItemSortOptionValue.DATE_DESCENDING },
+  { label: 'Time to Read ↑', value: DataItemSortOptionValue.TIME_ASCENDING },
+  { label: 'Time to Read ↓', value: DataItemSortOptionValue.TIME_DESCENDING },
 ]
 
 // --------------------------------------------

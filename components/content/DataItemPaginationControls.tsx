@@ -4,13 +4,13 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import Button from 'components/common/Button'
 import {
-  useArticleListContext,
-  useArticleSearchContext,
-} from 'constants/article-list-context/article-list-context'
+  useDataItemListContext,
+  useDataItemSearchContext,
+} from 'constants/data-item-context/data-item-context'
 
-export default function PaginationControls() {
-  const { numberOfPages, pageIndex, setCurrentPageIndex } = useArticleListContext()
-  const { searchValue, filterValue } = useArticleSearchContext()
+export default function DataItemPaginationControls() {
+  const { numberOfPages, pageIndex, setCurrentPageIndex } = useDataItemListContext()
+  const { searchValue, filterValue } = useDataItemSearchContext()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()

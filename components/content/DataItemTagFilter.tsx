@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { useArticleSearchContext } from 'constants/article-list-context/article-list-context'
+import { useDataItemSearchContext } from 'constants/data-item-context/data-item-context'
 import TagFilterControl from 'components/controls/tag-filter-control'
 
 type Props = {
   tags: string[]
 }
 
-export default function ArticleTagFilter({ tags }: Props) {
-  const { filterValue, setFilterValue, filterMode, setFilterMode } = useArticleSearchContext()
+export default function DataItemTagFilter({ tags }: Props) {
+  const { filterValue, setFilterValue, filterMode, setFilterMode } = useDataItemSearchContext()
   const [filteredTags] = useState(tags)
 
   return (

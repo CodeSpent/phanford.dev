@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { getDataSource } from 'constants/data-sources'
-import ProjectsPageClient from './projects-page-client'
+import ContentListingPageClient from 'components/content/ContentListingPageClient'
 
 export const metadata: Metadata = {
   title: 'Projects | Patrick Hanford',
@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 
 async function getProjectsData(page: number) {
   const dataSource = getDataSource('projects')
-  const projects = dataSource.getItems() || []
+  const items = dataSource.getItems() || []
   const tags = dataSource.getAvailableTags()
 
   return {
-    projects,
+    items,
     tags,
     pageIndex: page - 1, // Convert 1-based page to 0-based index
     path: '/projects',
@@ -27,13 +27,14 @@ type PageProps = {
 export default async function ProjectsPage({ searchParams }: PageProps) {
   const params = await searchParams
   const page = Number(params.page) || 1
-  const { projects, tags, pageIndex } = await getProjectsData(page)
+  const { items, tags, pageIndex } = await getProjectsData(page)
 
   return (
-    <ProjectsPageClient
-      projects={projects}
+    <ContentListingPageClient
+      items={items}
       tags={tags}
       pageIndex={pageIndex}
+      dataSourceType="projects"
     />
   )
 }

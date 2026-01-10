@@ -208,3 +208,4 @@ export function getArticleTags() {
 }
 
 export type ListViewArticles = ReturnType<typeof getAllArticles>
+export type ListViewDataItems = ListViewArticles

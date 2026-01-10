@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useArticleListContext } from 'constants/article-list-context/article-list-context'
+import { useDataItemListContext } from 'constants/data-item-context/data-item-context'
 import ArticleCard from 'components/blog/ArticleCard'
 import PhotoCard from 'components/blog/PhotoCard'
 import DocumentCard from 'components/blog/DocumentCard'
@@ -8,11 +8,11 @@ import { DataSourceType } from 'constants/data-sources'
 
 type Props = {
   dataSource?: DataSourceType
-  onPhotoClick?: (photo: any) => void
+  onItemClick?: (item: any) => void
 }
 
-export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props) {
-  const { articlesToDisplay } = useArticleListContext()
+export default function DataItemList({ dataSource = 'blog', onItemClick }: Props) {
+  const { itemsToDisplay } = useDataItemListContext()
   const masonryRef = useRef<HTMLDivElement>(null)
   const masonryInstance = useRef<any>(null)
 
@@ -21,7 +21,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
     // Only run on client side
     if (typeof window === 'undefined') return
 
-    if (dataSource === 'photography' && masonryRef.current && articlesToDisplay.length > 0) {
+    if (dataSource === 'photography' && masonryRef.current && itemsToDisplay.length > 0) {
       // Dynamically import Masonry to avoid SSR issues
       import('masonry-layout').then((MasonryModule) => {
         const Masonry = MasonryModule.default
@@ -76,7 +76,7 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
         masonryInstance.current = null
       }
     }
-  }, [dataSource, articlesToDisplay])
+  }, [dataSource, itemsToDisplay])
 
   // Function to determine mosaic layout classes based on index for non-photo content
   const getMosaicClasses = (index: number) => {
@@ -94,12 +94,12 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
   // Function to get natural image dimensions for Flexbox mosaic
   const getNaturalImageSize = (slug: string, orientation?: string, index: number = 0) => {
     const isLandscape = orientation === 'landscape'
-    
+
     // Create variety through multiple factors
     const hash = slug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
     const sizeVariant = hash % 3 // 0, 1, or 2 for size variety
     const positionVariant = index % 4 // Position-based variety
-    
+
     // Base sizes for natural flow
     const baseSizes = {
       landscape: [
@@ -113,13 +113,13 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
         { width: 360, height: 540 }  // Large portrait (2:3 ratio)
       ]
     }
-    
+
     // Add some randomness based on position for more organic feel
     const positionMultipliers = [1.0, 1.2, 0.9, 1.1]
     const multiplier = positionMultipliers[positionVariant]
-    
+
     const baseSize = isLandscape ? baseSizes.landscape[sizeVariant] : baseSizes.portrait[sizeVariant]
-    
+
     return {
       width: Math.round(baseSize.width * multiplier),
       height: Math.round(baseSize.height * multiplier)
@@ -130,28 +130,28 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
   if (dataSource === 'photography') {
     return (
       <div ref={masonryRef} className="my-4 min-h-[600px]">
-        {Array.isArray(articlesToDisplay) && articlesToDisplay.map((article, index) => {
-          const naturalSize = getNaturalImageSize(article.slug || '', (article as any).orientation, index)
+        {Array.isArray(itemsToDisplay) && itemsToDisplay.map((item, index) => {
+          const naturalSize = getNaturalImageSize(item.slug || '', (item as any).orientation, index)
           return (
             <div key={index} className="masonry-item">
               <PhotoCard
-                slug={article.slug || ''}
-                publishedDateTime={article.datetime || ''}
-                publishedDate={article.date || ''}
-                title={article.title || ''}
-                description={article.description || ''}
-                tags={article.tags || []}
-                imageUrl={(article as any).imageUrl}
-                blurDataUrl={(article as any).blurDataUrl}
-                location={(article as any).location}
-                camera={(article as any).camera}
-                lens={(article as any).lens}
-                settings={(article as any).settings}
-                category={(article as any).category}
-                orientation={(article as any).orientation}
+                slug={item.slug || ''}
+                publishedDateTime={item.datetime || ''}
+                publishedDate={item.date || ''}
+                title={item.title || ''}
+                description={item.description || ''}
+                tags={item.tags || []}
+                imageUrl={(item as any).imageUrl}
+                blurDataUrl={(item as any).blurDataUrl}
+                location={(item as any).location}
+                camera={(item as any).camera}
+                lens={(item as any).lens}
+                settings={(item as any).settings}
+                category={(item as any).category}
+                orientation={(item as any).orientation}
                 naturalWidth={naturalSize.width}
                 naturalHeight={naturalSize.height}
-                onClick={() => onPhotoClick?.(article)}
+                onClick={() => onItemClick?.(item)}
               />
             </div>
           )
@@ -163,42 +163,42 @@ export default function ArticleList({ dataSource = 'blog', onPhotoClick }: Props
   // For non-photo content, keep the grid layout
   return (
     <div className="my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-4 auto-rows-auto min-h-[600px]">
-      {Array.isArray(articlesToDisplay) && articlesToDisplay.map((article, index) => {
+      {Array.isArray(itemsToDisplay) && itemsToDisplay.map((item, index) => {
         const mosaicClasses = getMosaicClasses(index)
         return (
           <div key={index} className={`${mosaicClasses} md:${mosaicClasses}`}>
             {dataSource === 'documents' ? (
               <DocumentCard
-                slug={article.slug || ''}
-                title={article.title || ''}
-                description={article.description || ''}
-                date={article.date || ''}
-                tags={article.tags || []}
-                category={(article as any).category}
-                fileType={(article as any).fileType}
-                pageCount={(article as any).pageCount || Math.max(1, Math.ceil(((article as any).readingTime || 5) / 2.5))}
+                slug={item.slug || ''}
+                title={item.title || ''}
+                description={item.description || ''}
+                date={item.date || ''}
+                tags={item.tags || []}
+                category={(item as any).category}
+                fileType={(item as any).fileType}
+                pageCount={(item as any).pageCount || Math.max(1, Math.ceil(((item as any).readingTime || 5) / 2.5))}
               />
             ) : dataSource === 'projects' ? (
               <ProjectCard
-                slug={article.slug || ''}
-                title={article.title || ''}
-                shortDescription={(article as any).shortDescription || article.description || ''}
-                category={(article as any).category || 'Software'}
-                technologies={(article as any).technologies || []}
-                languages={(article as any).languages || []}
-                icon={(article as any).icon}
-                version={(article as any).version}
-                lastUpdated={(article as any).lastUpdated}
+                slug={item.slug || ''}
+                title={item.title || ''}
+                shortDescription={(item as any).shortDescription || item.description || ''}
+                category={(item as any).category || 'Software'}
+                technologies={(item as any).technologies || []}
+                languages={(item as any).languages || []}
+                icon={(item as any).icon}
+                version={(item as any).version}
+                lastUpdated={(item as any).lastUpdated}
               />
             ) : (
               <ArticleCard
-                slug={article.slug || ''}
-                publishedDateTime={article.datetime || ''}
-                publishedDate={article.date || ''}
-                title={article.title || ''}
-                description={article.description || ''}
-                tags={article.tags || []}
-                readingTime={(article as any).readingTime}
+                slug={item.slug || ''}
+                publishedDateTime={item.datetime || ''}
+                publishedDate={item.date || ''}
+                title={item.title || ''}
+                description={item.description || ''}
+                tags={item.tags || []}
+                readingTime={(item as any).readingTime}
               />
             )}
           </div>

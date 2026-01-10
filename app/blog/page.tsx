@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { getDataSource } from 'constants/data-sources'
-import BlogPageClient from './blog-page-client'
+import ContentListingPageClient from 'components/content/ContentListingPageClient'
 
 export const metadata: Metadata = {
   title: 'Blog | Patrick Hanford',
@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 
 async function getBlogData(page: number) {
   const dataSource = getDataSource('blog')
-  const articles = dataSource.getItems() || []
+  const items = dataSource.getItems() || []
   const tags = dataSource.getAvailableTags()
 
   return {
-    articles,
+    items,
     tags,
     pageIndex: page - 1, // Convert 1-based page to 0-based index
     path: '/blog',
@@ -27,13 +27,14 @@ type PageProps = {
 export default async function BlogPage({ searchParams }: PageProps) {
   const params = await searchParams
   const page = Number(params.page) || 1
-  const { articles, tags, pageIndex } = await getBlogData(page)
+  const { items, tags, pageIndex } = await getBlogData(page)
 
   return (
-    <BlogPageClient
-      articles={articles}
+    <ContentListingPageClient
+      items={items}
       tags={tags}
       pageIndex={pageIndex}
+      dataSourceType="blog"
     />
   )
 }

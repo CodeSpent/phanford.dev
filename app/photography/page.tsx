@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { allPhotos } from 'contentlayer/generated'
+import { getDataSource } from 'constants/data-sources'
 import PhotographyPageClient from './photography-page-client'
 
 export const metadata: Metadata = {
@@ -8,15 +8,13 @@ export const metadata: Metadata = {
 }
 
 async function getPhotographyData(page: number) {
-  const photos = allPhotos || []
-
-  // Extract unique tags from all photos
-  const allTags = photos.flatMap(photo => photo.tags || [])
-  const uniqueTags = Array.from(new Set(allTags))
+  const dataSource = getDataSource('photography')
+  const items = dataSource.getItems() || []
+  const tags = dataSource.getAvailableTags()
 
   return {
-    photos,
-    tags: uniqueTags,
+    items,
+    tags,
     pageIndex: page - 1, // Convert 1-based page to 0-based index
     path: '/photography',
   }
@@ -29,11 +27,11 @@ type PageProps = {
 export default async function PhotographyPage({ searchParams }: PageProps) {
   const params = await searchParams
   const page = Number(params.page) || 1
-  const { photos, tags, pageIndex } = await getPhotographyData(page)
+  const { items, tags, pageIndex } = await getPhotographyData(page)
 
   return (
     <PhotographyPageClient
-      photos={photos}
+      items={items}
       tags={tags}
       pageIndex={pageIndex}
     />
