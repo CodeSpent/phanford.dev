@@ -81,7 +81,7 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
           }
         `}
       >
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-4 pt-4">
           {/* Desktop Layout: Two rows for better space usage */}
           <div className="hidden md:block">
             {/* Top Row: Logo + Nav Links */}
