@@ -69,7 +69,6 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
     setHeadings(buildHierarchy(flatHeadings))
   }, [])
 
-  // Helper function to get all heading IDs from hierarchical structure
   const getAllHeadingIds = (headings: Heading[]): string[] => {
     const ids: string[] = []
     const traverse = (items: Heading[]) => {
@@ -96,58 +95,61 @@ export default function TableOfContents({ className = '' }: TableOfContentsProps
     })
   }
 
+  const NAVBAR_OFFSET = 100
+
   useEffect(() => {
     if (headings.length === 0) return
 
-    // Find the scrollable container (the left column with overflow-y-auto)
-    const scrollContainer = document.querySelector('.lg\\:overflow-y-auto')
-    
-    // Set up intersection observer to track active heading
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.length === 0) return
-        
-        // Find the entry that's most visible (highest intersection ratio)
-        let mostVisible = entries[0]
-        let highestRatio = 0
+    const allIds = getAllHeadingIds(headings)
 
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > highestRatio) {
-            mostVisible = entry
-            highestRatio = entry.intersectionRatio
+    const updateActiveHeading = () => {
+      const headingPositions = allIds
+        .map(id => {
+          const element = document.getElementById(id)
+          if (!element) return null
+          return {
+            id,
+            top: element.getBoundingClientRect().top
           }
         })
+        .filter((item): item is { id: string; top: number } => item !== null)
 
-        // If we have a most visible entry, set it as active
-        if (mostVisible && mostVisible.isIntersecting) {
-          setActiveId(mostVisible.target.id)
+      if (headingPositions.length === 0) return
+
+      const scrollBottom = window.scrollY + window.innerHeight
+      const docHeight = document.documentElement.scrollHeight
+      const isAtBottom = scrollBottom >= docHeight - 50
+
+      if (isAtBottom) {
+        setActiveId(headingPositions[headingPositions.length - 1].id)
+        return
+      }
+
+      let activeHeading = headingPositions[0].id
+
+      for (const heading of headingPositions) {
+        if (heading.top <= NAVBAR_OFFSET + 10) {
+          activeHeading = heading.id
+        } else {
+          break
         }
-      },
-      {
-        root: scrollContainer || null, // Use the scroll container as root, fallback to viewport
-        rootMargin: '-10% 0% -60% 0%', // Adjusted for better detection
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0] // Multiple thresholds for better accuracy
       }
-    )
 
-    const allIds = getAllHeadingIds(headings)
-    allIds.forEach((id) => {
-      const element = document.getElementById(id)
-      if (element) {
-        observer.observe(element)
-      }
-    })
+      setActiveId(activeHeading)
+    }
 
-    return () => observer.disconnect()
+    updateActiveHeading()
+
+    window.addEventListener('scroll', updateActiveHeading, { passive: true })
+
+    return () => window.removeEventListener('scroll', updateActiveHeading)
   }, [headings])
 
   const scrollToHeading = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
-      // Calculate offset for two-row sticky navbar (192px height + 16px spacing)
-      const navbarHeight = 208
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-      const offsetPosition = elementPosition - navbarHeight
+      const offsetPosition = elementPosition - NAVBAR_OFFSET
 
       window.scrollTo({
         top: offsetPosition,
