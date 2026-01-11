@@ -8,9 +8,13 @@ interface DocumentExportModuleProps {
   title: string
   rawMarkdown: string
   className?: string
+  sourceContent?: string
+  sourceExtension?: string
+  slug?: string
+  isLatex?: boolean
 }
 
-type ExportFormat = 'pdf' | 'docx' | 'md'
+type ExportFormat = 'pdf' | 'docx' | 'md' | 'source'
 
 /**
  * Document export module for sidebar
@@ -20,19 +24,49 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
   title,
   rawMarkdown,
   className = '',
+  sourceContent,
+  sourceExtension,
+  slug,
+  isLatex = false,
 }) => {
   const [loading, setLoading] = useState<ExportFormat | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  const downloadSource = useCallback(() => {
+    if (!sourceContent || !sourceExtension) return
+
+    const blob = new Blob([sourceContent], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.${sourceExtension}`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }, [sourceContent, sourceExtension, title])
+
+  const downloadLatexPDF = useCallback(() => {
+    if (!slug) return
+    // Direct link to pre-generated PDF
+    const pdfUrl = `/documents/${slug}/${slug}.pdf`
+    window.open(pdfUrl, '_blank')
+  }, [slug])
 
   const handleExport = useCallback(async (format: ExportFormat) => {
     setLoading(format)
     setError(null)
 
     try {
-      if (format === 'md') {
+      if (format === 'source') {
+        downloadSource()
+      } else if (format === 'md') {
         exportToMarkdown(rawMarkdown, title)
+      } else if (format === 'pdf' && isLatex) {
+        // Direct link to pre-generated PDF
+        downloadLatexPDF()
       } else {
-        // For PDF and DOCX, we need to get the article body element
+        // For PDF (non-LaTeX) and DOCX, use browser-based export
         const articleBody = document.querySelector('.article-body')
         if (!articleBody) {
           throw new Error('Article content not found')
@@ -44,13 +78,13 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
           await exportToDOCX(articleBody as HTMLElement, title)
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(`Export to ${format.toUpperCase()} failed:`, err)
-      setError(`Failed to export as ${format.toUpperCase()}. Please try again.`)
+      setError(err.message || `Failed to export as ${format.toUpperCase()}. Please try again.`)
     } finally {
       setLoading(null)
     }
-  }, [title, rawMarkdown])
+  }, [title, rawMarkdown, downloadSource, isLatex, downloadLatexPDF])
 
   return (
     <div
@@ -144,6 +178,24 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
         >
           Download Markdown
         </Button>
+
+        {/* Source Download */}
+        {sourceContent && sourceExtension && (
+          <Button
+            variant="solid-secondary"
+            size="md"
+            onClick={() => handleExport('source')}
+            disabled={loading !== null}
+            className="w-full justify-start"
+            icon={
+              <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+            }
+          >
+            Download Source (.{sourceExtension})
+          </Button>
+        )}
       </div>
 
       {/* Error message */}
@@ -155,7 +207,9 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
 
       {/* Help text */}
       <p className="mt-4 text-xs text-gray-500">
-        PDF and Word exports capture the rendered document. Markdown downloads the source file.
+        {isLatex
+          ? 'PDF is compiled from LaTeX source using XeLaTeX.'
+          : 'PDF and Word exports capture the rendered document.'}
       </p>
     </div>
   )
