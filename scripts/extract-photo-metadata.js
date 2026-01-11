@@ -3,6 +3,57 @@
 /**
  * Script to extract metadata from photo images and update info.json files
  * This extracts EXIF data including camera, lens, settings, and dimensions
+ *
+ *
+ * Full EXIF Metadata Body Example
+ * {
+ *   "Make": "Canon",
+ *   "Model": "Canon EOS Rebel T7",
+ *   "XResolution": 300,
+ *   "YResolution": 300,
+ *   "ResolutionUnit": "inches",
+ *   "Software": "Adobe Lightroom 10.2.3 (iOS)",  X
+ *   "ModifyDate": "2025-04-05T04:32:47.000Z",
+ *   "ExposureTime": 0.03333333333333333,
+ *   "FNumber": 4,
+ *   "ExposureProgram": "Not defined",
+ *   "ISO": 3200,
+ *   "SensitivityType": 2,
+ *   "RecommendedExposureIndex": 3200,
+ *   "ExifVersion": "2.3.1",
+ *   "DateTimeOriginal": "2025-04-03T03:47:56.000Z",
+ *   "CreateDate": "2025-04-03T03:47:56.000Z",
+ *   "OffsetTime": "-04:00",
+ *   "OffsetTimeOriginal": "-04:00",
+ *   "OffsetTimeDigitized": "-04:00",
+ *   "ShutterSpeedValue": 4.906891004156053,
+ *   "ApertureValue": 4,
+ *   "ExposureCompensation": 0,
+ *   "MaxApertureValue": 4,
+ *   "MeteringMode": "Pattern",
+ *   "Flash": "Flash did not fire",
+ *   "FocalLength": 25,
+ *   "SubSecTimeOriginal": "27",
+ *   "SubSecTimeDigitized": "27",
+ *   "ColorSpace": 1,
+ *   "ExifImageWidth": 1182,
+ *   "ExifImageHeight": 665,
+ *   "FocalPlaneXResolution": 2688.7265917602995,
+ *   "FocalPlaneYResolution": 2688.7265917602995,
+ *   "FocalPlaneResolutionUnit": "Centimeter",
+ *   "CustomRendered": "Normal",
+ *   "ExposureMode": "Auto",
+ *   "WhiteBalance": "Auto",
+ *   "SceneCaptureType": "Standard",
+ *   "LensInfo": [
+ *     18,
+ *     55,
+ *     0,
+ *     0
+ *   ],
+ *   "LensModel": "EF-S18-55mm f/3.5-5.6 IS II",
+ *   "LensSerialNumber": "000067ba9d"
+ * }
  */
 
 const fs = require('fs');
@@ -29,16 +80,32 @@ let processedCount = 0;
 let errorCount = 0;
 
 async function extractMetadata(imagePath) {
-  try {
-    const exifData = await exifr.parse(imagePath, {
-      pick: [
-        'Make', 'Model', 'LensModel', 'LensInfo', 'FocalLength',
-        'FNumber', 'ExposureTime', 'ISO', 'DateTime', 'DateTimeOriginal',
-        'ImageWidth', 'ImageHeight', 'ExifImageWidth', 'ExifImageHeight',
-        'Orientation', 'GPS'
-      ]
-    });
+  const exifOptions = {
+    pick: [
+      'Make',
+      'Model',
+      'LensModel',
+      'LensInfo',
+      'FocalLength',
+      'FNumber',
+      'ExposureTime',
+      'ISO',
+      'DateTime',
+      'DateTimeOriginal',
+      'ImageWidth',
+      'ImageHeight',
+      'ExifImageWidth',
+      'ExifImageHeight',
+      'Orientation',
+      'GPS',
+    ],
+  }
 
+  // Exclude picker options temporarily until we decide on what to display
+  try {
+    const exifData = await exifr.parse(imagePath, );
+
+    console.log(`EXIF Data: ${JSON.stringify(exifData, null, 2)}`)
     return exifData;
   } catch (error) {
     console.log(`  ⚠ Could not extract EXIF data: ${error.message}`);
