@@ -86,31 +86,33 @@ export default function PhotoCard({
       </div>
 
       {(location || lens || settings || camera) && (
-        <div className="absolute bottom-16 left-4 right-4 z-20 hidden md:group-hover:block">
-          <div className="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-2 text-xs text-gray-400">
+        <div className="absolute bottom-0 left-0 right-0 z-30
+          translate-y-full md:group-hover:translate-y-0
+          transition-transform duration-300 ease-out">
+          <div className="bg-gray-900/90 backdrop-blur-md px-4 py-3 text-xs text-gray-300">
             <div className="flex flex-wrap gap-x-4 gap-y-1">
-              {location && (
-                <div className="flex items-center gap-1">
-                  <span className="text-gray-500">Location:</span>
-                  <span>{location}</span>
-                </div>
-              )}
               {camera && (
-                <div className="flex items-center gap-1">
-                  <span className="text-gray-500">Camera:</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-gray-500">Camera</span>
                   <span>{camera}</span>
                 </div>
               )}
               {lens && (
-                <div className="flex items-center gap-1">
-                  <span className="text-gray-500">Lens:</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-gray-500">Lens</span>
                   <span>{lens}</span>
                 </div>
               )}
               {settings && (
-                <div className="flex items-center gap-1">
-                  <span className="text-gray-500">Settings:</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-gray-500">Settings</span>
                   <span>{settings}</span>
+                </div>
+              )}
+              {location && (
+                <div className="flex items-center gap-1.5">
+                  <span className="text-gray-500">Location</span>
+                  <span>{location}</span>
                 </div>
               )}
             </div>
@@ -118,7 +120,7 @@ export default function PhotoCard({
         </div>
       )}
 
-      <div className="absolute inset-0 hidden group-hover:flex bg-black bg-opacity-70 flex-col justify-start items-center pt-16 px-6 pb-6">
+      <div className="absolute inset-0 z-20 hidden group-hover:flex bg-black bg-opacity-70 flex-col justify-start items-center pt-16 px-6 pb-6">
         <div className="text-left max-w-full w-full space-y-4">
           <div className="space-y-3">
             <h3 className="text-xl font-bold text-white leading-tight">
