@@ -21,20 +21,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {}
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
   const imageUrl = `${baseUrl}${photo.imageUrl}`
 
   return {
     title: `${photo.title} | Patrick Hanford`,
     description: photo.description || `Photography by Patrick Hanford${photo.location ? ` taken in ${photo.location}` : ''}`,
     openGraph: {
+      url: `${baseUrl}/photography/${photo.slugAsParams}`,
       title: photo.title,
       description: photo.description || `Photography by Patrick Hanford${photo.location ? ` taken in ${photo.location}` : ''}`,
       images: [
         {
           url: imageUrl,
-          width: 1200,
-          height: 800,
+          width: photo.naturalWidth || 1200,
+          height: photo.naturalHeight || 800,
           alt: photo.title,
         },
       ],
