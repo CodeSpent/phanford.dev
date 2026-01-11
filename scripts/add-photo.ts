@@ -10,7 +10,7 @@
 
 import { program } from 'commander'
 import inquirer from 'inquirer'
-import pc from 'picocolors'
+import * as pc from 'picocolors'
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import { execSync } from 'child_process'
@@ -408,9 +408,7 @@ function runBuildScripts(): void {
   }
 }
 
-function commitToContentSubmodule(slug: string, metadata: PhotoMetadata): void {
-  const contentDir = 'content'
-
+function commitChanges(slug: string, metadata: PhotoMetadata): void {
   // Build commit message
   const title = `feat(photos): add "${metadata.title}"`
   const bodyParts: string[] = [metadata.description]
@@ -423,29 +421,39 @@ function commitToContentSubmodule(slug: string, metadata: PhotoMetadata): void {
   }
 
   const body = bodyParts.join('\n')
-  const fullMessage = `${title}\n\n${body}`
 
+  // 1. Commit to content submodule
   console.log(pc.cyan('\nCommitting to content submodule...'))
-
   try {
-    // Stage the new photo folder
-    execSync(`git add photos/${slug}`, { cwd: contentDir, stdio: 'pipe' })
-
-    // Create the commit using heredoc for proper message formatting
+    execSync(`git add photos/${slug}`, { cwd: 'content', stdio: 'pipe' })
     execSync(`git commit -m "${title}" -m "${body}"`, {
-      cwd: contentDir,
+      cwd: 'content',
       stdio: 'pipe',
     })
-
     console.log(pc.green('✓ Committed to content submodule'))
+  } catch (error: any) {
+    if (error.stderr?.toString().includes('nothing to commit')) {
+      console.log(pc.dim('  (already committed)'))
+    } else {
+      console.log(pc.yellow('⚠ Failed to commit to submodule'))
+    }
+  }
+
+  // 2. Commit public image + submodule reference to main repo
+  console.log(pc.cyan('Committing to main repo...'))
+  try {
+    // Stage the public image and the updated submodule reference
+    execSync(`git add public/images/photos/${slug}`, { stdio: 'pipe' })
+    execSync(`git add content`, { stdio: 'pipe' }) // Updates submodule reference
+    execSync(`git commit -m "${title}" -m "${body}"`, { stdio: 'pipe' })
+    console.log(pc.green('✓ Committed to main repo'))
     console.log(pc.dim(`  Message: ${title}`))
   } catch (error: any) {
-    // Check if it's just "nothing to commit"
-    if (error.message?.includes('nothing to commit')) {
-      console.log(pc.yellow('⚠ Nothing to commit (files may already be committed)'))
+    if (error.stderr?.toString().includes('nothing to commit')) {
+      console.log(pc.dim('  (already committed)'))
     } else {
-      console.log(pc.yellow('⚠ Failed to commit'))
-      console.warn(pc.yellow(`  You may need to commit manually in the content submodule`))
+      console.log(pc.yellow('⚠ Failed to commit to main repo'))
+      console.warn(pc.yellow(`  You may need to commit manually`))
     }
   }
 }
@@ -520,18 +528,18 @@ async function main() {
   // 7. Create files
   await createPhotoFolder(slug, metadata, imagePath, options)
 
-  // 8. Commit to content submodule
-  if (options.commit) {
-    commitToContentSubmodule(slug, metadata)
-  } else {
-    console.log(pc.dim('\nSkipped commit (--no-commit)'))
-  }
-
-  // 9. Run build scripts
+  // 8. Run build scripts (must run before commit to copy image to public/)
   if (options.build) {
     runBuildScripts()
   } else {
-    console.log(pc.dim('Skipped build scripts (--no-build)'))
+    console.log(pc.dim('\nSkipped build scripts (--no-build)'))
+  }
+
+  // 9. Commit changes (content submodule + main repo with public image)
+  if (options.commit) {
+    commitChanges(slug, metadata)
+  } else {
+    console.log(pc.dim('Skipped commit (--no-commit)'))
   }
 
   // 10. Success message
