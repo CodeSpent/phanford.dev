@@ -19,16 +19,28 @@ import { SidebarModule } from '../../../components/content/SidebarModule'
 import { DocumentExportModule } from '../../../components/content/DocumentExportModule'
 import { SocialShareModule } from '../../../components/content/SocialShareModule'
 
+// LaTeX rendering
+import { LaTeXRenderer } from '../../../components/latex'
+import type { ParsedResumeDocument } from '../../../types/latex'
+
 type Props = {
   document: any
   slug: string
   dataSource?: DataSourceType
   prevDoc?: any
   nextDoc?: any
+  latexDocument?: ParsedResumeDocument
 }
 
-export default function DocumentClient({ document, dataSource = 'documents', prevDoc, nextDoc }: Props) {
+export default function DocumentClient({
+  document,
+  dataSource = 'documents',
+  prevDoc,
+  nextDoc,
+  latexDocument,
+}: Props) {
   const MDXContent = document.body?.code ? useMDXComponent(document.body.code) : null
+  const isLatex = !!latexDocument
 
   const ds = getDataSource(dataSource)
   const contentType = 'documents'
@@ -78,12 +90,10 @@ export default function DocumentClient({ document, dataSource = 'documents', pre
             <DocumentExportModule
               title={document.title}
               rawMarkdown={document.body?.raw || ''}
-            />
-
-            {/* Share Options */}
-            <SocialShareModule
-              title={document.title}
-              variant="sidebar"
+              sourceContent={isLatex ? latexDocument?.raw : document.body?.raw}
+              sourceExtension={isLatex ? 'tex' : 'mdx'}
+              slug={document.slugAsParams}
+              isLatex={isLatex}
             />
 
             {/* Meta Information */}
@@ -112,7 +122,12 @@ export default function DocumentClient({ document, dataSource = 'documents', pre
 
         {/* Main Content Card */}
         <SidebarModule className="p-6 lg:p-8">
-          {!MDXContent ? (
+          {isLatex && latexDocument ? (
+            // Render LaTeX document
+            <article className="article-body prose prose-invert prose-lg max-w-none">
+              <LaTeXRenderer document={latexDocument} />
+            </article>
+          ) : !MDXContent ? (
             // No content available
             <div className="bg-amber-900/20 border-2 border-amber-700/50 rounded-lg p-6">
               <div className="flex items-start gap-3">

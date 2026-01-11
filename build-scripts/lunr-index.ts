@@ -5,6 +5,9 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as console from 'console'
 
+// Import LaTeX document loader
+import { getAllLatexDocuments } from '../utils/latex-loader'
+
 type ContentType = 'article' | 'project' | 'photo' | 'document'
 
 interface SearchableItem {
@@ -148,17 +151,39 @@ const getPhotoItems = (): SearchableItem[] => {
 
 // Transform documents to searchable items
 const getDocItems = (): SearchableItem[] => {
-  return allDocs.map((doc) => ({
+  // Get MDX documents (may be empty)
+  const mdxDocs = Array.isArray(allDocs) ? allDocs : []
+  const mdxItems: SearchableItem[] = mdxDocs.map((doc: any) => ({
     id: `doc-${doc.slug}`,
     type: 'document' as ContentType,
     title: doc.title,
     description: doc.description || '',
-    url: `/documents/${doc.slug}`,
+    url: `/documents/${doc.slugAsParams}`,
     tags: doc.tags || [],
-    content: doc.body.raw,
+    content: doc.body?.raw || '',
     category: doc.category,
     fileType: doc.fileType,
   }))
+
+  // Get LaTeX documents
+  const latexDocs = getAllLatexDocuments()
+  const latexItems: SearchableItem[] = latexDocs.map((doc) => ({
+    id: `doc-${doc.metadata.slug}`,
+    type: 'document' as ContentType,
+    title: doc.metadata.name || 'Resume',
+    description: `Resume for ${doc.metadata.name}`,
+    url: `/documents/${doc.metadata.slug}`,
+    tags: ['resume'],
+    content: doc.raw,
+    category: 'resume',
+    fileType: 'latex',
+  }))
+
+  // Combine, with LaTeX taking precedence (filter out duplicates)
+  const latexSlugs = new Set(latexDocs.map(d => d.metadata.slug))
+  const filteredMdxItems = mdxItems.filter(item => !latexSlugs.has(item.id.replace('doc-', '')))
+
+  return [...latexItems, ...filteredMdxItems]
 }
 
 // Combine all items
