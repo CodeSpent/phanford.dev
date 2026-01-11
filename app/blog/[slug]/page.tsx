@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {}
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
   const articleUrl = `${baseUrl}/blog/${article.slugAsParams}`
   
   // Try to extract first image from content for social sharing

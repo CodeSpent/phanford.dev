@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {}
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
   const projectUrl = `${baseUrl}/projects/${project.slugAsParams}`
 
   // Use project icon or fallback

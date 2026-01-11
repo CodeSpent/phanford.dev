@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Check for LaTeX document first
   const latexDoc = getLatexDocument(slug)
   if (latexDoc) {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
     const title = latexDoc.metadata.title || latexDoc.metadata.name || 'Resume'
     const description = latexDoc.metadata.description || `Resume for ${latexDoc.metadata.name}`
     const tags = latexDoc.metadata.tags || []
@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {}
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://phanford.dev'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
   const docUrl = `${baseUrl}/documents/${doc.slugAsParams}`
 
   // Try to extract first image from content for social sharing
