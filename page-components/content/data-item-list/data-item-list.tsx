@@ -35,7 +35,7 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
         if (!masonryRef.current) return
         masonryInstance.current = new Masonry(masonryRef.current, {
           itemSelector: '.masonry-item',
-          columnWidth: 340,
+          columnWidth: 400,
           gutter: 16,
           fitWidth: true
         })
