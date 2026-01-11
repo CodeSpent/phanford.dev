@@ -8,6 +8,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/resume',
+        destination: '/documents/resume',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     domains: ['localhost:3000', '127.0.0.1'],
     formats: ['image/avif', 'image/webp'],

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next",
     "start": "next start",
-    "build": "npm run build:favicon && npm run build:photos:blur && contentlayer2 build && npm run build:lunr && next build",
+    "build": "npm run build:favicon && npm run build:photos:blur && npm run build:latex && contentlayer2 build && npm run build:lunr && next build",
     "build:blog": "npm run build:content && npm run build:lunr",
     "build:lunr": "npx tsx build-scripts/lunr-index.ts",
     "build:latex": "npx tsx build-scripts/latex-parser/index.ts",
