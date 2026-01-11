@@ -20,6 +20,7 @@ type Props = {
   orientation?: string
   naturalWidth?: number
   naturalHeight?: number
+  cardWidth?: number
   onClick?: () => void
 }
 
@@ -39,10 +40,10 @@ export default function PhotoCard({
   category,
   orientation,
   naturalWidth = 400,
-  naturalHeight = 30,
+  naturalHeight = 300,
+  cardWidth = 400,
   onClick,
 }: Props) {
-  const cardWidth = 400
   const cardHeight = Math.round((cardWidth * naturalHeight) / naturalWidth)
   
   const shouldShowDescription = cardWidth >= 600
@@ -88,7 +89,7 @@ export default function PhotoCard({
           translate-y-full md:group-hover:translate-y-0
           transition-transform duration-300 ease-out">
           <div className="bg-gray-900/90 backdrop-blur-md px-4 py-3 text-xs text-gray-300">
-            <div className="flex flex-wrap gap-x-4 gap-y-1">
+            <div className="flex flex-col gap-1">
               {camera && (
                 <div className="flex items-center gap-1.5">
                   <span className="text-gray-500">Camera</span>

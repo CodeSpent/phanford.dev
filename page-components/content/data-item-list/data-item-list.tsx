@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDataItemListContext } from 'constants/data-item-context/data-item-context'
 import ArticleCard from 'components/blog/ArticleCard'
 import PhotoCard from 'components/blog/PhotoCard'
@@ -15,6 +15,31 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
   const { itemsToDisplay } = useDataItemListContext()
   const masonryRef = useRef<HTMLDivElement>(null)
   const masonryInstance = useRef<any>(null)
+  const [columnWidth, setColumnWidth] = useState(400)
+  const gutter = 16
+
+  // Calculate responsive column width based on container size
+  useEffect(() => {
+    if (typeof window === 'undefined' || dataSource !== 'photography') return
+
+    const calculateColumnWidth = () => {
+      const containerWidth = masonryRef.current?.parentElement?.clientWidth || 1200
+
+      // Determine column count based on width
+      let columns = 1
+      if (containerWidth >= 1024) columns = 3
+      else if (containerWidth >= 768) columns = 2
+
+      // Calculate column width to fill available space
+      const totalGutters = (columns - 1) * gutter
+      const width = Math.floor((containerWidth - totalGutters) / columns)
+      setColumnWidth(width)
+    }
+
+    calculateColumnWidth()
+    window.addEventListener('resize', calculateColumnWidth)
+    return () => window.removeEventListener('resize', calculateColumnWidth)
+  }, [dataSource])
 
   // Initialize Masonry for photos
   useEffect(() => {
@@ -35,8 +60,8 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
         if (!masonryRef.current) return
         masonryInstance.current = new Masonry(masonryRef.current, {
           itemSelector: '.masonry-item',
-          columnWidth: 400,
-          gutter: 16,
+          columnWidth: columnWidth,
+          gutter: gutter,
           fitWidth: true
         })
 
@@ -76,7 +101,7 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
         masonryInstance.current = null
       }
     }
-  }, [dataSource, itemsToDisplay])
+  }, [dataSource, itemsToDisplay, columnWidth, gutter])
 
   // Function to determine mosaic layout classes based on index for non-photo content
   const getMosaicClasses = (index: number) => {
@@ -152,6 +177,7 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
                 orientation={(item as any).orientation}
                 naturalWidth={naturalSize.width}
                 naturalHeight={naturalSize.height}
+                cardWidth={columnWidth}
                 onClick={() => onItemClick?.(item)}
               />
             </div>
