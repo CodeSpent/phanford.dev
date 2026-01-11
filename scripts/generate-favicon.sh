@@ -3,11 +3,20 @@ set -e
 
 # Script to download GitHub profile picture and generate favicons
 # Usage: ./scripts/generate-favicon.sh
+#
+# Skips generation locally if favicons already exist. Always runs in CI.
+# Force regeneration with: FORCE_FAVICON=1 npm run build:favicon
 
 GITHUB_USERNAME="codespent"
 PUBLIC_DIR="public"
 PROFILE_URL="https://github.com/${GITHUB_USERNAME}.png"
 PROFILE_IMG="${PUBLIC_DIR}/profile.png"
+
+# Skip generation locally if favicons already exist (unless forced or in CI)
+if [ -z "$CI" ] && [ -z "$FORCE_FAVICON" ] && [ -f "${PUBLIC_DIR}/favicon.ico" ] && [ -f "${PUBLIC_DIR}/apple-touch-icon.png" ]; then
+  echo "✓ Favicons already exist. Skipping generation (use FORCE_FAVICON=1 to regenerate)"
+  exit 0
+fi
 
 echo "🖼️  Downloading profile picture from GitHub..."
 curl -L -o "${PROFILE_IMG}" "${PROFILE_URL}"
