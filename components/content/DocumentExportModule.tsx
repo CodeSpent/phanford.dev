@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import Button from '../common/Button'
 import { exportToPDF, exportToDOCX, exportToMarkdown } from '../../utils/document-export'
 
@@ -15,6 +15,56 @@ interface DocumentExportModuleProps {
 }
 
 type ExportFormat = 'pdf' | 'docx' | 'md' | 'source'
+
+interface ExportOption {
+  format: ExportFormat
+  label: string
+  loadingLabel: string
+  icon: React.ReactNode
+  condition?: boolean
+}
+
+const LoadingSpinner = () => (
+  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    />
+  </svg>
+)
+
+const PdfIcon = () => (
+  <svg className="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7zm-2.5 9.5v3h1.5v-3h1.5L12 11l-3 2.5h1.5zm-2.5 3h.5v-3H7v1h1v2H6v.5h2v-.5zm7-3v3h1v-3h1v-.5h-1v-.5h-1v.5h-.5v.5h.5z" />
+  </svg>
+)
+
+const DocxIcon = () => (
+  <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7zm-4.5 9.5L7 17h1l.75-2.5h1.5L11 17h1l-1.5-3.5L12 10h-1l-.75 2.5h-1.5L8 10H7l1.5 3.5z" />
+  </svg>
+)
+
+const MarkdownIcon = () => (
+  <svg className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.31a1.73 1.73 0 0 1-1.73 1.73zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.077h-2.308l-2.307 2.885-2.308-2.885H3.461v7.846zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.462 4.615z" />
+  </svg>
+)
+
+const SourceIcon = () => (
+  <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+  </svg>
+)
 
 /**
  * Document export module for sidebar
@@ -63,10 +113,8 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
       } else if (format === 'md') {
         exportToMarkdown(rawMarkdown, title)
       } else if (format === 'pdf' && isLatex) {
-        // Direct link to pre-generated PDF
         downloadLatexPDF()
       } else {
-        // For PDF (non-LaTeX) and DOCX, use browser-based export
         const articleBody = document.querySelector('.article-body')
         if (!articleBody) {
           throw new Error('Article content not found')
@@ -86,6 +134,34 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
     }
   }, [title, rawMarkdown, downloadSource, isLatex, downloadLatexPDF])
 
+  const exportOptions: ExportOption[] = [
+    {
+      format: 'pdf',
+      label: 'Download PDF',
+      loadingLabel: 'Generating PDF...',
+      icon: <PdfIcon />,
+    },
+    {
+      format: 'docx',
+      label: 'Download Word',
+      loadingLabel: 'Generating DOCX...',
+      icon: <DocxIcon />,
+    },
+    {
+      format: 'md',
+      label: 'Download Markdown',
+      loadingLabel: 'Generating Markdown...',
+      icon: <MarkdownIcon />,
+    },
+    {
+      format: 'source',
+      label: `Download Source (.${sourceExtension})`,
+      loadingLabel: 'Downloading...',
+      icon: <SourceIcon />,
+      condition: Boolean(sourceContent && sourceExtension),
+    },
+  ]
+
   return (
     <div
       className={`bg-card-background rounded-lg border border-gray-800/50 p-6 ${className}`}
@@ -95,107 +171,21 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
       </h3>
 
       <div className="flex flex-col gap-2">
-        {/* PDF Export */}
-        <Button
-          variant="solid-secondary"
-          size="md"
-          onClick={() => handleExport('pdf')}
-          disabled={loading !== null}
-          className="w-full justify-start"
-          icon={
-            loading === 'pdf' ? (
-              <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-            ) : (
-              <svg className="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7zm-2.5 9.5v3h1.5v-3h1.5L12 11l-3 2.5h1.5zm-2.5 3h.5v-3H7v1h1v2H6v.5h2v-.5zm7-3v3h1v-3h1v-.5h-1v-.5h-1v.5h-.5v.5h.5z" />
-              </svg>
-            )
-          }
-        >
-          {loading === 'pdf' ? 'Generating PDF...' : 'Download PDF'}
-        </Button>
-
-        {/* DOCX Export */}
-        <Button
-          variant="solid-secondary"
-          size="md"
-          onClick={() => handleExport('docx')}
-          disabled={loading !== null}
-          className="w-full justify-start"
-          icon={
-            loading === 'docx' ? (
-              <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-            ) : (
-              <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7zm-4.5 9.5L7 17h1l.75-2.5h1.5L11 17h1l-1.5-3.5L12 10h-1l-.75 2.5h-1.5L8 10H7l1.5 3.5z" />
-              </svg>
-            )
-          }
-        >
-          {loading === 'docx' ? 'Generating DOCX...' : 'Download Word'}
-        </Button>
-
-        {/* Markdown Export */}
-        <Button
-          variant="solid-secondary"
-          size="md"
-          onClick={() => handleExport('md')}
-          disabled={loading !== null}
-          className="w-full justify-start"
-          icon={
-            <svg className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.31a1.73 1.73 0 0 1-1.73 1.73zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.077h-2.308l-2.307 2.885-2.308-2.885H3.461v7.846zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.462 4.615z" />
-            </svg>
-          }
-        >
-          Download Markdown
-        </Button>
-
-        {/* Source Download */}
-        {sourceContent && sourceExtension && (
-          <Button
-            variant="solid-secondary"
-            size="md"
-            onClick={() => handleExport('source')}
-            disabled={loading !== null}
-            className="w-full justify-start"
-            icon={
-              <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
-            }
-          >
-            Download Source (.{sourceExtension})
-          </Button>
-        )}
+        {exportOptions
+          .filter((option) => option.condition !== false)
+          .map((option) => (
+            <Button
+              key={option.format}
+              variant="solid-secondary"
+              size="md"
+              onClick={() => handleExport(option.format)}
+              disabled={loading !== null}
+              className="w-full justify-start"
+              icon={loading === option.format ? <LoadingSpinner /> : option.icon}
+            >
+              {loading === option.format ? option.loadingLabel : option.label}
+            </Button>
+          ))}
       </div>
 
       {/* Error message */}
