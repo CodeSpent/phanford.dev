@@ -6,8 +6,6 @@ import { links } from '../../../constants/navbarLinks'
 import SocialLinks from '../../SocialLinks'
 import NavBadge, { BadgeVariant } from '../NavBadge'
 import NavSearch from '../NavSearch'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { BadgeData } from './NavbarWrapper'
 
 interface BadgeInfo {
@@ -20,11 +18,38 @@ interface MobileNavPanelProps {
   badgeData?: BadgeData
 }
 
-const ToggleButton = ({ onClick, isOpen }) => {
+interface AnimatedMenuButtonProps {
+  isOpen: boolean
+  onClick: () => void
+}
+
+const AnimatedMenuButton = ({ isOpen, onClick }: AnimatedMenuButtonProps) => {
   return (
-    <div className="flex h-6 w-6 cursor-pointer" onClick={onClick}>
-      <FontAwesomeIcon icon={isOpen ? faTimes : faBars} className="text-xl text-white" />
-    </div>
+    <button
+      onClick={onClick}
+      className="relative flex h-10 w-10 items-center justify-center rounded-md
+                 hover:bg-gray-800/60 transition-colors focus:outline-none"
+      aria-label={isOpen ? 'Close menu' : 'Open menu'}
+      aria-expanded={isOpen}
+    >
+      <div className="flex h-5 w-6 flex-col justify-between">
+        {/* Top line */}
+        <span
+          className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-in-out origin-center
+            ${isOpen ? 'translate-y-[9px] rotate-45' : 'translate-y-0 rotate-0'}`}
+        />
+        {/* Middle line */}
+        <span
+          className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-in-out
+            ${isOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'}`}
+        />
+        {/* Bottom line */}
+        <span
+          className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-in-out origin-center
+            ${isOpen ? '-translate-y-[9px] -rotate-45' : 'translate-y-0 rotate-0'}`}
+        />
+      </div>
+    </button>
   )
 }
 
@@ -46,8 +71,8 @@ const MobileNavPanel = ({ badgeData }: MobileNavPanelProps) => {
 
   return (
     <>
-      <div className="sticky z-50 ml-auto p-4 lg:hidden">
-        <ToggleButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+      <div className="sticky z-[70] ml-auto p-4 lg:hidden">
+        <AnimatedMenuButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
       </div>
       <Transition
         as={React.Fragment}
@@ -61,27 +86,19 @@ const MobileNavPanel = ({ badgeData }: MobileNavPanelProps) => {
       >
         <div
           className="fixed right-0 top-0 z-40 ml-auto flex h-screen w-screen flex-col
-          bg-black/95 backdrop-blur-md border-l border-gray-800/80
-          p-6 py-4 overflow-y-auto"
+          bg-card-background/80 backdrop-blur-md border-l border-gray-800/80
+          p-6 pt-20 overflow-y-auto"
         >
-          {/* Close button at top */}
-          <div className="flex justify-end mb-4">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800/60 transition-colors"
-            >
-              <FontAwesomeIcon icon={faTimes} className="text-xl" />
-            </button>
-          </div>
-
           {/* Search bar */}
-          <div className="mb-6">
-            <NavSearch
-              isExpanded={searchExpanded}
-              onToggle={() => setSearchExpanded(!searchExpanded)}
-              isCompact={false}
-            />
-          </div>
+          {process.env.NEXT_PUBLIC_ENABLE_GLOBAL_SEARCH && (
+            <div className="mb-6">
+              <NavSearch
+                isExpanded={searchExpanded}
+                onToggle={() => setSearchExpanded(!searchExpanded)}
+                isCompact={false}
+              />
+            </div>
+          )}
 
           {/* Navigation links */}
           <nav className="flex flex-grow flex-col gap-3">
@@ -97,11 +114,11 @@ const MobileNavPanel = ({ badgeData }: MobileNavPanelProps) => {
                   className={`
                     flex items-center justify-between
                     px-4 py-3 rounded-lg
-                    text-lg font-medium
+                    text-lg
                     transition-all duration-200
                     ${isActive
-                      ? 'bg-gray-800/60 text-white border-l-2 border-blue-400'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-800/40'
+                      ? 'text-white font-medium'
+                      : 'text-gray-400 font-light hover:text-white'
                     }
                   `}
                   style={{

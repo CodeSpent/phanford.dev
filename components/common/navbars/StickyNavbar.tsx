@@ -94,11 +94,11 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
                   alt={brandConfig.profileAltText}
                 />
                 <div className="ml-3 flex flex-col">
-                  <h1 className={`text-xl ${brandConfig.primaryTextClass} group-hover:text-white transition-colors`}>
+                  <h1 className="text-xl font-medium text-white group-hover:text-gray-200 transition-colors leading-tight">
                     {brandName}
                   </h1>
-                  <p className={`text-xs ${brandConfig.secondaryTextClass}`}>
-                    <span className="font-semibold">{brandConfig.jobTitle}</span>
+                  <p className="text-xs text-gray-400 leading-tight">
+                    {brandConfig.jobTitle}
                   </p>
                 </div>
               </Link>
@@ -159,6 +159,14 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
                 src={brandConfig.profileImage}
                 alt={brandConfig.profileAltText}
               />
+              <div className="ml-3 flex flex-col">
+                <h1 className="text-base font-medium text-white leading-tight">
+                  {brandName}
+                </h1>
+                <p className="text-xs text-gray-400 leading-tight">
+                  {brandConfig.jobTitle}
+                </p>
+              </div>
             </Link>
 
             {/* Mobile Menu Button */}
