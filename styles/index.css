@@ -64,3 +64,20 @@ html {
 .h-screen--nav-aware {
   height: calc(100vh - 96px);
 }
+
+
+@media (max-width: 767px) {
+  .masonry-item__container {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    width: 100% !important;
+  }
+
+  .masonry-item__container .masonry-item {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    margin-bottom: 16px;
+  }
+}

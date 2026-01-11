@@ -35,7 +35,7 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
         if (!masonryRef.current) return
         masonryInstance.current = new Masonry(masonryRef.current, {
           itemSelector: '.masonry-item',
-          columnWidth: 400,
+          columnWidth: 340,
           gutter: 16,
           fitWidth: true
         })
@@ -95,8 +95,9 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
   const getNaturalImageSize = (slug: string, orientation?: string, index: number = 0) => {
     const isLandscape = orientation === 'landscape'
 
-    // Create variety through multiple factors
-    const hash = slug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    // Create variety through multiple factors - guard against undefined slug
+    const safeSlug = slug || ''
+    const hash = safeSlug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
     const sizeVariant = hash % 3 // 0, 1, or 2 for size variety
     const positionVariant = index % 4 // Position-based variety
 
@@ -129,7 +130,7 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
   // For photos, use Masonry layout
   if (dataSource === 'photography') {
     return (
-      <div ref={masonryRef} className="my-4 min-h-[600px]">
+      <div ref={masonryRef} className="masonry-item__container my-4 min-h-[600px]">
         {Array.isArray(itemsToDisplay) && itemsToDisplay.map((item, index) => {
           const naturalSize = getNaturalImageSize(item.slug || '', (item as any).orientation, index)
           return (

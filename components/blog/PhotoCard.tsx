@@ -86,7 +86,7 @@ export default function PhotoCard({
       </div>
 
       {(location || lens || settings || camera) && (
-        <div className="absolute bottom-16 left-4 right-4 z-20 hidden group-hover:block">
+        <div className="absolute bottom-16 left-4 right-4 z-20 hidden md:group-hover:block">
           <div className="bg-black bg-opacity-40 backdrop-blur-sm rounded-lg p-2 text-xs text-gray-400">
             <div className="flex flex-wrap gap-x-4 gap-y-1">
               {location && (
