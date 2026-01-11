@@ -9,6 +9,5 @@ export const links: INavbarLink[] = [
   { title: 'Articles', href: '/blog' },
   { title: 'Projects', href: '/projects' },
   { title: 'Photography', href: '/photography' },
-  { title: 'Music', href: '#', isModal: true },
   { title: 'Resume', href: '/documents/resume' },
 ]
