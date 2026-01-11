@@ -52,11 +52,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PhotoPage({ params }: Props) {
   const { slug } = await params
-  const photo = allPhotos.find((photo) => photo.slugAsParams === slug)
+
+  // Sort photos by date descending (matching gallery order)
+  const sortedPhotos = [...allPhotos].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
+
+  const currentIndex = sortedPhotos.findIndex((p) => p.slugAsParams === slug)
+  const photo = sortedPhotos[currentIndex]
 
   if (!photo) {
     notFound()
   }
 
-  return <PhotoPageClient photo={photo} slug={slug} />
+  // Compute adjacent photo slugs (wrap around)
+  const prevPhoto =
+    currentIndex > 0
+      ? sortedPhotos[currentIndex - 1]
+      : sortedPhotos[sortedPhotos.length - 1]
+  const nextPhoto =
+    currentIndex < sortedPhotos.length - 1
+      ? sortedPhotos[currentIndex + 1]
+      : sortedPhotos[0]
+
+  return (
+    <PhotoPageClient
+      photo={photo}
+      slug={slug}
+      prevSlug={prevPhoto?.slugAsParams}
+      nextSlug={nextPhoto?.slugAsParams}
+      currentIndex={currentIndex}
+      totalPhotos={sortedPhotos.length}
+    />
+  )
 }
