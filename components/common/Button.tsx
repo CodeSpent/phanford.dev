@@ -85,7 +85,7 @@ export default function Button(props: ButtonProps) {
     ...restProps
   } = props
 
-  const baseClasses = 'inline-flex items-center gap-2 font-medium rounded-lg transition-colors duration-200 border'
+  const baseClasses = 'inline-flex items-center font-medium rounded-lg transition-colors duration-200 border'
   const variantClasses = getVariantClasses(variant)
   const sizeClasses = getSizeClasses(size)
   const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : ''
