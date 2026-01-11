@@ -39,11 +39,11 @@ export default function PhotoCard({
   category,
   orientation,
   naturalWidth = 400,
-  naturalHeight = 300,
+  naturalHeight = 30,
   onClick,
 }: Props) {
   // Masonry layout approach - fixed width with natural height
-  const cardWidth = 400 // Fixed width for masonry
+  const cardWidth = 340 // Fixed width for masonry
   const cardHeight = Math.round((cardWidth * naturalHeight) / naturalWidth)
   
   // Hide description if card width is less than 600px
