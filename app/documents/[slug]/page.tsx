@@ -3,6 +3,7 @@ import { allDocs } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
 import DocumentClient from './document-client'
 import { getLatexDocument, getLatexDocumentIndex } from '../../../utils/latex-loader'
+import { getOGImageUrl, getFallbackOGImage } from '@/utils/og-image'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -50,6 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const title = latexDoc.metadata.title || latexDoc.metadata.name || 'Resume'
     const description = latexDoc.metadata.description || `Resume for ${latexDoc.metadata.name}`
     const tags = latexDoc.metadata.tags || []
+    const imageUrl = getFallbackOGImage('document')
 
     return {
       title: `${title} | Patrick Hanford`,
@@ -60,11 +62,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         type: 'article',
         authors: ['Patrick Hanford'],
         tags,
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
       },
       twitter: {
-        card: 'summary',
+        card: 'summary_large_image',
         title,
         description,
+        images: [imageUrl],
       },
       authors: [{ name: 'Patrick Hanford' }],
       keywords: tags,
@@ -81,14 +92,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
   const docUrl = `${baseUrl}/documents/${doc.slugAsParams}`
 
-  // Try to extract first image from content for social sharing
-  let imageUrl = `${baseUrl}/og-image.png` // fallback image
-  if (doc.body?.raw) {
-    const imageMatch = doc.body.raw.match(/!\[([^\]]*)\]\(([^)]+)\)/)
-    if (imageMatch) {
-      imageUrl = `${baseUrl}/documents/${doc.slugAsParams}/${imageMatch[2]}`
-    }
-  }
+  // Priority: extracted MDX image > fallback
+  const imageUrl = getOGImageUrl({
+    contentType: 'document',
+    mdxContent: doc.body?.raw,
+    slug: doc.slugAsParams,
+  })
 
   return {
     title: `${doc.title} | Patrick Hanford`,

@@ -27,6 +27,28 @@ export const metadata = {
     address: false,
     telephone: false,
   },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'),
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Patrick Hanford',
+    title: 'Patrick Hanford',
+    description: 'Personal website and portfolio of Patrick Hanford',
+    images: [
+      {
+        url: '/og-default.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Patrick Hanford',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Patrick Hanford',
+    description: 'Personal website and portfolio of Patrick Hanford',
+    images: ['/og-default.svg'],
+  },
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { allPhotos } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
 import PhotoPageClient from './photo-page-client'
+import { getOGImageUrl } from '@/utils/og-image'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -22,7 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
-  const imageUrl = `${baseUrl}${photo.imageUrl}`
+  const imageUrl = getOGImageUrl({
+    contentType: 'photo',
+    imageUrl: photo.imageUrl,
+  })
 
   return {
     title: `${photo.title} | Patrick Hanford`,

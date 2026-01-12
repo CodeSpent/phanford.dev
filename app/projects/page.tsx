@@ -5,6 +5,24 @@ import ContentListingPageClient from 'components/content/ContentListingPageClien
 export const metadata: Metadata = {
   title: 'Projects | Patrick Hanford',
   description: 'A showcase of my software projects, applications, and open-source contributions.',
+  openGraph: {
+    title: 'Projects | Patrick Hanford',
+    description: 'A showcase of my software projects, applications, and open-source contributions.',
+    images: [
+      {
+        url: '/og-projects.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Patrick Hanford Projects',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Projects | Patrick Hanford',
+    description: 'A showcase of my software projects, applications, and open-source contributions.',
+    images: ['/og-projects.svg'],
+  },
 }
 
 async function getProjectsData(page: number) {

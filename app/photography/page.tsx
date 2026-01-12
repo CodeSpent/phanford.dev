@@ -5,6 +5,24 @@ import PhotographyPageClient from './photography-page-client'
 export const metadata: Metadata = {
   title: 'Photography | Patrick Hanford',
   description: 'A collection of photography work by Patrick Hanford.',
+  openGraph: {
+    title: 'Photography | Patrick Hanford',
+    description: 'A collection of photography work by Patrick Hanford.',
+    images: [
+      {
+        url: '/og-photography.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Patrick Hanford Photography',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Photography | Patrick Hanford',
+    description: 'A collection of photography work by Patrick Hanford.',
+    images: ['/og-photography.svg'],
+  },
 }
 
 async function getPhotographyData(page: number) {

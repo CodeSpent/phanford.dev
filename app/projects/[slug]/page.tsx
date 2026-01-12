@@ -3,6 +3,7 @@ import { allProjects } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
 import ProjectClient from './project-client'
 import { fetchGitHubData } from '@/lib/github-api'
+import { getOGImageUrl } from '@/utils/og-image'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -25,10 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
   const projectUrl = `${baseUrl}/projects/${project.slugAsParams}`
 
-  // Use project icon or fallback
-  const imageUrl = project.icon
-    ? `${baseUrl}${project.icon}`
-    : `${baseUrl}/og-image.png`
+  // Priority: first screenshot > icon > fallback
+  const imageUrl = getOGImageUrl({
+    contentType: 'project',
+    screenshots: project.screenshots,
+    icon: project.icon,
+  })
 
   return {
     title: `${project.title} | Patrick Hanford`,

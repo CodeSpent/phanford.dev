@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { allArticles } from 'contentlayer/generated'
 import { notFound } from 'next/navigation'
 import BlogArticleClient from './blog-article-client'
+import { getOGImageUrl } from '@/utils/og-image'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -23,15 +24,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.phanford.dev'
   const articleUrl = `${baseUrl}/blog/${article.slugAsParams}`
-  
-  // Try to extract first image from content for social sharing
-  let imageUrl = `${baseUrl}/og-image.png` // fallback image
-  if (article.body?.raw) {
-    const imageMatch = article.body.raw.match(/!\[([^\]]*)\]\(([^)]+)\)/)
-    if (imageMatch) {
-      imageUrl = `${baseUrl}/articles/${article.slugAsParams}/${imageMatch[2]}`
-    }
-  }
+
+  // Priority: headerImage frontmatter > extracted MDX image > fallback
+  const imageUrl = getOGImageUrl({
+    contentType: 'article',
+    headerImage: article.headerImage,
+    mdxContent: article.body?.raw,
+    slug: article.slugAsParams,
+  })
 
   return {
     title: `${article.title} | Patrick Hanford`,

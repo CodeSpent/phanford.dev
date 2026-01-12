@@ -5,6 +5,24 @@ import ContentListingPageClient from 'components/content/ContentListingPageClien
 export const metadata: Metadata = {
   title: 'Blog | Patrick Hanford',
   description: 'Articles and thoughts on web development, software engineering, and technology.',
+  openGraph: {
+    title: 'Blog | Patrick Hanford',
+    description: 'Articles and thoughts on web development, software engineering, and technology.',
+    images: [
+      {
+        url: '/og-blog.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Patrick Hanford Blog',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog | Patrick Hanford',
+    description: 'Articles and thoughts on web development, software engineering, and technology.',
+    images: ['/og-blog.svg'],
+  },
 }
 
 async function getBlogData(page: number) {
