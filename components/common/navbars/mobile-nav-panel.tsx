@@ -35,17 +35,17 @@ const AnimatedMenuButton = ({ isOpen, onClick }: AnimatedMenuButtonProps) => {
       <div className="flex h-5 w-6 flex-col justify-between">
         {/* Top line */}
         <span
-          className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-in-out origin-center
+          className={`block h-0.5 w-full !bg-white rounded-full transition-all duration-300 ease-in-out origin-center
             ${isOpen ? 'translate-y-[9px] rotate-45' : 'translate-y-0 rotate-0'}`}
         />
         {/* Middle line */}
         <span
-          className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-in-out
+          className={`block h-0.5 w-full !bg-white rounded-full transition-all duration-300 ease-in-out
             ${isOpen ? 'opacity-0 scale-x-0' : 'opacity-100 scale-x-100'}`}
         />
         {/* Bottom line */}
         <span
-          className={`block h-0.5 w-full bg-white rounded-full transition-all duration-300 ease-in-out origin-center
+          className={`block h-0.5 w-full !bg-white rounded-full transition-all duration-300 ease-in-out origin-center
             ${isOpen ? '-translate-y-[9px] -rotate-45' : 'translate-y-0 rotate-0'}`}
         />
       </div>
@@ -71,7 +71,7 @@ const MobileNavPanel = ({ badgeData }: MobileNavPanelProps) => {
 
   return (
     <>
-      <div className="sticky z-[70] ml-auto p-4 lg:hidden">
+      <div className="sticky z-[70] ml-auto lg:hidden">
         <AnimatedMenuButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
       </div>
       <Transition

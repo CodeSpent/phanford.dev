@@ -81,12 +81,9 @@ export default function StickyNavbar({ badgeData }: StickyNavbarProps) {
           }
         `}
       >
-        <div className="max-w-7xl mx-auto px-4 pt-4">
-          {/* Desktop Layout: Two rows for better space usage */}
+        <div className="max-w-7xl mx-auto px-4 p-4">
           <div className="hidden md:block">
-            {/* Top Row: Logo + Nav Links */}
             <div className="flex items-center justify-between mb-3">
-              {/* Logo / Brand */}
               <Link href="/" className="flex items-center group flex-shrink-0">
                 <img
                   className="h-10 w-10 rounded-full"

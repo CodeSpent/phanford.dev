@@ -39,7 +39,7 @@ export default function Navbar() {
         title={modalTitle} 
       />
       <Popover className="relative z-40">
-        <div className="flex items-center justify-between space-x-10 px-4 py-6 md:justify-start">
+        <div className="flex items-center justify-between space-x-10 px-4 pt-6 pb-4 md:justify-start">
           <div className="flex justify-start">
             <Link href="/">
               <div className="flex items-center">
@@ -60,7 +60,7 @@ export default function Navbar() {
               </div>
             </Link>
           </div>
-          <div className="-my-2 -mr-2 md:hidden">
+          <div className="-my-2 md:hidden">
             <MobileNavPanel />
           </div>
           <Popover.Group
