@@ -1,0 +1,60 @@
+name: Capture Project Screenshots
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_slug:
+        description: 'Specific project slug (leave empty for all)'
+        required: false
+        type: string
+
+jobs:
+  capture-screenshots:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install capture-website-cli
+        run: npm install -g capture-website-cli
+
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Create output directory
+        run: mkdir -p public/images/projects
+
+      - name: Capture screenshots
+        run: node scripts/capture-project-screenshots.js ${{ inputs.project_slug }}
+        continue-on-error: true
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet public/images/projects/ content/projects/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push screenshots
+        if: steps.check-changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/images/projects/*.png
+          git add content/projects/*/index.mdx
+          git commit -m "chore: update project screenshots [automated]"
+          git push
