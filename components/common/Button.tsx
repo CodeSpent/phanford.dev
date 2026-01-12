@@ -73,6 +73,7 @@ const renderIcon = (icon: IconProp | React.ReactNode) => {
   return null
 }
 
+
 export default function Button(props: ButtonProps) {
   const {
     children,
@@ -85,7 +86,7 @@ export default function Button(props: ButtonProps) {
     ...restProps
   } = props
 
-  const baseClasses = 'inline-flex items-center font-medium rounded-lg transition-colors duration-200 border gap-2'
+  const baseClasses = 'inline-flex items-center font-medium rounded-lg transition-colors duration-200 border gap-2 whitespace-nowrap'
   const variantClasses = getVariantClasses(variant)
   const sizeClasses = getSizeClasses(size)
   const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : ''
