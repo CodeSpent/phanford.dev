@@ -111,7 +111,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
             </div>
           )}
           {/* Title */}
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight mb-1">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight mb-1 pt-3">
             {title}
           </h1>
           {/* URL and Category subtext - subtle */}
@@ -267,12 +267,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
   return (
     <header className={`bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-xl overflow-hidden ${className}`}>
       <div className="p-6 md:p-8">
-        {/* Tags */}
-        {tags.length > 0 && (
-          <div className="mb-4">
-            <TagList tags={tags} />
-          </div>
-        )}
+
 
         {/* Two-column layout: All content on left, Optional screenshot on right */}
         <div className={hasScreenshotLink ? 'grid md:grid-cols-[1fr_320px] gap-6 md:items-center' : ''}>
@@ -313,7 +308,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
 
             {/* Description */}
             {description && (
-              <p className="text-base md:text-lg text-gray-300 leading-relaxed mb-6 pl-3 border-l-2 border-gray-800">
+              <p className="text-base md:text-lg text-gray-300 leading-relaxed mb-6 p-3 border-l-2 border-gray-800">
                 {description}
               </p>
             )}
@@ -360,6 +355,13 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
             </a>
           )}
         </div>
+
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div className="mb-4">
+            <TagList tags={tags} />
+          </div>
+        )}
       </div>
     </header>
   )

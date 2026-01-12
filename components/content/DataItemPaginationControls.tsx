@@ -116,22 +116,22 @@ export default function DataItemPaginationControls() {
   }
 
   return (
-    <div className="flex items-center justify-between py-6 lg:max-w-7xl mx-auto">
+    <div className="flex items-center justify-between py-6 w-full">
       {/* Previous Button */}
-      {pageIndex > 0 ? (
-        <Button
-          variant="solid-secondary"
-          size="md"
-          icon={faChevronLeft}
-          iconPosition="left"
-          className="whitespace-nowrap"
-          onClick={() => changePage(pageIndex - 1)}
-        >
-          Previous Page
-        </Button>
-      ) : (
-        <div className="w-auto" />
-      )}
+      <div className="flex-1 flex justify-start">
+        {pageIndex > 0 && (
+          <Button
+            variant="solid-secondary"
+            size="md"
+            icon={faChevronLeft}
+            iconPosition="left"
+            className="whitespace-nowrap"
+            onClick={() => changePage(pageIndex - 1)}
+          >
+            Previous Page
+          </Button>
+        )}
+      </div>
 
       {/* Page Numbers */}
       <div className="flex items-center justify-center space-x-2">
@@ -139,20 +139,20 @@ export default function DataItemPaginationControls() {
       </div>
 
       {/* Next Button */}
-      {pageIndex < numberOfPages - 1 ? (
-        <Button
-          variant="solid-secondary"
-          size="md"
-          icon={faChevronRight}
-          iconPosition="right"
-          className="whitespace-nowrap"
-          onClick={() => changePage(pageIndex + 1)}
-        >
-          Next Page
-        </Button>
-      ) : (
-        <div className="w-auto" />
-      )}
+      <div className="flex-1 flex justify-end">
+        {pageIndex < numberOfPages - 1 && (
+          <Button
+            variant="solid-secondary"
+            size="md"
+            icon={faChevronRight}
+            iconPosition="right"
+            className="whitespace-nowrap"
+            onClick={() => changePage(pageIndex + 1)}
+          >
+            Next Page
+          </Button>
+        )}
+      </div>
     </div>
   )
 }
