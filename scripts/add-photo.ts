@@ -164,36 +164,37 @@ async function collectMetadata(
   }
 
   // Build prompts - only ask for date if not extracted from EXIF
-  const prompts: Parameters<typeof inquirer.prompt>[0] = [
+  const prompts = [
     {
-      type: 'input',
+      type: 'input' as const,
       name: 'title',
       message: 'Photo title:',
       validate: (value: string) => (value.trim() ? true : 'Title is required'),
     },
     {
-      type: 'input',
+      type: 'input' as const,
       name: 'description',
       message: 'Description:',
       validate: (value: string) => (value.trim() ? true : 'Description is required'),
     },
+    // Conditionally add date prompt if no EXIF date available
+    ...(!exifDate
+      ? [
+          {
+            type: 'input' as const,
+            name: 'date',
+            message: 'Date (YYYY-MM-DD):',
+            default: getTodayDate(),
+            validate: (value: string) => {
+              if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+                return 'Please use YYYY-MM-DD format'
+              }
+              return true
+            },
+          },
+        ]
+      : []),
   ]
-
-  // Only prompt for date if no EXIF date available
-  if (!exifDate) {
-    prompts.push({
-      type: 'input',
-      name: 'date',
-      message: 'Date (YYYY-MM-DD):',
-      default: getTodayDate(),
-      validate: (value: string) => {
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-          return 'Please use YYYY-MM-DD format'
-        }
-        return true
-      },
-    })
-  }
 
   const basicAnswers = await inquirer.prompt(prompts)
 
