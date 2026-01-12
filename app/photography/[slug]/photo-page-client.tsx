@@ -38,7 +38,7 @@ export default function PhotoPageClient({
 }: Props) {
   const ds = getDataSource(dataSource)
   const router = useRouter()
-  const [showInfo, setShowInfo] = useState(true)
+  const [showInfo, setShowInfo] = useState(false)
   const [copied, setCopied] = useState(false)
 
   // Keyboard navigation
@@ -105,7 +105,7 @@ export default function PhotoPageClient({
           {/* Info toggle button */}
           <button
             onClick={toggleInfo}
-            className={`p-3 rounded-full transition-all ${
+            className={`flex items-center gap-2 px-3 py-3 rounded-full transition-all ${
               showInfo
                 ? 'bg-white/20 text-white'
                 : 'bg-black/50 hover:bg-black/70 text-white'
@@ -113,6 +113,9 @@ export default function PhotoPageClient({
             aria-label={showInfo ? 'Hide photo info' : 'Show photo info'}
           >
             <InformationCircleIcon className="h-5 w-5" />
+            {!showInfo && (
+              <span className="text-sm font-medium">Tap for details</span>
+            )}
           </button>
 
           {/* Close button */}
@@ -177,14 +180,13 @@ export default function PhotoPageClient({
         />
       </div>
 
-      {/* Info Panel - conditionally rendered */}
-      {showInfo && (
-        <div
-          className="absolute bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur-sm"
-          onClick={(e) => e.stopPropagation()}
-        >
+      <div
+        className={`absolute bottom-0 left-0 right-0 z-30 bg-black/90 backdrop-blur-sm transition-transform duration-300 ease-out ${
+          showInfo ? 'translate-y-0' : 'translate-y-full'
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="p-6 md:p-8 max-w-4xl mx-auto">
-          {/* Title row with share button */}
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex-1 min-w-0">
               <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
@@ -296,7 +298,6 @@ export default function PhotoPageClient({
           )}
         </div>
       </div>
-      )}
     </div>
   )
 }
