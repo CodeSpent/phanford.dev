@@ -39,7 +39,13 @@ export const SiteSettingsProvider = ({ children }) => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setAnimationEnabled(JSON.parse(localStorage.getItem('animationEnabled') || 'true'))
+      const storedAnimationPref = localStorage.getItem('animationEnabled')
+      if (storedAnimationPref !== null) {
+        setAnimationEnabled(JSON.parse(storedAnimationPref))
+      } else {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        setAnimationEnabled(!prefersReducedMotion)
+      }
       setParticlesHidden(JSON.parse(localStorage.getItem('particlesHidden') || 'false'))
       setDevBannerVisible(JSON.parse(localStorage.getItem('devBannerVisible') || 'true'))
       setInitialized(true)
