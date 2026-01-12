@@ -22,7 +22,8 @@
     "validate:content": "node scripts/validate-mdx.mjs",
     "lint:mdx": "remark content/ --frail --quiet",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "capture:screenshots": "node scripts/capture-project-screenshots.js"
   },
   "browser": {
     "fs": false,
