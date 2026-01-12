@@ -224,12 +224,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
   if (isBackgroundImage && hasImage) {
     return (
       <header
-        className={`relative bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-xl overflow-hidden ${className}`}
-        style={{
-          boxShadow:
-            '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-        }}
-      >
+        className={`relative bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-xl overflow-hidden ${className}`}>
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
           <Image
@@ -251,12 +246,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
   if (isTopImage && hasImage) {
     return (
       <header
-        className={`bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-xl overflow-hidden ${className}`}
-        style={{
-          boxShadow:
-            '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-        }}
-      >
+        className={`bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-xl overflow-hidden ${className}`}>
         {/* Top Image */}
         <div className="relative w-full aspect-video bg-gray-900">
           <Image
@@ -275,13 +265,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
 
   // Unified layout - consistent for all projects (with or without screenshot)
   return (
-    <header
-      className={`bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-xl overflow-hidden ${className}`}
-      style={{
-        boxShadow:
-          '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)',
-      }}
-    >
+    <header className={`bg-card-background backdrop-blur-sm border border-gray-800/50 rounded-xl overflow-hidden ${className}`}>
       <div className="p-6 md:p-8">
         {/* Tags */}
         {tags.length > 0 && (
