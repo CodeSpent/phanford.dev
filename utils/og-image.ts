@@ -84,8 +84,15 @@ export function getOGImageUrl(options: OGImageOptions): string {
 
     case 'photo': {
       // Priority: imageUrl > fallback
+      // Use Next.js image optimization for photos to avoid OG crawlers failing on large images
       if (imageUrl) {
-        return imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`
+        if (imageUrl.startsWith('http')) {
+          return imageUrl
+        }
+        // Use Next.js image optimization to resize for OG (1920px wide, 90% quality)
+        // Higher quality for photography while staying well within OG size limits (~5MB)
+        const encodedUrl = encodeURIComponent(imageUrl)
+        return `${baseUrl}/_next/image?url=${encodedUrl}&w=1920&q=90`
       }
       return `${baseUrl}${FALLBACK_IMAGES.photo}`
     }
