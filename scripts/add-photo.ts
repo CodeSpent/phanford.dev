@@ -14,6 +14,7 @@ import * as pc from 'picocolors'
 import * as fs from 'fs/promises'
 import * as path from 'path'
 import { execSync } from 'child_process'
+import exifr from 'exifr'
 
 // Constants
 const CONTENT_PHOTOS_DIR = 'content/photos'
@@ -78,6 +79,29 @@ async function validateImagePath(imagePath: string): Promise<void> {
   }
 }
 
+async function extractDateFromImage(imagePath: string): Promise<string | null> {
+  try {
+    const exifData = await exifr.parse(imagePath, {
+      pick: ['DateTimeOriginal', 'CreateDate', 'ModifyDate'],
+    })
+
+    if (!exifData) return null
+
+    // Prefer DateTimeOriginal, then CreateDate, then ModifyDate
+    const dateValue = exifData.DateTimeOriginal || exifData.CreateDate || exifData.ModifyDate
+
+    if (!dateValue) return null
+
+    // Convert to YYYY-MM-DD format
+    const date = new Date(dateValue)
+    if (isNaN(date.getTime())) return null
+
+    return date.toISOString().split('T')[0]
+  } catch {
+    return null
+  }
+}
+
 async function loadExistingData(): Promise<ExistingData> {
   const tagsSet = new Set<string>()
   const categoriesSet = new Set<string>()
@@ -119,19 +143,28 @@ async function loadExistingData(): Promise<ExistingData> {
 
 async function collectMetadata(
   existingData: ExistingData,
-  options: CLIOptions
+  options: CLIOptions,
+  imagePath: string
 ): Promise<PhotoMetadata> {
+  // Try to extract date from image EXIF data
+  const exifDate = await extractDateFromImage(imagePath)
+
   if (options.yes) {
     // Use minimal defaults for --yes mode
     return {
       title: 'Untitled Photo',
       description: 'No description provided',
-      date: getTodayDate(),
+      date: exifDate || getTodayDate(),
     }
   }
 
-  // Basic info prompts
-  const basicAnswers = await inquirer.prompt([
+  // Show extracted date if found
+  if (exifDate) {
+    console.log(pc.dim(`  Detected date from image: ${exifDate}`))
+  }
+
+  // Build prompts - only ask for date if not extracted from EXIF
+  const prompts: Parameters<typeof inquirer.prompt>[0] = [
     {
       type: 'input',
       name: 'title',
@@ -144,7 +177,11 @@ async function collectMetadata(
       message: 'Description:',
       validate: (value: string) => (value.trim() ? true : 'Description is required'),
     },
-    {
+  ]
+
+  // Only prompt for date if no EXIF date available
+  if (!exifDate) {
+    prompts.push({
       type: 'input',
       name: 'date',
       message: 'Date (YYYY-MM-DD):',
@@ -155,8 +192,13 @@ async function collectMetadata(
         }
         return true
       },
-    },
-  ])
+    })
+  }
+
+  const basicAnswers = await inquirer.prompt(prompts)
+
+  // Use EXIF date if available, otherwise use prompted date
+  const photoDate = exifDate || basicAnswers.date
 
   let tags: string[] = []
 
@@ -233,7 +275,7 @@ async function collectMetadata(
   return {
     title: basicAnswers.title,
     description: basicAnswers.description,
-    date: basicAnswers.date,
+    date: photoDate,
     tags: tags.length > 0 ? tags : undefined,
     category,
   }
@@ -484,7 +526,7 @@ async function main() {
   const existingData = await loadExistingData()
 
   // 3. Collect metadata via prompts
-  const metadata = await collectMetadata(existingData, options)
+  const metadata = await collectMetadata(existingData, options, imagePath)
 
   // 4. Generate/resolve slug
   const baseSlug = options.slug || generateSlug(metadata.title)
