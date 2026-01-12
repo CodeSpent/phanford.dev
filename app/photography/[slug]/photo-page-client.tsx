@@ -119,15 +119,13 @@ export default function PhotoPageClient({
           </button>
 
           {/* Close button */}
-          <Button
-            as="link"
+          <Link
             href={`/${ds.id}`}
-            variant="icon-minimal"
-            className="p-3"
-            icon={<XIcon className="h-5 w-5" />}
+            className="p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-all"
+            aria-label="Back to photography"
           >
-            <span className="sr-only">Back to photography</span>
-          </Button>
+            <XIcon className="h-5 w-5" />
+          </Link>
         </div>
       </div>
 
