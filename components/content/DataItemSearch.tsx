@@ -3,9 +3,10 @@ import SearchControl from '../controls/search-control'
 
 type Props = {
   searchLabel?: string
+  compact?: boolean
 }
 
-export default function DataItemSearch({ searchLabel = "Search" }: Props) {
+export default function DataItemSearch({ searchLabel = "Search", compact = false }: Props) {
   const { searchValue, setSearchValue } = useDataItemSearchContext()
 
   return (
@@ -17,6 +18,7 @@ export default function DataItemSearch({ searchLabel = "Search" }: Props) {
         setSearchValue(value)
       }}
       hotkey="⌘K"
+      compact={compact}
     />
   )
 }

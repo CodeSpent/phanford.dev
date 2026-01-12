@@ -4,17 +4,20 @@ import {
 import { ListBoxInput } from '../common/Input'
 import { sortOptions } from '../../constants/content-options'
 
-export default function DataItemSortFilter() {
+type Props = {
+  compact?: boolean
+}
+
+export default function DataItemSortFilter({ compact = false }: Props) {
   const { sortValue, setSortValue } = useDataItemListContext()
 
   return (
-    <>
-      <ListBoxInput
-        label="Sort"
-        options={sortOptions}
-        value={sortValue}
-        onChange={setSortValue}
-      />
-    </>
+    <ListBoxInput
+      label="Sort"
+      options={sortOptions}
+      value={sortValue}
+      onChange={setSortValue}
+      compact={compact}
+    />
   )
 }

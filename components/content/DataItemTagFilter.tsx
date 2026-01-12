@@ -4,9 +4,10 @@ import TagFilterControl from 'components/controls/tag-filter-control'
 
 type Props = {
   tags: string[]
+  compact?: boolean
 }
 
-export default function DataItemTagFilter({ tags }: Props) {
+export default function DataItemTagFilter({ tags, compact = false }: Props) {
   const { filterValue, setFilterValue, filterMode, setFilterMode } = useDataItemSearchContext()
   const [filteredTags] = useState(tags)
 
@@ -20,6 +21,7 @@ export default function DataItemTagFilter({ tags }: Props) {
       showFilterMode={true}
       filterMode={filterMode}
       onFilterModeChange={setFilterMode}
+      compact={compact}
     />
   )
 }

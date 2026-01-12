@@ -7,6 +7,7 @@ import DataItemSortFilter from 'components/content/DataItemSortFilter'
 import {
   DataItemListContextProvider,
   DataItemSearchContextProvider,
+  useDataItemSearchContext,
 } from 'constants/data-item-context/data-item-context'
 import React, { useState } from 'react'
 import DataItemList from 'page-components/content/data-item-list/data-item-list'
@@ -14,6 +15,47 @@ import DataItemPagesFilter from 'components/content/DataItemPagesFilter'
 import DataItemPaginationControls from 'components/content/DataItemPaginationControls'
 import DataSourceSelector from 'components/content/DataSourceSelector'
 import { DataSourceType, getDataSource } from 'constants/data-sources'
+import { MobileFilterProvider, MobileFilterButton, MobileFilterContent } from 'components/content/MobileFilterPanel'
+
+type FilterControlsSectionProps = {
+  tags: string[]
+  itemNamePlural: string
+  searchLabel: string
+}
+
+function FilterControlsSection({ tags, itemNamePlural, searchLabel }: FilterControlsSectionProps) {
+  const { filterValue } = useDataItemSearchContext()
+  const activeFilterCount = filterValue.length
+
+  return (
+    <>
+      <MobileFilterProvider>
+        <div className="lg:hidden">
+          <div className="flex items-end gap-3">
+            <div className="flex-1">
+              <DataItemSearch searchLabel={searchLabel} />
+            </div>
+            <MobileFilterButton activeFilterCount={activeFilterCount} />
+          </div>
+          <MobileFilterContent>
+            <DataItemTagFilter tags={tags} compact />
+            <div className="grid grid-cols-2 gap-3">
+              <DataItemSortFilter compact />
+              <DataItemPagesFilter itemNamePlural={itemNamePlural} compact />
+            </div>
+          </MobileFilterContent>
+        </div>
+      </MobileFilterProvider>
+
+      <div className="hidden lg:flex lg:items-center lg:gap-5">
+        <DataItemSearch searchLabel={searchLabel} />
+        <DataItemTagFilter tags={tags} />
+        <DataItemSortFilter />
+        <DataItemPagesFilter itemNamePlural={itemNamePlural} />
+      </div>
+    </>
+  )
+}
 
 type Props = {
   items: any[]
@@ -36,7 +78,6 @@ export default function ContentListingPageClient({
   const dataSourceConfig = getDataSource(dataSourceType)
   const pageTitle = `${dataSourceConfig.name} | Patrick Hanford`
 
-  // Projects page has different padding
   const containerPadding = dataSourceType === 'projects' ? 'py-10' : 'py-2'
 
   return (
@@ -50,11 +91,12 @@ export default function ContentListingPageClient({
                   <DataSourceSelector selectedDataSource={dataSourceType} />
                 </div>
 
-                <div className="sm:fl mt-3 flex flex-col gap-3 pt-4 pb-2 sm:mt-4 lg:flex-row lg:items-center lg:gap-5">
-                  <DataItemSearch searchLabel={dataSourceConfig.searchLabel} />
-                  <DataItemTagFilter tags={tags} />
-                  <DataItemSortFilter />
-                  <DataItemPagesFilter itemNamePlural={dataSourceConfig.itemNamePlural} />
+                <div className="mt-3 pt-4 pb-2 sm:mt-4">
+                  <FilterControlsSection
+                    tags={tags}
+                    itemNamePlural={dataSourceConfig.itemNamePlural}
+                    searchLabel={dataSourceConfig.searchLabel}
+                  />
                 </div>
               </div>
               <DataItemList dataSource={dataSourceType} onItemClick={onItemClick} />

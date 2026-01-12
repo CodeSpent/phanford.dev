@@ -10,11 +10,12 @@ interface InputProps {
   value: any
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
   rightAddon?: React.ReactNode
+  compact?: boolean
 }
 
-const Input: React.FC<InputProps> = ({ label, type, placeholder, value, onChange, rightAddon }) => {
+const Input: React.FC<InputProps> = ({ label, type, placeholder, value, onChange, rightAddon, compact = false }) => {
   return (
-    <div className="mb-5">
+    <div className={compact ? '' : 'mb-5'}>
       <label className="block text-sm font-medium text-gray-400">{label}</label>
       <div className="relative">
         <input
@@ -45,11 +46,12 @@ interface ListBoxInputProps {
   options: ListBoxOption[]
   value: any
   onChange: (newValue: any) => void
+  compact?: boolean
 }
 
-export const ListBoxInput: React.FC<ListBoxInputProps> = ({ label, options, value, onChange }) => {
+export const ListBoxInput: React.FC<ListBoxInputProps> = ({ label, options, value, onChange, compact = false }) => {
   return (
-    <div className="mb-5">
+    <div className={compact ? '' : 'mb-5'}>
       <label className="block text-sm font-medium text-gray-400">{label}</label>
       <select
         value={value}
@@ -81,6 +83,7 @@ export interface ComboBoxInputProps {
   showFilterMode?: boolean
   filterMode?: 'OR' | 'AND'
   onFilterModeChange?: (mode: 'OR' | 'AND') => void
+  compact?: boolean
 }
 
 export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
@@ -92,6 +95,7 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
   showFilterMode = false,
   filterMode = 'OR',
   onFilterModeChange,
+  compact = false,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [filteredOptions, setFilteredOptions] = useState<ComboBoxOption[]>(options)
@@ -132,7 +136,7 @@ export const ComboBoxInput: React.FC<ComboBoxInputProps> = ({
 
   // @ts-ignore
   return (
-    <div className="mb-5">
+    <div className={compact ? '' : 'mb-5'}>
       <label className="block text-sm font-medium text-gray-400">{label}</label>
       <Combobox 
         as="div" 

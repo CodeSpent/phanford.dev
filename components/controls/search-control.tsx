@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Input from 'components/common/Input'
 
-export default function SearchControl({ label, placeholder, value, onChange, hotkey }) {
+export default function SearchControl({ label, placeholder, value, onChange, hotkey, compact = false }) {
   const [searchValue, setSearchValue] = useState(value)
 
   useEffect(() => {
@@ -24,6 +24,7 @@ export default function SearchControl({ label, placeholder, value, onChange, hot
       placeholder={placeholder}
       value={searchValue}
       onChange={handleChange}
+      compact={compact}
       rightAddon={
         hotkey ? (
           <kbd

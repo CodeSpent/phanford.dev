@@ -11,6 +11,7 @@ type TagFilterProps = {
   showFilterMode?: boolean
   filterMode?: 'OR' | 'AND'
   onFilterModeChange?: (mode: 'OR' | 'AND') => void
+  compact?: boolean
 }
 
 const getPlaceholderText = (selectedTags: string[]) => {
@@ -32,6 +33,7 @@ export default function TagFilterControl({
   showFilterMode = false,
   filterMode = 'OR',
   onFilterModeChange,
+  compact = false,
 }: TagFilterProps) {
   return (
     <ComboBoxInput
@@ -42,6 +44,7 @@ export default function TagFilterControl({
       showFilterMode={showFilterMode}
       filterMode={filterMode}
       onFilterModeChange={onFilterModeChange}
+      compact={compact}
       options={tags.map(tag => {
         return {
           label: formatTag(tag),
