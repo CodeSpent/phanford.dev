@@ -102,8 +102,6 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
   const [loading, setLoading] = useState<ExportFormat | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const hasExportUrls = Object.keys(exportFormats).length > 0
-
   const getExportUrl = (format: ExportFormat): string | null => {
     const config = exportFormats[format]
     if (!config) return null
@@ -232,11 +230,9 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
 
       {/* Help text */}
       <p className="mt-4 text-xs text-gray-500">
-        {hasExportUrls
-          ? 'Downloads are pre-generated from source.'
-          : isLatex
-            ? 'PDF is compiled from LaTeX source using XeLaTeX.'
-            : 'PDF and Word exports capture the rendered document.'}
+        {isLatex
+          ? 'PDF is compiled from LaTeX source using XeLaTeX.'
+          : 'PDF and Word exports capture the rendered document.'}
       </p>
     </div>
   )
