@@ -16,7 +16,7 @@ import { ContentDetailLayout } from '../../../components/content/ContentDetailLa
 import { TableOfContentsModule } from '../../../components/content/TableOfContentsModule'
 import { MetaInfoModule } from '../../../components/content/MetaInfoModule'
 import { SidebarModule } from '../../../components/content/SidebarModule'
-import { DocumentExportModule } from '../../../components/content/DocumentExportModule'
+import { DocumentExportModule, getResumeExportFormats } from '../../../components/content/DocumentExportModule'
 import { SocialShareModule } from '../../../components/content/SocialShareModule'
 
 // LaTeX rendering
@@ -90,10 +90,9 @@ export default function DocumentClient({
             <DocumentExportModule
               title={document.title}
               rawMarkdown={document.body?.raw || ''}
-              sourceContent={isLatex ? latexDocument?.raw : document.body?.raw}
-              sourceExtension={isLatex ? 'tex' : 'mdx'}
               slug={document.slugAsParams}
-              isLatex={isLatex}
+              exportFormats={document.slugAsParams === 'resume' ? getResumeExportFormats() : undefined}
+              allowClientGeneration={!isLatex}
             />
 
             {/* Meta Information */}

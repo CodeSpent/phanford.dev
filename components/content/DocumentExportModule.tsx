@@ -4,24 +4,24 @@ import React, { useState, useCallback } from 'react'
 import Button from '../common/Button'
 import { exportToPDF, exportToDOCX, exportToMarkdown } from '../../utils/document-export'
 
-interface DocumentExportModuleProps {
-  title: string
-  rawMarkdown: string
-  className?: string
-  sourceContent?: string
-  sourceExtension?: string
-  slug?: string
-  isLatex?: boolean
+export type ExportFormat = 'pdf' | 'docx' | 'md' | 'tex'
+
+export interface ExportFormatConfig {
+  url: string
+  label?: string
 }
 
-type ExportFormat = 'pdf' | 'docx' | 'md' | 'source'
+export type ExportFormatsMap = Partial<Record<ExportFormat, ExportFormatConfig | string>>
 
-interface ExportOption {
-  format: ExportFormat
-  label: string
-  loadingLabel: string
-  icon: React.ReactNode
-  condition?: boolean
+interface DocumentExportModuleProps {
+  title: string
+  rawMarkdown?: string
+  className?: string
+  slug?: string
+  /** Map of available export formats with their download URLs */
+  exportFormats?: ExportFormatsMap
+  /** Fallback: generate exports client-side if no URL provided */
+  allowClientGeneration?: boolean
 }
 
 const LoadingSpinner = () => (
@@ -42,78 +42,88 @@ const LoadingSpinner = () => (
   </svg>
 )
 
-const PdfIcon = () => (
-  <svg className="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7zm-2.5 9.5v3h1.5v-3h1.5L12 11l-3 2.5h1.5zm-2.5 3h.5v-3H7v1h1v2H6v.5h2v-.5zm7-3v3h1v-3h1v-.5h-1v-.5h-1v.5h-.5v.5h.5z" />
-  </svg>
-)
+const formatIcons: Record<ExportFormat, React.ReactNode> = {
+  pdf: (
+    <svg className="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7z" />
+    </svg>
+  ),
+  docx: (
+    <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7z" />
+    </svg>
+  ),
+  md: (
+    <svg className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.31a1.73 1.73 0 0 1-1.73 1.73zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.077h-2.308l-2.307 2.885-2.308-2.885H3.461v7.846zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.462 4.615z" />
+    </svg>
+  ),
+  tex: (
+    <svg className="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+    </svg>
+  ),
+}
 
-const DocxIcon = () => (
-  <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1v5h5v12H6V4h7zm-4.5 9.5L7 17h1l.75-2.5h1.5L11 17h1l-1.5-3.5L12 10h-1l-.75 2.5h-1.5L8 10H7l1.5 3.5z" />
-  </svg>
-)
+const formatLabels: Record<ExportFormat, string> = {
+  pdf: 'PDF',
+  docx: 'Word',
+  md: 'Markdown',
+  tex: 'LaTeX Source',
+}
 
-const MarkdownIcon = () => (
-  <svg className="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M22.27 19.385H1.73A1.73 1.73 0 0 1 0 17.655V6.345a1.73 1.73 0 0 1 1.73-1.73h20.54A1.73 1.73 0 0 1 24 6.345v11.31a1.73 1.73 0 0 1-1.73 1.73zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.077h-2.308l-2.307 2.885-2.308-2.885H3.461v7.846zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.462 4.615z" />
-  </svg>
-)
-
-const SourceIcon = () => (
-  <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-  </svg>
-)
+/**
+ * GitHub release URL helper for resume
+ */
+export const getResumeExportFormats = (): ExportFormatsMap => ({
+  pdf: {
+    url: 'https://github.com/CodeSpent/resume/releases/latest/download/resume.pdf',
+    label: 'PDF',
+  },
+  docx: {
+    url: 'https://github.com/CodeSpent/resume/releases/latest/download/resume.docx',
+    label: 'Word',
+  },
+  md: {
+    url: 'https://github.com/CodeSpent/resume/releases/latest/download/resume.md',
+    label: 'Markdown',
+  },
+})
 
 /**
  * Document export module for sidebar
- * Provides PDF, DOCX, and Markdown export buttons
+ * Supports both pre-generated downloads (via URL) and client-side generation
  */
 export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
   title,
-  rawMarkdown,
+  rawMarkdown = '',
   className = '',
-  sourceContent,
-  sourceExtension,
   slug,
-  isLatex = false,
+  exportFormats = {},
+  allowClientGeneration = true,
 }) => {
   const [loading, setLoading] = useState<ExportFormat | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const downloadSource = useCallback(() => {
-    if (!sourceContent || !sourceExtension) return
-
-    const blob = new Blob([sourceContent], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `${title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.${sourceExtension}`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
-  }, [sourceContent, sourceExtension, title])
-
-  const downloadLatexPDF = useCallback(() => {
-    if (!slug) return
-    // Direct link to pre-generated PDF
-    const pdfUrl = `/documents/${slug}/${slug}.pdf`
-    window.open(pdfUrl, '_blank')
-  }, [slug])
-
   const handleExport = useCallback(async (format: ExportFormat) => {
+    const formatConfig = exportFormats[format]
+
+    // If we have a URL, just open it
+    if (formatConfig) {
+      const url = typeof formatConfig === 'string' ? formatConfig : formatConfig.url
+      window.open(url, '_blank')
+      return
+    }
+
+    // Otherwise, try client-side generation
+    if (!allowClientGeneration) return
+
     setLoading(format)
     setError(null)
 
     try {
-      if (format === 'source') {
-        downloadSource()
-      } else if (format === 'md') {
+      if (format === 'md') {
         exportToMarkdown(rawMarkdown, title)
-      } else if (format === 'pdf' && isLatex) {
-        downloadLatexPDF()
       } else {
         const articleBody = document.querySelector('.article-body')
         if (!articleBody) {
@@ -132,74 +142,69 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
     } finally {
       setLoading(null)
     }
-  }, [title, rawMarkdown, downloadSource, isLatex, downloadLatexPDF])
+  }, [title, rawMarkdown, exportFormats, allowClientGeneration])
 
-  const exportOptions: ExportOption[] = [
-    {
-      format: 'pdf',
-      label: 'Download PDF',
-      loadingLabel: 'Generating PDF...',
-      icon: <PdfIcon />,
-    },
-    {
-      format: 'docx',
-      label: 'Download Word',
-      loadingLabel: 'Generating DOCX...',
-      icon: <DocxIcon />,
-    },
-    {
-      format: 'md',
-      label: 'Download Markdown',
-      loadingLabel: 'Generating Markdown...',
-      icon: <MarkdownIcon />,
-    },
-    {
-      format: 'source',
-      label: `Download Source (.${sourceExtension})`,
-      loadingLabel: 'Downloading...',
-      icon: <SourceIcon />,
-      condition: Boolean(sourceContent && sourceExtension),
-    },
-  ]
+  // Determine which formats to show
+  const availableFormats = Object.keys(exportFormats) as ExportFormat[]
+
+  // If no export formats provided but client generation allowed, show default options
+  const formatsToShow: ExportFormat[] = availableFormats.length > 0
+    ? availableFormats
+    : allowClientGeneration
+      ? ['pdf', 'docx', 'md']
+      : []
+
+  if (formatsToShow.length === 0) {
+    return null
+  }
 
   return (
-    <div
-      className={`bg-card-background rounded-lg border border-gray-800/50 p-6 ${className}`}
-    >
+    <div className={`bg-card-background rounded-lg border border-gray-800/50 p-6 ${className}`}>
       <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">
         Export Document
       </h3>
 
       <div className="flex flex-col gap-2">
-        {exportOptions
-          .filter((option) => option.condition !== false)
-          .map((option) => (
+        {formatsToShow.map((format) => {
+          const config = exportFormats[format]
+          const label = config && typeof config !== 'string' && config.label
+            ? config.label
+            : formatLabels[format]
+          const hasUrl = !!config
+
+          return (
             <Button
-              key={option.format}
+              key={format}
               variant="solid-secondary"
               size="md"
-              onClick={() => handleExport(option.format)}
+              onClick={() => handleExport(format)}
               disabled={loading !== null}
               className="w-full justify-start"
-              icon={loading === option.format ? <LoadingSpinner /> : option.icon}
+              icon={loading === format ? <LoadingSpinner /> : formatIcons[format]}
             >
-              {loading === option.format ? option.loadingLabel : option.label}
+              {loading === format
+                ? `Generating ${label}...`
+                : `Download ${label}`}
+              {hasUrl && (
+                <svg className="w-3 h-3 ml-auto text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              )}
             </Button>
-          ))}
+          )
+        })}
       </div>
 
-      {/* Error message */}
       {error && (
         <div className="mt-3 p-2 bg-red-900/20 border border-red-700/50 rounded text-red-400 text-sm">
           {error}
         </div>
       )}
 
-      {/* Help text */}
       <p className="mt-4 text-xs text-gray-500">
-        {isLatex
-          ? 'PDF is compiled from LaTeX source using XeLaTeX.'
-          : 'PDF and Word exports capture the rendered document.'}
+        {Object.keys(exportFormats).length > 0
+          ? 'Downloads are pre-generated from source.'
+          : 'Exports are generated from the rendered document.'}
       </p>
     </div>
   )
