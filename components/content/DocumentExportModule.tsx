@@ -79,9 +79,9 @@ const SourceIcon = () => (
  * GitHub release URL helper for resume
  */
 export const getResumeExportFormats = (): ExportFormatsMap => ({
-  pdf: 'https://github.com/CodeSpent/resume/releases/latest/download/resume.pdf',
-  docx: 'https://github.com/CodeSpent/resume/releases/latest/download/resume.docx',
-  md: 'https://github.com/CodeSpent/resume/releases/latest/download/resume.md',
+  pdf: 'https://github.com/CodeSpent/resume/releases/latest/download/Patrick-Hanford-Resume.pdf',
+  docx: 'https://github.com/CodeSpent/resume/releases/latest/download/Patrick-Hanford-Resume.docx',
+  md: 'https://github.com/CodeSpent/resume/releases/latest/download/Patrick-Hanford-Resume.md',
 })
 
 /**
