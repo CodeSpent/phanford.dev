@@ -34,6 +34,15 @@ const getDocumentIcon = (fileType?: string) => {
           </svg>
         </div>
       )
+    case 'latex':
+    case 'tex':
+      return (
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500/20 to-teal-600/20 border border-teal-500/30 group-hover:from-teal-500/30 group-hover:to-teal-600/30 group-hover:border-teal-500/50 transition-all duration-200">
+          <svg className="w-4 h-4 text-teal-400 group-hover:text-teal-300 transition-colors duration-200" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+          </svg>
+        </div>
+      )
     case 'mdx':
     case 'md':
     case 'markdown':
@@ -55,6 +64,9 @@ const getFileTypeLabel = (fileType?: string) => {
     case 'docx':
     case 'doc':
       return 'Word'
+    case 'latex':
+    case 'tex':
+      return 'LaTeX'
     case 'mdx':
     case 'md':
     case 'markdown':
