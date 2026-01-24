@@ -228,12 +228,6 @@ export const DocumentExportModule: React.FC<DocumentExportModuleProps> = ({
         </div>
       )}
 
-      {/* Help text */}
-      <p className="mt-4 text-xs text-gray-500">
-        {isLatex
-          ? 'PDF is compiled from LaTeX source using XeLaTeX.'
-          : 'PDF and Word exports capture the rendered document.'}
-      </p>
     </div>
   )
 }
