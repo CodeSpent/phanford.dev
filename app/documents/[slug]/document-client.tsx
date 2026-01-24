@@ -90,9 +90,11 @@ export default function DocumentClient({
             <DocumentExportModule
               title={document.title}
               rawMarkdown={document.body?.raw || ''}
+              sourceContent={isLatex ? latexDocument?.raw : document.body?.raw}
+              sourceExtension={isLatex ? 'tex' : 'mdx'}
               slug={document.slugAsParams}
+              isLatex={isLatex}
               exportFormats={document.slugAsParams === 'resume' ? getResumeExportFormats() : undefined}
-              allowClientGeneration={!isLatex}
             />
 
             {/* Meta Information */}
