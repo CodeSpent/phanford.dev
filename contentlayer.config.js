@@ -255,6 +255,60 @@ export const Doc = defineDocumentType(() => ({
   computedFields,
 }))
 
+export const LatexDoc = defineDocumentType(() => ({
+  name: 'LatexDoc',
+  filePathPattern: 'documents/*/info.json',
+  contentType: 'data',
+  fields: {
+    title: {
+      type: 'string',
+      required: true,
+    },
+    description: {
+      type: 'string',
+      required: false,
+    },
+    date: {
+      type: 'date',
+      required: false,
+    },
+    tags: {
+      type: 'list',
+      of: { type: 'string' },
+      required: false,
+    },
+    category: {
+      type: 'string',
+      required: false,
+    },
+    fileType: {
+      type: 'string',
+      required: false,
+    },
+    pageCount: {
+      type: 'number',
+      required: false,
+    },
+  },
+  computedFields: {
+    slug: {
+      type: 'string',
+      resolve: doc => {
+        const pathParts = doc._raw.flattenedPath.split('/')
+        const folderName = pathParts[pathParts.length - 2]
+        return `/${folderName}`
+      },
+    },
+    slugAsParams: {
+      type: 'string',
+      resolve: doc => {
+        const pathParts = doc._raw.flattenedPath.split('/')
+        return pathParts[pathParts.length - 2]
+      },
+    },
+  },
+}))
+
 export const Project = defineDocumentType(() => ({
   name: 'Project',
   filePathPattern: 'projects/**/*.{md,mdx}',
@@ -414,7 +468,8 @@ export const Project = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'content',
-  documentTypes: [Article, Photo, Doc, Project],
+  contentDirExclude: ['**/README.md'],
+  documentTypes: [Article, Photo, Doc, LatexDoc, Project],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

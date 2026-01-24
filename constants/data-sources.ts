@@ -1,4 +1,4 @@
-import { Article, Doc, Photo, Project, allArticles, allDocs, allPhotos, allProjects } from 'contentlayer/generated'
+import { Article, Doc, LatexDoc, Photo, Project, allArticles, allDocs, allLatexDocs, allPhotos, allProjects } from 'contentlayer/generated'
 
 export type DataSourceType = 'blog' | 'photography' | 'documents' | 'projects'
 
@@ -58,18 +58,20 @@ export const dataSources: Record<DataSourceType, DataSource> = {
     searchLabel: 'Search Documents',
     getItems: () => {
       try {
-        return Array.isArray(allDocs) ? allDocs : []
+        const docs = Array.isArray(allDocs) ? allDocs : []
+        const latexDocs = Array.isArray(allLatexDocs) ? allLatexDocs : []
+        return [...docs, ...latexDocs]
       } catch (error) {
         console.error('Error loading documents:', error)
         return []
       }
     },
-    getItemUrl: (item: Doc) => `/documents${item.slug}`,
-    getItemTitle: (item: Doc) => item.title,
-    getItemDescription: (item: Doc) => item.description || 'Document',
-    getItemDate: (item: Doc) => item.date || null,
-    getItemTags: (item: Doc) => Array.isArray(item.tags) ? item.tags : [],
-    getItemReadingTime: (item: Doc) => 5, // Estimated reading time for documents
+    getItemUrl: (item: Doc | LatexDoc) => `/documents${item.slug}`,
+    getItemTitle: (item: Doc | LatexDoc) => item.title,
+    getItemDescription: (item: Doc | LatexDoc) => item.description || 'Document',
+    getItemDate: (item: Doc | LatexDoc) => item.date || null,
+    getItemTags: (item: Doc | LatexDoc) => Array.isArray(item.tags) ? item.tags : [],
+    getItemReadingTime: (item: Doc | LatexDoc) => 5, // Estimated reading time for documents
     getAvailableTags: () => [
       'resume', 'cv', 'software engineer', 'full-stack', 'python', 'javascript', 'react',
       'portfolio', 'professional', 'experience', 'skills', 'education', 'certification',
