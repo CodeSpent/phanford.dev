@@ -7,11 +7,12 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next",
     "start": "next start",
-    "build": "npm run build:favicon && npm run build:photos:blur && npm run build:latex && contentlayer2 build && npm run build:lunr && next build",
+    "build": "npm run build:favicon && npm run build:photos:blur && npm run build:latex && npm run build:resume-pdf && contentlayer2 build && npm run build:lunr && next build",
     "build:blog": "npm run build:content && npm run build:lunr",
     "build:lunr": "npx tsx build-scripts/lunr-index.ts",
     "build:latex": "npx tsx build-scripts/latex-parser/index.ts",
     "build:latex:pdf": "npx tsx build-scripts/latex-pdf-generator.ts",
+    "build:resume-pdf": "npx tsx build-scripts/fetch-resume-pdf.ts",
     "build:content": "contentlayer2 build",
     "build:photos": "npm run build:photos:metadata && npm run build:photos:blur && node scripts/copy-photo-images.js",
     "build:photos:blur": "node scripts/generate-blur-placeholders.js",

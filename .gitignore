@@ -42,3 +42,5 @@ tsconfig.tsbuildinfo
 .idea/
 .vscode/
 *.sw*
+# Build-generated resume PDF
+public/documents/resume.pdf
