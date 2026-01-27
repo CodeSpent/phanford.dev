@@ -10,7 +10,7 @@
  *   npx tsx build-scripts/fetch-resume-pdf.ts
  *
  * Output:
- *   public/documents/resume.pdf
+ *   public/documents/resume/resume.pdf
  */
 
 import * as fs from 'fs'
@@ -19,7 +19,7 @@ import * as https from 'https'
 
 const REPO_OWNER = 'CodeSpent'
 const REPO_NAME = 'resume'
-const OUTPUT_DIR = path.join(process.cwd(), 'public', 'documents')
+const OUTPUT_DIR = path.join(process.cwd(), 'public', 'documents', 'resume')
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'resume.pdf')
 
 interface ReleaseAsset {

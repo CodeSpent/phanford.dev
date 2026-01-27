@@ -23,10 +23,23 @@ jobs:
         run: |
           git submodule update --remote --recursive
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch resume PDF from latest release
+        run: npm run build:resume-pdf
+        continue-on-error: true
+
       - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --staged --quiet || git commit -m "chore: update content submodules"
+          git diff --staged --quiet || git commit -m "chore: update content submodules and resume PDF"
           git push
