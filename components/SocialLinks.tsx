@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { faDev, faGithub, faLinkedinIn, faTwitch } from '@fortawesome/free-brands-svg-icons'
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faCalendarDays, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 import { classNames } from 'utils/common'
 import Link from 'next/link'
@@ -56,6 +56,11 @@ const socials = [
         />
       </svg>
     ),
+  },
+  {
+    name: 'Calendly',
+    href: 'https://calendly.com/phanforddev',
+    icon: props => <FontAwesomeIcon icon={faCalendarDays} {...props} />,
   },
   {
     name: 'Email',
