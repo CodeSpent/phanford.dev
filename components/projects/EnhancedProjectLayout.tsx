@@ -280,6 +280,7 @@ export const EnhancedProjectLayout: React.FC<EnhancedProjectLayoutProps> = ({
                 width={1200}
                 height={675}
                 className="w-full h-full object-cover"
+                priority
               />
             </div>
           </div>
