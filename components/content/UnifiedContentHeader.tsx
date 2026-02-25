@@ -232,6 +232,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
             alt={title}
             fill
             className="object-cover opacity-20"
+            priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black" />
         </div>
@@ -254,6 +255,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
             alt={title}
             fill
             className="object-cover"
+            priority
           />
         </div>
 
@@ -347,6 +349,7 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
                 width={320}
                 height={240}
                 className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
+                priority
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
               <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm rounded-md p-1.5">
