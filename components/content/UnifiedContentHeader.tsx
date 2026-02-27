@@ -190,6 +190,10 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
             <span>{readingTime} min read</span>
           </div>
         )}
+
+        {showSocialShare && (
+          <SocialShareModule title={title} description={description} />
+        )}
       </div>
 
       {/* External Links */}
@@ -211,12 +215,6 @@ export const UnifiedContentHeader: React.FC<UnifiedContentHeaderProps> = ({
         </div>
       )}
 
-      {/* Social Share - Hidden for now */}
-      {/* {showSocialShare && (
-        <div className="pt-4 border-t border-gray-800">
-          <SocialShareModule title={title} variant="inline" />
-        </div>
-      )} */}
     </>
   )
 
