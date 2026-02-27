@@ -226,6 +226,7 @@ export default function DataItemList({ dataSource = 'blog', onItemClick }: Props
                 description={item.description || ''}
                 tags={item.tags || []}
                 readingTime={(item as any).readingTime}
+                headerImage={(item as any).headerImage ? `/articles/${(item as any).slugAsParams || item.slug || ''}/${(item as any).headerImage}` : undefined}
               />
             )}
           </div>

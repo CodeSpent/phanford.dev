@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { UnifiedTagList } from '../common/UnifiedTag'
@@ -10,6 +11,7 @@ type Props = {
   description: string
   tags: string[]
   readingTime?: number
+  headerImage?: string
 }
 
 export default function ArticleCard({
@@ -20,20 +22,32 @@ export default function ArticleCard({
   description,
   tags,
   readingTime,
+  headerImage,
 }: Props) {
   const url = slug && slug.startsWith('/') ? `/blog${slug}` : `/blog/${(slug || '')}`
-  
+
   // Truncate description for more compact cards
-  const truncatedDescription = description.length > 120 
-    ? description.substring(0, 120) + '...' 
+  const truncatedDescription = description.length > 120
+    ? description.substring(0, 120) + '...'
     : description
 
   return (
     <Link href={url}>
       <div
-        className={`h-full bg-card-background group rounded-xl border border-gray-800/50 
-        transition-all duration-200 hover:border-gray-700 hover:shadow-lg hover:shadow-gray-900/20 flex flex-col cursor-pointer`}
+        className={`h-full bg-card-background group rounded-xl border border-gray-800/50
+        transition-all duration-200 hover:border-gray-700 hover:shadow-lg hover:shadow-gray-900/20 flex flex-col cursor-pointer overflow-hidden`}
       >
+        {headerImage && (
+          <div className="relative w-full aspect-[16/9]">
+            <Image
+              src={headerImage}
+              alt={title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            />
+          </div>
+        )}
         <div className="p-5 flex flex-col h-full">
           {/* Header with tags */}
           <div className="mb-3">

@@ -99,6 +99,8 @@ export default function BlogArticleClient({ article, dataSource = 'blog', prevAr
           tags={article.tags || []}
           date={article.date}
           readingTime={article.readingTime}
+          headerImage={article.headerImage ? `/articles/${article.slugAsParams}/${article.headerImage}` : undefined}
+          imagePosition={article.imagePosition || 'top'}
           showSocialShare={true}
           className="mb-6"
         />
